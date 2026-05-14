@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regions Map</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #e2dcc4;
+      --card: #ffffff;
+      --white: #ffffff;
+      --black: #000000;
+      --blue: #0000ff;
+      --yellow: #ffff00;
+      --muted: #d7d1bb;
+      background-color: var(--blue) !important;
+    }
+
+    @font-face {
+      font-family: "LoRes 21 OT";
+      src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
+        url("/fonts/LoRes21OT-Regular.woff") format("woff");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html {
+      background-color: var(--blue) !important;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg) !important;
+      color: var(--black);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .top-bar {
+      height: 16px;
+      background: var(--blue);
+      border-bottom: 2px solid var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      padding: 14px 22px 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 500;
+      flex-wrap: wrap;
+      background: var(--bg);
+      position: sticky;
+      top: 16px;
+      z-index: 90;
+    }
+
+    .nav a,
+    .nav span {
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      background: var(--yellow);
+    }
+
+    .hero {
+      padding: 12px 20px 18px;
+      width: 100%;
+      max-width: none;
+      font-family: "LoRes 21 OT", monospace;
+      font-size: clamp(34px, 5.8vw, 82px);
+      line-height: 0.94;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+
+    .map-page {
+      padding: 0 20px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--black);
+      background: var(--white);
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .panel.muted {
+      background: var(--muted);
+    }
+
+    .panel-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 8px;
+    }
+
+    .map-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .map-frame {
+      position: relative;
+      width: 100%;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+      background: var(--white);
+      border: 1px solid var(--black);
+      overflow: hidden;
+    }
+
+    .map-frame.small {
+      min-height: 0;
+      height: auto;
+      aspect-ratio: 4 / 3;
+    }
+
+    .map-frame.small svg {
+      height: 100%;
+      min-height: 0;
+    }
+
+    .map-frame svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .map-status {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      max-width: calc(100% - 24px);
+      background: var(--white);
+      border: 1px solid var(--black);
+      padding: 6px 8px 5px;
+      font-size: 11px;
+      line-height: 1.2;
+      text-transform: uppercase;
+      font-weight: 700;
+      z-index: 3;
+    }
+
+    .country {
+      fill: var(--muted);
+      stroke: var(--black);
+      stroke-width: 0.45;
+      vector-effect: non-scaling-stroke;
+      transition: fill 0.12s ease;
+    }
+
+    .country.region-country {
+      fill: var(--white);
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+    .country.is-hovered,
+    .country.is-selected {
+      fill: var(--yellow);
+    }
+
+    .country.detail-country {
+      fill: var(--white);
+      stroke-width: 0.7;
+    }
+
+    .graticule {
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.18);
+      stroke-width: 0.45;
+      vector-effect: non-scaling-stroke;
+      pointer-events: none;
+    }
+
+    .sphere {
+      fill: #f6f3e6;
+      stroke: var(--black);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .region-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .region-button {
+      border: 1px solid var(--black);
+      background: var(--white);
+      color: var(--black);
+      padding: 8px 9px 7px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .region-button:hover,
+    .region-button.is-active {
+      background: var(--yellow);
+    }
+
+    .region-view {
+      display: grid;
+      gap: 10px;
+    }
+
+    .region-heading {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 56px);
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .region-copy {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.42;
+    }
+
+    .region-meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 5px 12px;
+      padding: 8px 0;
+      border-top: 1px solid var(--black);
+      border-bottom: 1px solid var(--black);
+      font-size: 11px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .region-meta span:nth-child(odd) {
+      width: max-content;
+      border: 1px solid var(--black);
+      background: var(--yellow);
+      padding: 3px 5px 2px;
+    }
+
+    .marker {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+
+    .marker-leader {
+      stroke: var(--black);
+      stroke-width: 1;
+      stroke-dasharray: 3 3;
+      vector-effect: non-scaling-stroke;
+      pointer-events: none;
+    }
+
+    .marker-dot {
+      fill: var(--yellow);
+      stroke: var(--black);
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .marker text {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      paint-order: stroke;
+      stroke: var(--white);
+      stroke-width: 3px;
+      stroke-linejoin: round;
+      fill: var(--black);
+      pointer-events: none;
+    }
+
+    .location-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .location-card {
+      display: grid;
+      gap: 5px;
+      border: 1px solid var(--black);
+      background: var(--white);
+      padding: 10px;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .location-card:hover,
+    .location-card.is-active {
+      background: var(--yellow);
+    }
+
+    .location-title {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.05;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .location-text {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.32;
+    }
+
+    .location-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .location-meta span {
+      border: 1px solid var(--black);
+      background: var(--white);
+      padding: 4px 5px 3px;
+    }
+
+    .location-card.is-game {
+      border-width: 2px;
+    }
+
+    .location-card.is-game .location-meta span {
+      background: var(--white);
+    }
+
+    .location-card.is-game .location-meta span:first-child,
+    .location-card.is-game .location-meta span:last-child {
+      background: var(--yellow);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    body,
+    a,
+    button,
+    input,
+    select,
+    .region-button,
+    .location-card {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover,
+    button:hover,
+    .region-button:hover,
+    .location-card:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+
+    .map-expand-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+      border: 1px solid var(--black);
+      background: var(--white);
+      color: var(--black);
+      padding: 7px 10px 6px;
+      font: inherit;
+      font-size: 11px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .map-expand-button:hover {
+      background: var(--yellow);
+    }
+
+    .map-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .map-modal.is-open {
+      display: flex;
+    }
+
+    .map-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.64);
+    }
+
+    .map-modal-panel {
+      position: relative;
+      z-index: 2;
+      width: min(1180px, 92vw);
+      height: min(780px, 86vh);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border: 2px solid var(--black);
+      background: var(--white);
+    }
+
+    .map-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--black);
+      background: var(--white);
+    }
+
+    .map-modal-title {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .map-modal-close {
+      border: 1px solid var(--black);
+      background: var(--white);
+      color: var(--black);
+      padding: 7px 10px 6px;
+      font: inherit;
+      font-size: 11px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .map-modal-close:hover {
+      background: var(--yellow);
+    }
+
+    .expanded-map-wrap {
+      position: relative;
+      min-height: 0;
+      background: #f6f3e6;
+    }
+
+    .expanded-map-wrap svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .marker {
+      transition: opacity 0.12s ease;
+    }
+
+    .marker .marker-dot {
+      transition: r 0.12s ease, fill 0.12s ease, stroke-width 0.12s ease;
+    }
+
+    .marker text {
+      opacity: 0.78;
+      transition: opacity 0.12s ease, font-size 0.12s ease;
+    }
+
+    .marker:hover .marker-dot,
+    .marker:focus .marker-dot,
+    .marker.is-active .marker-dot {
+      r: 8;
+      fill: var(--black);
+      stroke: var(--yellow);
+      stroke-width: 3;
+    }
+
+    .marker:hover text,
+    .marker:focus text,
+    .marker.is-active text {
+      opacity: 1;
+      font-size: 11px;
+      stroke: var(--yellow);
+      stroke-width: 5px;
+    }
+
+    .marker:hover::after {
+      content: "";
+    }
+
+    .marker-hit {
+      fill: transparent;
+      pointer-events: all;
+    }
+
+    .location-card:hover,
+    .location-card.is-active {
+      transform: translateX(3px);
+    }
+
+
+    .location-card.no-link {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    .location-card.no-link:hover {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    body.map-modal-open {
+      overflow: hidden;
+    }
+
+    body,
+    a,
+    button,
+    input,
+    select,
+    .region-button,
+    .location-card,
+    .map-expand-button,
+    .map-modal-close,
+    .marker {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover,
+    button:hover,
+    .region-button:hover,
+    .location-card:hover,
+    .map-expand-button:hover,
+    .map-modal-close:hover,
+    .marker:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+
+    .location-card .location-meta span,
+    .location-card.is-game .location-meta span {
+      background: var(--white) !important;
+    }
+
+    @media (max-width: 1100px) {
+      .map-page {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .map-frame {
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        gap: 14px;
+      }
+
+      .hero,
+      .map-page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .region-controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .map-frame {
+        aspect-ratio: 16 / 9;
+      }
+
+      .map-frame.small {
+        min-height: 0;
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    .map-frame.small {
+      background: #f6f3e6;
+    }
+
+    #detailMap,
+    #expandedMap {
+      background: #f6f3e6;
+    }
+
+    @media (max-width: 520px) {
+      .map-frame {
+        aspect-ratio: 4 / 3;
+      }
+
+      .map-frame.small {
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="top-bar"></div>
+
+  <div class="nav">
+    <a href="homepage.html">Home</a>
+    <a href="index.html">Start</a>
+    <a href="archivecatalogue.html">Catalogue</a>
+    <a href="articles.html">Articles</a>
+    <a href="emulators.html">Emulators</a>
+    <a href="timeline.html">Timeline</a>
+    <a href="regionsmap.html">Regions Map</a>
+    <a href="art-archive.html">Art Archive</a>
+    <a href="about.html">About</a>
+  </div>
+
+  <div class="hero">Regions Map</div>
+
+  <main class="map-page">
+    <section class="map-panel">
+      <section class="panel">
+        <p class="panel-title">World regions</p>
+        <div class="map-frame" id="worldMapFrame">
+          <svg id="worldMap" role="img" aria-label="World map with selectable regions"></svg>
+          <div class="map-status" id="mapStatus">Loading map data</div>
+        </div>
+      </section>
+
+      <section class="panel muted">
+        <p class="panel-title">Select region</p>
+        <div class="region-controls" id="regionControls"></div>
+      </section>
+    </section>
+
+    <section class="region-view" id="regionView">
+      <section class="panel">
+        <p class="panel-title">Region detail</p>
+        <h1 class="region-heading" id="regionTitle">North America</h1>
+        <p class="region-copy" id="regionDescription"></p>
+        <div class="region-meta" style="margin-top: 10px;">
+          <span>Scope</span><span id="regionScope"></span>
+          <span>Locations</span><span id="regionCount"></span>
+        </div>
+      </section>
+
+      <section class="detail-layout">
+        <section class="panel">
+          <p class="panel-title">Regional map</p>
+          <div class="map-frame small" id="detailMapFrame">
+            <svg id="detailMap" role="img" aria-label="Selected region map"></svg>
+            <button class="map-expand-button" id="expandMapButton" type="button">Expand map</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <p class="panel-title">Games and events</p>
+          <div class="location-list" id="locationList"></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+
+  <div class="map-modal" id="mapModal" aria-hidden="true">
+    <div class="map-modal-backdrop" data-close-map-modal></div>
+    <section class="map-modal-panel" role="dialog" aria-modal="true" aria-labelledby="expandedMapTitle">
+      <div class="map-modal-header">
+        <h1 class="map-modal-title" id="expandedMapTitle">Regional map</h1>
+        <button class="map-modal-close" type="button" data-close-map-modal>Close</button>
+      </div>
+      <div class="expanded-map-wrap">
+        <svg id="expandedMap" role="img" aria-label="Expanded selected region map"></svg>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const regionData = {
+      'north-america': {
+        label: 'North America',
+        detailProjection: 'northAmericaConic',
+        detailBounds: [[-168, 16], [-48, 74]],
+        scope: 'United States, Canada, Greenland',
+        description: 'Games and events tied to US military culture, nuclear command, defence infrastructure, and American Cold War politics.',
+        countries: ['840', '124', '304'],
+        locations: [
+          {
+            title: 'Balance of Power',
+            type: 'game',
+            year: '1985',
+            lon: -77.0369,
+            lat: 38.9072,
+            text: 'US–Soviet diplomacy and nuclear brinkmanship.',
+            href: 'emulators.html#balance-of-power'
+          },
+          {
+            title: 'Shadow President',
+            type: 'game',
+            year: '1993',
+            lon: -77.0369,
+            lat: 38.9072,
+            text: 'US presidential crisis management.',
+            href: 'emulators.html#shadow-president'
+          },
+          {
+            title: 'Nuclear War',
+            type: 'game',
+            year: '1989',
+            lon: -87.6298,
+            lat: 41.8781,
+            text: 'Satirical nuclear strategy.',
+            href: 'art-archive.html#nuclear-war-cover-art'
+          },
+          {
+            title: 'Duke Nukem',
+            type: 'game',
+            year: '1991',
+            lon: -97.7431,
+            lat: 30.2672,
+            text: 'American action-game militarism.',
+            href: 'emulators.html#duke-nukem'
+          },
+          {
+            title: 'America’s Army',
+            type: 'game',
+            year: '2002',
+            lon: -84.9719,
+            lat: 32.3632,
+            text: 'Recruitment and military image culture.',
+            href: 'articles.html'
+          },
+          {
+            title: 'Strategic Defense Initiative',
+            type: 'event',
+            year: '1983',
+            lon: -77.0369,
+            lat: 38.9072,
+            text: 'Missile defence and nuclear strategy.',
+            href: 'timeline.html#sdi'
+          },
+          {
+            title: 'NORAD',
+            type: 'event',
+            year: '1980s',
+            lon: -104.8214,
+            lat: 38.8339,
+            text: 'Early-warning and command infrastructure.',
+            href: ''
+          }
+        ]
+      },
+      'latin-america': {
+        label: 'Latin America',
+        scope: 'Mexico, Central America, the Caribbean, South America',
+        description: 'Games and events linked to coups, counterinsurgency, US intervention, proxy conflict, debt, aid, and anti-imperial imagery.',
+        countries: [
+          '484',
+          '084', '188', '222', '320', '340', '558', '591',
+          '028', '044', '052', '192', '212', '214', '308', '332', '388', '659', '662', '670', '780', '796', '531', '533', '534', '535', '630',
+          '032', '068', '076', '152', '170', '218', '238', '254', '328', '600', '604', '740', '858', '862'
+        ],
+        locations: [
+          {
+            title: 'Hidden Agenda',
+            type: 'game',
+            year: '1988',
+            lon: -86.2514,
+            lat: 12.1364,
+            text: 'Central American political simulation.',
+            href: 'emulators.html#hidden-agenda'
+          },
+          {
+            title: 'Contra War / Nicaragua',
+            type: 'event',
+            year: '1980s',
+            lon: -86.2514,
+            lat: 12.1364,
+            text: 'Nicaraguan side of Iran-Contra.',
+            href: 'timeline.html#iran-contra'
+          },
+          {
+            title: 'Grenada Invasion',
+            type: 'event',
+            year: '1983',
+            lon: -61.679,
+            lat: 12.1165,
+            text: 'US intervention in the Caribbean.',
+            href: 'timeline.html#grenada-1983'
+          },
+          {
+            title: 'Balance of Power: Latin America',
+            type: 'game context',
+            year: '1985',
+            lon: -99.1332,
+            lat: 19.4326,
+            text: 'Regional crises as superpower pressure points.',
+            href: 'emulators.html#balance-of-power'
+          },
+          {
+            title: 'Chile Coup',
+            type: 'event',
+            year: '1973',
+            lon: -70.6693,
+            lat: -33.4489,
+            text: 'Coup politics and Cold War intervention.',
+            href: 'timeline.html'
+          },
+          {
+            title: 'South Atlantic Conflict',
+            type: 'event',
+            year: '1982',
+            lon: -58.3816,
+            lat: -34.6037,
+            text: 'Territory, media, and military mapping.',
+            href: ''
+          },
+          {
+            title: 'Andean Counterinsurgency',
+            type: 'event',
+            year: '1980s',
+            lon: -74.0721,
+            lat: 4.711,
+            text: 'Counterinsurgency and aid politics.',
+            href: ''
+          }
+        ]
+      },
+      'europe': {
+        label: 'Europe',
+        detailProjection: 'europeConic',
+        detailBounds: [[-15, 35], [42, 64]],
+        scope: 'Europe and Russia',
+        description: 'Games and events tied to Berlin, NATO, the Warsaw Pact, Soviet reform, naval routes, and European escalation scenarios.',
+        countries: ['008', '020', '040', '056', '031', '051', '268', '070', '100', '112', '191', '203', '208', '233', '246', '250', '276', '300', '348', '352', '372', '380', '428', '438', '440', '442', '470', '498', '499', '528', '578', '616', '620', '642', '643', '688', '703', '705', '724', '752', '756', '804', '807', '826'],
+        locations: [
+          {
+            title: 'Raid over Moscow',
+            type: 'game',
+            year: '1984',
+            lon: 37.6173,
+            lat: 55.7558,
+            text: 'Anti-Soviet arcade attack fantasy.',
+            href: 'art-archive.html#raid-over-moscow-cover-art'
+          },
+          {
+            title: 'Crisis in the Kremlin',
+            type: 'game',
+            year: '1991',
+            lon: 37.6173,
+            lat: 55.7558,
+            text: 'Late-Soviet political management.',
+            href: 'emulators.html#crisis-in-the-kremlin'
+          },
+          {
+            title: 'Theatre Europe',
+            type: 'game',
+            year: '1985',
+            lon: 14.5,
+            lat: 50.2,
+            text: 'NATO / Warsaw Pact escalation.',
+            href: 'art-archive.html#theatre-europe-cover-art'
+          },
+          {
+            title: 'Conflict: Europe',
+            type: 'game',
+            year: '1989',
+            lon: 14.5,
+            lat: 50.2,
+            text: 'European strategy and force deployment.',
+            href: 'art-archive.html#conflict-europe-cover-art'
+          },
+          {
+            title: 'NATO Commander',
+            type: 'game',
+            year: '1983',
+            lon: 10.4515,
+            lat: 51.1657,
+            text: 'Central European command planning.',
+            href: 'art-archive.html#nato-commander-cover-art'
+          },
+          {
+            title: 'Red Storm Rising',
+            type: 'game',
+            year: '1988',
+            lon: -28,
+            lat: 56,
+            text: 'North Atlantic submarine warfare.',
+            href: 'art-archive.html#red-storm-rising-cover-art'
+          },
+          {
+            title: 'Harpoon',
+            type: 'game',
+            year: '1989',
+            lon: -28,
+            lat: 56,
+            text: 'Modern naval command simulation.',
+            href: 'emulators.html#harpoon'
+          },
+          {
+            title: 'Balance of Power: Geneva',
+            type: 'game context',
+            year: '1985',
+            lon: 6.1432,
+            lat: 46.2044,
+            text: 'Summit diplomacy and superpower pressure.',
+            href: 'emulators.html#balance-of-power'
+          },
+          {
+            title: 'Berlin Wall',
+            type: 'event',
+            year: '1989',
+            lon: 13.405,
+            lat: 52.52,
+            text: 'Cold War division and collapse.',
+            href: 'timeline.html#1989-fall-of-the-wall'
+          }
+        ]
+      },
+      'middle-east': {
+        label: 'Middle East',
+        scope: 'Middle East, Afghanistan, Pakistan',
+        description: 'Games and events linked to oil politics, Gulf War imagery, proxy conflict, air strikes, and post-Cold War intervention.',
+        countries: ['004', '048', '275', '364', '368', '376', '400', '414', '422', '512', '586', '634', '682', '760', '792', '784', '887'],
+        locations: [
+          {
+            title: 'Desert Strike',
+            type: 'game',
+            year: '1992',
+            lon: 47.4818,
+            lat: 29.3117,
+            text: 'Gulf War helicopter action.',
+            href: 'art-archive.html#desert-strike-return-to-the-gulf-cover-art'
+          },
+          {
+            title: 'Conflict: Middle East',
+            type: 'game',
+            year: '1991',
+            lon: 35.2137,
+            lat: 31.7683,
+            text: 'Regional conflict simulation.',
+            href: 'art-archive.html#conflict-middle-east-cover-art'
+          },
+          {
+            title: 'F-15 Strike Eagle',
+            type: 'game',
+            year: '1984',
+            lon: 44.3661,
+            lat: 33.3152,
+            text: 'Air strike missions and target maps.',
+            href: 'art-archive.html#f-15-strike-eagle-cover-art'
+          },
+          {
+            title: 'F-117A Nighthawk',
+            type: 'game',
+            year: '1991',
+            lon: 44.3661,
+            lat: 33.3152,
+            text: 'Stealth bombing and Gulf War imagery.',
+            href: 'art-archive.html#f-117a-nighthawk-stealth-fighter-2-0-cover-art'
+          },
+          {
+            title: 'F-19 Stealth Fighter',
+            type: 'game',
+            year: '1988',
+            lon: 51.389,
+            lat: 35.6892,
+            text: 'Radar, routes, and strike targets.',
+            href: 'art-archive.html#f-19-stealth-fighter-cover-art'
+          },
+          {
+            title: 'M1 Tank Platoon',
+            type: 'game',
+            year: '1989',
+            lon: 44.3661,
+            lat: 33.3152,
+            text: 'Armoured warfare simulation.',
+            href: 'art-archive.html#m1-tank-platoon-cover-art'
+          },
+          {
+            title: 'Under Ash',
+            type: 'game',
+            year: '2001',
+            lon: 35.2137,
+            lat: 31.7683,
+            text: 'Palestinian political game.',
+            href: ''
+          },
+          {
+            title: 'September 12th',
+            type: 'game',
+            year: '2003',
+            lon: 44.3661,
+            lat: 33.3152,
+            text: 'Critical game about cycles of violence.',
+            href: ''
+          },
+          {
+            title: 'First Gulf War',
+            type: 'event',
+            year: '1991',
+            lon: 47.4818,
+            lat: 29.3117,
+            text: 'Broadcast war and intervention imagery.',
+            href: 'timeline.html#first-gulf-war'
+          },
+          {
+            title: 'Iran-Contra Arms Sales',
+            type: 'event',
+            year: '1985–86',
+            lon: 51.389,
+            lat: 35.6892,
+            text: 'Secret weapons sales to Iran.',
+            href: 'timeline.html#iran-contra'
+          },
+          {
+            title: 'Afghanistan',
+            type: 'event',
+            year: '1980s',
+            lon: 69.2075,
+            lat: 34.5553,
+            text: 'Proxy war and mountain warfare.',
+            href: ''
+          }
+        ]
+      },
+      'africa': {
+        label: 'Africa',
+        scope: 'North Africa and Sub-Saharan Africa',
+        description: 'Games and events linked to proxy wars, air strike scenarios, strategic routes, postcolonial conflict, and military aid.',
+        countries: ['012', '024', '072', '108', '854', '120', '132', '140', '148', '174', '178', '180', '204', '226', '231', '232', '262', '266', '270', '288', '324', '384', '404', '426', '430', '434', '450', '454', '466', '478', '480', '504', '508', '516', '562', '566', '624', '646', '678', '686', '690', '694', '706', '710', '728', '729', '732', '748', '768', '788', '800', '818', '834', '894', '716'],
+        locations: [
+          {
+            title: 'F-15 Strike Eagle: Libya',
+            type: 'game context',
+            year: '1980s',
+            lon: 13.1913,
+            lat: 32.8872,
+            text: 'North African strike scenario.',
+            href: 'art-archive.html#f-15-strike-eagle-cover-art'
+          },
+          {
+            title: 'Balance of Power: Africa',
+            type: 'game context',
+            year: '1985',
+            lon: 17.8739,
+            lat: -11.2027,
+            text: 'Proxy crises and superpower influence.',
+            href: 'emulators.html#balance-of-power'
+          },
+          {
+            title: 'Harpoon: Red Sea',
+            type: 'game context',
+            year: '1989',
+            lon: 38.0,
+            lat: 18.0,
+            text: 'Chokepoints and naval routes.',
+            href: 'emulators.html#harpoon'
+          },
+          {
+            title: 'Egypt / Suez',
+            type: 'event',
+            year: 'Cold War',
+            lon: 31.2357,
+            lat: 30.0444,
+            text: 'North African strategic route.',
+            href: ''
+          },
+          {
+            title: 'Angola',
+            type: 'event',
+            year: '1975–91',
+            lon: 13.2344,
+            lat: -8.839,
+            text: 'Cold War proxy war.',
+            href: ''
+          },
+          {
+            title: 'Horn of Africa',
+            type: 'event',
+            year: '1970s–80s',
+            lon: 42.5903,
+            lat: 11.8251,
+            text: 'Ports, aid, and strategic access.',
+            href: ''
+          },
+          {
+            title: 'Southern Africa',
+            type: 'event',
+            year: '1980s',
+            lon: 18.4241,
+            lat: -33.9249,
+            text: 'Border war and apartheid-era conflict.',
+            href: ''
+          }
+        ]
+      },
+      'asia': {
+        label: 'Asia',
+        detailBounds: [[66, -10], [150, 52]],
+        detailCountries: ['050', '064', '096', '104', '036', '598', '116', '144', '156', '158', '356', '360', '392', '408', '410', '418', '458', '496', '524', '608', '626', '702', '704', '764'],
+        scope: 'South, East, Southeast Asia, Australia, and the Pacific',
+        description: 'Games and events linked to Korea, Vietnam, South Asia, Pacific routes, and nearby Pacific settings outside the Middle East.',
+        countries: ['520', '798', '776', '882', '585', '584', '583', '296', '548', '242', '090', '554', '598', '036', '050', '064', '096', '104', '116', '144', '156', '158', '356', '360', '392', '398', '408', '410', '417', '418', '458', '496', '524', '608', '626', '702', '704', '762', '764', '795', '860'],
+        locations: [
+          {
+            title: 'Harpoon: South China Sea',
+            type: 'game context',
+            year: '1989',
+            lon: 114.5,
+            lat: 14.5,
+            text: 'Pacific naval command route.',
+            href: 'emulators.html#harpoon'
+          },
+          {
+            title: 'Top Gun: Fire at Will!',
+            type: 'game context',
+            year: '1996',
+            lon: 139.6917,
+            lat: 35.6895,
+            text: 'Military cinema and flight combat.',
+            href: 'art-archive.html#top-gun-fire-at-will-cover-art'
+          },
+          {
+            title: 'Red Storm Rising: Pacific Routes',
+            type: 'game context',
+            year: '1988',
+            lon: 150.0,
+            lat: 32.0,
+            text: 'Submarine and convoy routes.',
+            href: 'art-archive.html#red-storm-rising-cover-art'
+          },
+          {
+            title: 'India / South Asia',
+            type: 'context',
+            year: 'Cold War',
+            lon: 77.209,
+            lat: 28.6139,
+            text: 'Non-alignment and regional conflict.',
+            href: ''
+          },
+          {
+            title: 'Korean Peninsula',
+            type: 'event',
+            year: 'Cold War',
+            lon: 127.7669,
+            lat: 35.9078,
+            text: 'Proxy frontier and military border.',
+            href: ''
+          },
+          {
+            title: 'Vietnam / Saigon',
+            type: 'event',
+            year: '1970s',
+            lon: 106.6297,
+            lat: 10.8231,
+            text: 'Vietnam War memory and protest imagery.',
+            href: 'timeline.html'
+          },
+          {
+            title: 'Tokyo',
+            type: 'context',
+            year: '1980s–90s',
+            lon: 139.6917,
+            lat: 35.6895,
+            text: 'Game production and arcade culture.',
+            href: ''
+          },
+          {
+            title: 'Taiwan Strait',
+            type: 'event',
+            year: 'Cold War',
+            lon: 120.9605,
+            lat: 23.6978,
+            text: 'Pacific flashpoint and island-chain strategy.',
+            href: ''
+          }
+        ]
+      }
+    };
+
+    const regionOrder = ['north-america', 'latin-america', 'europe', 'middle-east', 'africa', 'asia'];
+
+    const hashAliases = {
+      'central-europe': 'europe',
+      'berlin': 'europe',
+      'north-atlantic': 'europe',
+      'persian-gulf': 'middle-east',
+      'afghanistan': 'middle-east',
+      'iran-contra': 'middle-east',
+      'north-africa': 'africa',
+      'suez': 'africa',
+      'libya': 'africa',
+      'latin-america': 'latin-america',
+      'south-america': 'latin-america',
+      'central-america': 'latin-america',
+      'caribbean': 'latin-america',
+      'nicaragua': 'latin-america',
+      'contra-war': 'latin-america',
+      'grenada': 'latin-america',
+      'korean-peninsula': 'asia'
+    };
+
+    const mapUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+
+    const worldSvg = d3.select('#worldMap');
+    const detailSvg = d3.select('#detailMap');
+    const expandedSvg = d3.select('#expandedMap');
+    const mapModal = document.getElementById('mapModal');
+    const expandMapButton = document.getElementById('expandMapButton');
+    const expandedMapTitle = document.getElementById('expandedMapTitle');
+    const status = document.getElementById('mapStatus');
+    const regionControls = document.getElementById('regionControls');
+    const regionTitle = document.getElementById('regionTitle');
+    const regionDescription = document.getElementById('regionDescription');
+    const regionScope = document.getElementById('regionScope');
+    const regionCount = document.getElementById('regionCount');
+    const locationList = document.getElementById('locationList');
+
+    let countries = [];
+    let activeRegion = 'north-america';
+
+    function getCode(feature) {
+      const rawId = String(feature.id ?? feature.properties?.iso_n3 ?? '').trim();
+      const name = String(
+        feature.properties?.name ||
+        feature.properties?.name_long ||
+        feature.properties?.formal_en ||
+        feature.properties?.admin ||
+        ''
+      ).trim().toLowerCase();
+
+      if (/^\d+$/.test(rawId)) {
+        return rawId.padStart(3, '0');
+      }
+
+      const fallbackByName = {
+        'somaliland': '706',
+        'somalia': '706',
+        'burkina faso': '854',
+        'armenia': '051',
+        'azerbaijan': '031',
+        'georgia': '268',
+        'australia': '036',
+        'papua new guinea': '598'
+      };
+
+      return fallbackByName[name] || rawId.padStart(3, '0');
+    }
+
+    function getRegionForCountry(feature) {
+      const code = getCode(feature);
+      const listedRegion = regionOrder.find((regionId) => regionData[regionId].countries.includes(code));
+
+      if (listedRegion) {
+        return listedRegion;
+      }
+
+      const centroid = d3.geoCentroid(feature);
+      const lon = centroid[0];
+      const lat = centroid[1];
+
+      if (lon >= 110 && lon <= 180 && lat >= -50 && lat <= 10) {
+        return 'asia';
+      }
+
+      if (lon >= 100 && lon <= 180 && lat > 10 && lat <= 55) {
+        return 'asia';
+      }
+
+      if (lon >= -20 && lon <= 55 && lat >= -36 && lat <= 38) {
+        return 'africa';
+      }
+
+      if (lon >= -25 && lon <= 60 && lat > 38 && lat <= 72) {
+        return 'europe';
+      }
+
+      return null;
+    }
+
+    function makeFeatureCollection(features) {
+      return {
+        type: 'FeatureCollection',
+        features
+      };
+    }
+
+    function svgSize(svgSelection, fallbackWidth, fallbackHeight) {
+      const node = svgSelection.node();
+      const rect = node.getBoundingClientRect();
+      const width = Math.max(320, rect.width || fallbackWidth);
+      const height = Math.max(260, rect.height || fallbackHeight);
+
+      return { width, height };
+    }
+
+    function setSelectedRegion(regionId, updateHash) {
+      activeRegion = regionData[regionId] ? regionId : 'north-america';
+
+      document.querySelectorAll('.region-button').forEach((button) => {
+        button.classList.toggle('is-active', button.dataset.region === activeRegion);
+      });
+
+      if (updateHash) {
+        history.replaceState(null, '', '#' + activeRegion);
+      }
+
+      drawWorldMap();
+      drawDetailMap();
+      renderRegionDetails();
+    }
+
+    function resolveHashRegion() {
+      const hash = window.location.hash.replace('#', '');
+      return regionData[hash] ? hash : (hashAliases[hash] || 'north-america');
+    }
+
+    function renderButtons() {
+      regionControls.innerHTML = '';
+
+      regionOrder.forEach((regionId) => {
+        const button = document.createElement('button');
+        button.className = 'region-button';
+        button.type = 'button';
+        button.dataset.region = regionId;
+        button.textContent = regionData[regionId].label;
+
+        button.addEventListener('click', function () {
+          setSelectedRegion(regionId, true);
+        });
+
+        regionControls.appendChild(button);
+      });
+    }
+
+    function drawWorldMap() {
+      if (!countries.length) return;
+
+      const { width, height } = svgSize(worldSvg, 900, 520);
+      const projection = d3.geoNaturalEarth1();
+      projection.fitExtent([[18, 18], [width - 18, height - 18]], { type: 'Sphere' });
+
+      const path = d3.geoPath(projection);
+      const graticule = d3.geoGraticule10();
+
+      worldSvg
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .selectAll('*')
+        .remove();
+
+      worldSvg.append('path')
+        .attr('class', 'sphere')
+        .attr('d', path({ type: 'Sphere' }));
+
+      worldSvg.append('path')
+        .attr('class', 'graticule')
+        .attr('d', path(graticule));
+
+      worldSvg.append('g')
+        .selectAll('path')
+        .data(countries)
+        .join('path')
+        .attr('class', function (feature) {
+          const regionId = getRegionForCountry(feature);
+          const classes = ['country'];
+
+          if (regionId) classes.push('region-country');
+          if (regionId === activeRegion) classes.push('is-selected');
+
+          return classes.join(' ');
+        })
+        .attr('data-region', getRegionForCountry)
+        .attr('d', path)
+        .on('mouseenter', function (event, feature) {
+          const regionId = getRegionForCountry(feature);
+          if (!regionId) return;
+
+          worldSvg.selectAll('.country')
+            .classed('is-hovered', function (countryFeature) {
+              return getRegionForCountry(countryFeature) === regionId;
+            });
+        })
+        .on('mouseleave', function () {
+          worldSvg.selectAll('.country').classed('is-hovered', false);
+        })
+        .on('click', function (event, feature) {
+          const regionId = getRegionForCountry(feature);
+          if (!regionId) return;
+
+          setSelectedRegion(regionId, true);
+        });
+    }
+
+
+
+    function makeDetailProjection(regionId) {
+      if (regionId === 'europe') {
+        return d3.geoConicConformal()
+          .parallels([38, 62])
+          .rotate([-15, 0])
+          .center([0, 52]);
+      }
+
+      if (regionId === 'north-america') {
+        return d3.geoConicConformal()
+          .parallels([25, 60])
+          .rotate([96, 0])
+          .center([0, 42]);
+      }
+
+      return d3.geoMercator();
+    }
+
+    function zoomProjectionAroundFrameCenter(projection, width, height, factor) {
+      const oldScale = projection.scale();
+      const oldTranslate = projection.translate();
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      projection
+        .scale(oldScale * factor)
+        .translate([
+          centerX - factor * (centerX - oldTranslate[0]),
+          centerY - factor * (centerY - oldTranslate[1])
+        ]);
+    }
+
+    function adjustDetailProjectionScale(projection, regionId, expanded, width, height) {
+      const compactZoom = {
+        'north-america': 1.55,
+        'europe': 1.16
+      };
+
+      const expandedZoom = {
+        'north-america': 1,
+        'europe': 1.36
+      };
+
+      const zoomFactor = expanded
+        ? (expandedZoom[regionId] || 1)
+        : (compactZoom[regionId] || 1);
+
+      if (zoomFactor !== 1) {
+        zoomProjectionAroundFrameCenter(projection, width, height, zoomFactor);
+      }
+    }
+
+    function fitProjectionToBounds(projection, bounds, width, height, expanded) {
+      const [[west, south], [east, north]] = bounds;
+      const padding = expanded ? 28 : 18;
+      projection
+        .scale(1)
+        .translate([0, 0]);
+
+      const corners = [
+        projection([west, south]),
+        projection([west, north]),
+        projection([east, south]),
+        projection([east, north])
+      ].filter(Boolean);
+
+      const xs = corners.map((point) => point[0]);
+      const ys = corners.map((point) => point[1]);
+      const minX = Math.min(...xs);
+      const maxX = Math.max(...xs);
+      const minY = Math.min(...ys);
+      const maxY = Math.max(...ys);
+      const projectedWidth = Math.max(1, maxX - minX);
+      const projectedHeight = Math.max(1, maxY - minY);
+      const scale = Math.min(
+        (width - padding * 2) / projectedWidth,
+        (height - padding * 2) / projectedHeight
+      );
+
+      const centerX = (minX + maxX) / 2;
+      const centerY = (minY + maxY) / 2;
+
+      projection
+        .scale(scale)
+        .translate([
+          width / 2 - scale * centerX,
+          height / 2 - scale * centerY
+        ]);
+
+      return projection;
+    }
+
+    function clampValue(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function makeSpacedMarkerPositions(locations, projection, width, height, expanded) {
+      const minimumDistance = expanded ? 42 : (activeRegion === 'europe' ? 30 : 28);
+      const boundsPadding = expanded ? 26 : 18;
+      const positions = locations.map((location, index) => {
+        const point = projection([location.lon, location.lat]) || [-100, -100];
+
+        return {
+          location,
+          index,
+          anchorX: point[0],
+          anchorY: point[1],
+          displayX: point[0],
+          displayY: point[1]
+        };
+      });
+
+      for (let pass = 0; pass < 90; pass += 1) {
+        positions.forEach((first, firstIndex) => {
+          positions.slice(firstIndex + 1).forEach((second) => {
+            const dx = second.displayX - first.displayX;
+            const dy = second.displayY - first.displayY;
+            const distance = Math.sqrt(dx * dx + dy * dy) || 0.001;
+
+            if (distance >= minimumDistance) return;
+
+            const push = (minimumDistance - distance) / 2;
+            const angle = Math.atan2(dy, dx) || ((first.index + 1) * 1.618);
+            const pushX = Math.cos(angle) * push;
+            const pushY = Math.sin(angle) * push;
+
+            first.displayX -= pushX;
+            first.displayY -= pushY;
+            second.displayX += pushX;
+            second.displayY += pushY;
+          });
+        });
+
+        positions.forEach((marker) => {
+          marker.displayX = clampValue(marker.displayX, boundsPadding, width - boundsPadding);
+          marker.displayY = clampValue(marker.displayY, boundsPadding, height - boundsPadding);
+        });
+      }
+
+      return positions;
+    }
+
+    function drawRegionMap(svgSelection, fallbackWidth, fallbackHeight, expanded) {
+      if (!countries.length) return;
+
+      const region = regionData[activeRegion];
+      const visibleCountryCodes = region.detailCountries || region.countries;
+      const regionCountries = countries.filter((feature) => visibleCountryCodes.includes(getCode(feature)));
+      const { width, height } = svgSize(svgSelection, fallbackWidth, fallbackHeight);
+      const projection = makeDetailProjection(activeRegion);
+
+      if (region.detailBounds) {
+        fitProjectionToBounds(projection, region.detailBounds, width, height, expanded);
+      } else {
+        projection.fitExtent(
+          [[18, 18], [width - 18, height - 18]],
+          makeFeatureCollection(regionCountries)
+        );
+      }
+
+      adjustDetailProjectionScale(projection, activeRegion, expanded, width, height);
+
+      const path = d3.geoPath(projection);
+
+      svgSelection
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .selectAll('*')
+        .remove();
+
+      svgSelection.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', height)
+        .attr('fill', '#f6f3e6');
+
+      svgSelection.append('g')
+        .selectAll('path')
+        .data(regionCountries)
+        .join('path')
+        .attr('class', 'country detail-country')
+        .attr('d', path);
+
+      const markerPositions = makeSpacedMarkerPositions(region.locations, projection, width, height, expanded);
+      const markers = svgSelection.append('g');
+
+      markers.selectAll('g')
+        .data(markerPositions)
+        .join('g')
+        .attr('class', 'marker')
+        .attr('tabindex', '0')
+        .attr('role', function (marker) {
+          return marker.location.href ? 'link' : 'button';
+        })
+        .attr('aria-label', function (marker) {
+          return marker.location.href ? 'Open ' + marker.location.title : marker.location.title;
+        })
+        .attr('transform', function (marker) {
+          return `translate(${marker.displayX},${marker.displayY})`;
+        })
+        .on('mouseenter', function (event, marker) {
+          bringMarkerToFront(this);
+          setActiveLocation(marker.location.title, true);
+        })
+        .on('mouseleave', function () {
+          setActiveLocation(null, true);
+        })
+        .on('focus', function (event, marker) {
+          bringMarkerToFront(this);
+          setActiveLocation(marker.location.title, true);
+        })
+        .on('blur', function () {
+          setActiveLocation(null, true);
+        })
+        .on('click', function (event, marker) {
+          if (!marker.location.href) return;
+
+          window.location.href = marker.location.href;
+        })
+        .on('keydown', function (event, marker) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+
+          if (!marker.location.href) return;
+
+          event.preventDefault();
+          window.location.href = marker.location.href;
+        })
+        .each(function (marker) {
+          const group = d3.select(this);
+          const labelX = expanded ? 11 : 8;
+          const labelY = expanded ? -10 : -8;
+          const leaderX = marker.anchorX - marker.displayX;
+          const leaderY = marker.anchorY - marker.displayY;
+          const isOffset = Math.abs(leaderX) > 1 || Math.abs(leaderY) > 1;
+
+          if (isOffset) {
+            group.append('line')
+              .attr('class', 'marker-leader')
+              .attr('x1', 0)
+              .attr('y1', 0)
+              .attr('x2', leaderX)
+              .attr('y2', leaderY);
+          }
+
+          group.append('circle')
+            .attr('class', 'marker-hit')
+            .attr('r', expanded ? 17 : 15);
+
+          group.append('circle')
+            .attr('class', 'marker-dot')
+            .attr('r', expanded ? 6 : 5);
+
+          group.append('text')
+            .attr('x', labelX)
+            .attr('y', labelY)
+            .text(marker.location.title);
+        });
+    }
+
+    function drawDetailMap() {
+      drawRegionMap(detailSvg, 700, 400, false);
+
+      if (mapModal && mapModal.classList.contains('is-open')) {
+        drawRegionMap(expandedSvg, 1080, 680, true);
+      }
+    }
+
+
+    function bringMarkerToFront(markerElement) {
+      if (!markerElement || !markerElement.parentNode) return;
+
+      markerElement.parentNode.appendChild(markerElement);
+    }
+
+    function bringActiveMarkersToFront(title) {
+      if (!title) return;
+
+      d3.selectAll('.marker').each(function (marker) {
+        if (marker && marker.location && marker.location.title === title) {
+          bringMarkerToFront(this);
+        }
+      });
+    }
+
+    function setActiveLocation(title, fromMarker) {
+      document.querySelectorAll('.location-card').forEach((card) => {
+        const isActive = title && card.dataset.locationTitle === title;
+        card.classList.toggle('is-active', isActive);
+      });
+
+      d3.selectAll('.marker').classed('is-active', function (marker) {
+        return title && marker && marker.location && marker.location.title === title;
+      });
+
+      bringActiveMarkersToFront(title);
+    }
+
+    function openMapModal() {
+      if (!mapModal) return;
+
+      expandedMapTitle.textContent = regionData[activeRegion].label + ' map';
+      mapModal.classList.add('is-open');
+      mapModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('map-modal-open');
+
+      requestAnimationFrame(function () {
+        drawRegionMap(expandedSvg, 1080, 680, true);
+      });
+    }
+
+    function closeMapModal() {
+      if (!mapModal) return;
+
+      mapModal.classList.remove('is-open');
+      mapModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('map-modal-open');
+      expandedSvg.selectAll('*').remove();
+    }
+
+    function renderRegionDetails() {
+      const region = regionData[activeRegion];
+
+      regionTitle.textContent = region.label;
+      regionDescription.textContent = region.description;
+      regionScope.textContent = region.scope;
+      regionCount.textContent = `${region.locations.length} marked locations`;
+
+      locationList.innerHTML = '';
+
+      region.locations.forEach((location) => {
+        const hasLink = Boolean(location.href);
+        const card = document.createElement(hasLink ? 'a' : 'div');
+
+        card.className = 'location-card';
+        card.dataset.locationTitle = location.title;
+
+        if (String(location.type || '').includes('game')) {
+          card.classList.add('is-game');
+        }
+
+        if (!hasLink) {
+          card.classList.add('no-link');
+        } else {
+          card.href = location.href;
+        }
+
+        card.addEventListener('mouseenter', function () {
+          setActiveLocation(location.title, false);
+        });
+
+        card.addEventListener('mouseleave', function () {
+          setActiveLocation(null, false);
+        });
+
+        card.addEventListener('focus', function () {
+          setActiveLocation(location.title, false);
+        });
+
+        card.addEventListener('blur', function () {
+          setActiveLocation(null, false);
+        });
+
+        card.innerHTML = `
+          <h2 class="location-title">${location.title}</h2>
+          <p class="location-text">${location.text}</p>
+          <div class="location-meta">
+            <span>${location.year}</span>
+            <span>${location.type}</span>
+          </div>
+        `;
+
+        locationList.appendChild(card);
+      });
+    }
+
+    function initialiseMaps(worldData) {
+      countries = topojson.feature(worldData, worldData.objects.countries).features;
+
+      renderButtons();
+      setSelectedRegion(resolveHashRegion(), false);
+
+      status.textContent = 'Click a highlighted landmass or region label';
+
+      window.addEventListener('resize', function () {
+        drawWorldMap();
+        drawDetailMap();
+      });
+
+      if (expandMapButton) {
+        expandMapButton.addEventListener('click', openMapModal);
+      }
+
+      if (mapModal) {
+        mapModal.addEventListener('click', function (event) {
+          if (event.target.closest('[data-close-map-modal]')) {
+            closeMapModal();
+          }
+        });
+      }
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && mapModal && mapModal.classList.contains('is-open')) {
+          closeMapModal();
+        }
+      });
+
+      window.addEventListener('hashchange', function () {
+        setSelectedRegion(resolveHashRegion(), false);
+      });
+    }
+
+    fetch(mapUrl)
+      .then((response) => response.json())
+      .then(initialiseMaps)
+      .catch((error) => {
+        console.error(error);
+        status.textContent = 'Map data could not be loaded';
+      });
+  </script>
+
+  <script>
+    (function () {
+      let audioContext = null;
+
+      function getAudioContext() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+
+        return audioContext;
+      }
+
+      function playTone(frequency, duration, volume, delay) {
+        const ctx = getAudioContext();
+        const startTime = ctx.currentTime + (delay || 0);
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playClickSound() {
+        playTone(620, 0.035, 0.045, 0);
+        playTone(310, 0.025, 0.03, 0.025);
+      }
+
+      function isClickableElement(element) {
+        return element.closest('a, button, input, select, textarea, .region-button, .location-card, .marker, .region-country, .map-expand-button, .map-modal-close');
+      }
+
+      document.addEventListener('pointerdown', function (event) {
+        const target = event.target;
+
+        if (!target || !isClickableElement(target)) {
+          return;
+        }
+
+        playClickSound();
+      });
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #e2dcc4;
+      --blue: #0000ff;
+      --black: #000000;
+      --white: #ffffff;
+      --yellow: #ffff00;
+      --top-bar-height: 16px;
+    }
+
+    html {
+      background: var(--blue);
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding-top: var(--top-bar-height);
+      background: var(--bg);
+      color: var(--black);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      display: block;
+      position: relative;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: var(--blue);
+      border-bottom: 2px solid var(--black);
+      z-index: 100;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 40;
+      display: flex;
+      gap: 22px;
+      padding: 14px 22px 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 500;
+      flex-wrap: wrap;
+      background: transparent;
+    }
+
+    .nav a {
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      background: var(--yellow);
+    }
+
+    @font-face {
+      font-family: "LoRes 21 OT";
+      src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
+        url("/fonts/LoRes21OT-Regular.woff") format("woff");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .page-wrap {
+      position: fixed;
+      top: var(--top-bar-height);
+      left: 20px;
+      right: 20px;
+      bottom: 0;
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 1fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .archive-column {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .image-stack {
+      min-height: 0;
+      height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      display: grid;
+      gap: 16px;
+      padding: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      pointer-events: auto;
+    }
+
+    .image-stack::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .image-card {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--black);
+      background: var(--white);
+      content-visibility: auto;
+    }
+
+    .image-card a {
+      display: block;
+    }
+
+    .text-column {
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+      padding: 0 0 28px;
+      background: var(--bg);
+      position: relative;
+      z-index: 20;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transform: translateY(-5vh);
+    }
+
+    .panel-title {
+      margin: 0 0 12px;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .04em;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 8px;
+    }
+
+    .body-text {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+      text-align: justify;
+    }
+
+    .body-text p {
+      margin-top: 0;
+      margin-bottom: 1em;
+    }
+
+    .body-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    body,
+    a,
+    button,
+    .button {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover,
+    button:hover,
+    .button:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+    @media (max-width: 820px) {
+      html,
+      body {
+        height: auto;
+        overflow: auto;
+      }
+
+      body {
+        display: block;
+        padding-top: 0;
+      }
+
+      .top-bar {
+        position: static;
+      }
+
+      .nav,
+
+      .page-wrap {
+        position: static;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        grid-template-columns: 1fr;
+        gap: 26px;
+        overflow: visible;
+        width: 100%;
+        padding: 0 20px 20px;
+        pointer-events: auto;
+      }
+
+      .text-column {
+        order: -1;
+      }
+
+      .archive-column,
+      .text-column,
+      .image-stack {
+        overflow: visible;
+      }
+
+      .text-column {
+        height: auto;
+        padding: 2px 0 0;
+        display: block;
+        transform: none;
+      }
+
+      .image-stack {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar"></div>
+
+  <div class="nav">
+    <a href="homepage.html">Home</a>
+    <a href="index.html">Start</a>
+    <a href="archivecatalogue.html">Catalogue</a>
+    <a href="articles.html">Articles</a>
+    <a href="emulators.html">Emulators</a>
+    <a href="timeline.html">Timeline</a>
+    <a href="regionsmap.html">Regions Map</a>
+    <a href="art-archive.html">Art Archive</a>
+    <a href="about.html">About</a>
+  </div>
+
+  <main class="page-wrap">
+    <aside class="archive-column" aria-label="Cold War images">
+      <div class="image-stack" id="cold-war-images"></div>
+    </aside>
+
+    <section class="text-column">
+      <h1 class="panel-title">About the Archive</h1>
+      <div class="body-text">
+        <p>This project intends to explore history through the lens of a less visible form of political media. While some attention has been drawn to videogames as a sociological influencer, it is often missed that the scope of this issue goes beyond the mindless violence scare of the 1990s. The concept of persuasion in within videogames is that, being conditioned to a game’s rules, in turn conditions the mind to understand said rules as acceptable, or normalised. This has been documented since the war on terror, with games such as America’s Army (2002), although the history of persuasion in videogames goes much further back.</p>
+        <p>If an obscure game made at the brink of an imperialist project led to increased conscription in the early 2000s, we may see games of the past have similarly influenced people’s minds.</p>
+      </div>
+    </section>
+
+    <aside class="archive-column" aria-label="Videogame images">
+      <div class="image-stack" id="video-game-images"></div>
+    </aside>
+  </main>
+
+  <script>
+    (function () {
+      const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
+      const START_YEAR = 1960;
+      const END_YEAR = 2000;
+      const TARGET_COUNT = 24;
+      const SEARCH_LIMIT = 100;
+      const CATEGORY_LIMIT = 100;
+      const THUMB_WIDTH = 440;
+      const CACHE_MAX_AGE = 1000 * 60 * 60 * 24;
+      const AUTO_SCROLL_PIXELS_PER_SECOND = 18;
+      const AUTO_SCROLL_RESET_PAUSE = 1400;
+
+      const imageSources = {
+        coldWar: {
+          outputId: 'cold-war-images',
+          cacheKey: 'commons-cold-war-1960-2000-v5-better-video-balance',
+          allowYearFallback: false,
+          queries: [
+            'Cold War photograph',
+            'Cold War event photograph',
+            'Berlin Wall photograph 1961 1989',
+            'Checkpoint Charlie photograph',
+            'Cuban Missile Crisis photograph',
+            'Cuban Missile Crisis military photograph',
+            'Vietnam War Cold War photograph',
+            'NATO Warsaw Pact photograph',
+            'Soviet Union United States Cold War photograph',
+            'space race Cold War photograph',
+            'nuclear missile Cold War photograph',
+            'anti nuclear protest Cold War photograph'
+          ],
+          categories: []
+        },
+        videoGames: {
+          outputId: 'video-game-images',
+          cacheKey: 'commons-video-games-1960-2000-v6-arcade-gameplay-context',
+          allowYearFallback: true,
+          queries: [
+            'incategory:"Arcade video games" arcade cabinet gameplay',
+            'incategory:"Arcade video games" video arcade players',
+            'incategory:"Arcade video games" arcade hall',
+            'incategory:"Arcade video games" arcade machine in use',
+            'incategory:"Pac-Man arcade machines" Pac-Man gameplay',
+            'incategory:"Space Invaders" arcade gameplay',
+            'incategory:"Pong" arcade machine in use',
+            '"Computer Space" arcade cabinet',
+            '"Pong" arcade gameplay',
+            '"Space Invaders" arcade cabinet gameplay',
+            '"Pac-Man" arcade machine gameplay',
+            '"video arcade" "1980"',
+            '"arcade hall" "video game"',
+            '"arcade game" players',
+            '"people playing" "video game"',
+            '"children playing" "video game"',
+            '"home computer game" screenshot',
+            '"computer game" screenshot "1980"',
+            '"video game screenshot" "1980"',
+            '"video game screenshot" "1990"',
+            '"Commodore 64" game screenshot',
+            '"Amiga" game screenshot',
+            '"MS-DOS" game screenshot',
+            '"DOS" game screenshot',
+            '"video game" television screen',
+            '"video game" exhibition',
+            '"video game" trade show',
+            '"video game" competition',
+            '"arcade cabinet" "1980" video game',
+            '"arcade cabinet" "1990" video game'
+          ],
+          categories: [
+            'Category:Arcade video games',
+            'Category:Pac-Man arcade machines',
+            'Category:Sega arcade video games',
+            'Category:Video game screenshots',
+            'Category:Video arcades',
+            'Category:Arcade cabinets',
+            'Category:Computer and video game screenshots',
+            'Category:Amiga games',
+            'Category:Commodore 64 games',
+            'Category:MS-DOS games'
+          ]
+        }
+      };
+
+      function plainText(value) {
+        const holder = document.createElement('div');
+        holder.innerHTML = value || '';
+        return holder.textContent.replace(/\s+/g, ' ').trim();
+      }
+
+      function titleFromFileName(title) {
+        return title
+          .replace(/^File:/i, '')
+          .replace(/\.[a-z0-9]+$/i, '')
+          .replace(/[_-]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function extractMetadataText(metadata, keys) {
+        for (const key of keys) {
+          if (metadata && metadata[key] && metadata[key].value) {
+            const value = plainText(metadata[key].value);
+            if (value) return value;
+          }
+        }
+        return '';
+      }
+
+      function yearFromText(text) {
+        const match = String(text || '').match(/\b(19[6-9]\d|2000)\b/);
+        return match ? Number(match[1]) : null;
+      }
+
+      function extractDate(page, metadata, config) {
+        const rawDate = extractMetadataText(metadata, [
+          'DateTimeOriginal',
+          'DateTime',
+          'Date'
+        ]);
+
+        const metadataYear = yearFromText(rawDate);
+        if (metadataYear) {
+          const parsedDate = Date.parse(rawDate.replace(/^(\d{4})$/, '$1-01-01'));
+          const sortValue = Number.isNaN(parsedDate) ? Date.UTC(metadataYear, 0, 1) : parsedDate;
+
+          return {
+            raw: rawDate,
+            year: metadataYear,
+            sortValue
+          };
+        }
+
+        if (!config.allowYearFallback) {
+          return null;
+        }
+
+        const description = extractMetadataText(metadata, [
+          'ImageDescription',
+          'ObjectName',
+          'Categories'
+        ]);
+        const fallbackYear = yearFromText(`${page.title || ''} ${description}`);
+
+        if (!fallbackYear) {
+          return null;
+        }
+
+        return {
+          raw: String(fallbackYear),
+          year: fallbackYear,
+          sortValue: Date.UTC(fallbackYear, 0, 1)
+        };
+      }
+
+      function normaliseDuplicateText(value) {
+        return String(value || '')
+          .toLowerCase()
+          .replace(/^file:/, '')
+          .replace(/\.[a-z0-9]+$/i, '')
+          .replace(/\([^)]*\)/g, ' ')
+          .replace(/\b(copy|duplicate|cropped|crop|version|photo|photograph|image|screenshot|screen shot|picture|file)\b/g, ' ')
+          .replace(/\b(front|rear|back|left|right|top|bottom|side|angle|view|detail|closeup|close-up)\b/g, ' ')
+          .replace(/\b(fl|fr|bl|br|ft|bk|lt|rt)\b/g, ' ')
+          .replace(/\b(console|cabinet|machine|system|unit)\s*0?\d+\b/g, '$1')
+          .replace(/\b0?\d{1,3}\b/g, ' ')
+          .replace(/[^a-z0-9]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function familyKeyForTitle(title) {
+        const text = normaliseDuplicateText(title);
+        const families = [
+          ['atari 2600', /\batari\s*(2600|vcs|video computer system)\b/],
+          ['pong', /\bpong\b/],
+          ['computer space', /\bcomputer\s+space\b/],
+          ['space invaders', /\bspace\s+invaders\b/],
+          ['pac man', /\bpac\s*man\b/],
+          ['famicom', /\bfamicom\b/],
+          ['nes', /\b(nes|nintendo entertainment system)\b/],
+          ['game boy', /\bgame\s+boy\b/],
+          ['sega mega drive', /\b(sega\s+mega\s+drive|sega\s+genesis)\b/],
+          ['snes', /\b(super\s+nintendo|snes|super\s+famicom)\b/],
+          ['commodore 64', /\bcommodore\s*64\b/],
+          ['amiga', /\bamiga\b/],
+          ['ms dos', /\b(ms\s*dos|dos)\b/]
+        ];
+
+        for (const [family, pattern] of families) {
+          if (pattern.test(text)) return family;
+        }
+
+        return text.split(' ').slice(0, 4).join(' ');
+      }
+
+      function getDuplicateKeys(page, info) {
+        const keys = [];
+        const rawImageUrl = info.url || '';
+        const thumbUrl = info.thumburl || '';
+        const titleKey = normaliseDuplicateText(page.title);
+        const familyKey = familyKeyForTitle(page.title);
+
+        if (info.sha1) keys.push(`sha1:${info.sha1}`);
+        if (rawImageUrl) keys.push(`url:${rawImageUrl}`);
+        if (thumbUrl) keys.push(`thumb:${thumbUrl.replace(/\/thumb\//, '/').replace(/\/\d+px-[^/]+$/, '')}`);
+        if (titleKey) keys.push(`title:${titleKey}`);
+        if (titleKey && titleKey.length > 12) keys.push(`compact:${titleKey.replace(/\b(the|a|an|of|and|with|in|on)\b/g, '').replace(/\s+/g, '')}`);
+        if (familyKey && titleKey.includes('console')) keys.push(`family-console:${familyKey}`);
+        if (familyKey && titleKey.includes('cabinet')) keys.push(`family-cabinet:${familyKey}`);
+
+        return keys;
+      }
+
+      function isUsableImage(info, page, config) {
+        const mime = info.mime || '';
+        const mediatype = info.mediatype || '';
+        const imageUrl = info.thumburl || info.url || '';
+        const title = String(page.title || '').toLowerCase();
+
+        if (!imageUrl) return false;
+        if (mime && !mime.startsWith('image/')) return false;
+        if (/svg|gif/i.test(mime)) return false;
+        if (mediatype && mediatype !== 'BITMAP') return false;
+        if (/\.pdf($|\?)/i.test(imageUrl)) return false;
+        if (info.width && info.width < 240) return false;
+        if (info.height && info.height < 160) return false;
+
+        if (config.outputId === 'video-game-images') {
+          const metadata = info.extmetadata || {};
+          const description = extractMetadataText(metadata, ['ImageDescription', 'ObjectName', 'Categories']).toLowerCase();
+          const combined = `${title} ${description}`;
+
+          if (/\b(logo|icon|symbol|diagram|emblem|map|qr|seal|manual|sticker|sprite|chip|cpu|motherboard|circuit|pinout|template|advertisement|flyer|poster)\b/i.test(combined)) {
+            return false;
+          }
+
+          if (/\b(cartridge|controller|joystick)\b/i.test(combined) && !/\b(player|playing|arcade|screen|screenshot|television|tv|exhibition|display|museum)\b/i.test(combined)) {
+            return false;
+          }
+
+          if (/\b(console)\b/i.test(combined) && !/\b(player|playing|screen|screenshot|television|tv|home|room|display|museum|exhibition)\b/i.test(combined)) {
+            return false;
+          }
+
+          if (/\b(white background|isolated|studio)\b/i.test(combined)) {
+            return false;
+          }
+
+          const goodSubject = /\b(arcade|cabinet|machine|video arcade|players?|playing|gameplay|screen|screenshot|television|tv|computer\s*game|video\s*game|commodore|amiga|ms\s*dos|dos|pong|pac\s*man|space\s*invaders|computer\s*space|atari)\b/i.test(combined);
+          if (!goodSubject) return false;
+        }
+
+        return true;
+      }
+
+      function imageScore(page, info, metadata, date, config) {
+        const title = String(page.title || '').toLowerCase();
+        const description = extractMetadataText(metadata, ['ImageDescription', 'ObjectName']).toLowerCase();
+        const combined = `${title} ${description}`;
+        let score = 0;
+
+        score += Math.min(8, Math.round(((info.width || 0) * (info.height || 0)) / 400000));
+        score += date && date.raw && date.raw.length > 4 ? 3 : 0;
+
+        if (config.outputId === 'video-game-images') {
+          if (/\b(arcade|cabinet|machine|video arcade)\b/.test(combined)) score += 10;
+          if (/\b(players?|playing|gameplay|competition|exhibition|trade show|museum|display)\b/.test(combined)) score += 8;
+          if (/\b(pong|pac\s*man|space\s*invaders|computer\s*space|atari|commodore|amiga|ms\s*dos|dos)\b/.test(combined)) score += 6;
+          if (/\b(screenshot|screen|television|tv)\b/.test(combined)) score += 6;
+          if (/\b(home computer|computer game|video game)\b/.test(combined)) score += 4;
+          if (/\b(console|controller|cartridge|handheld)\b/.test(combined)) score -= 5;
+          if (/\b(logo|icon|diagram|manual|motherboard|chip|cpu|cropped|crop|white background|isolated|studio)\b/.test(combined)) score -= 14;
+          if (/\b(201[0-9]|202[0-9])\b/.test(combined) && !/\b(19[6-9]\d|2000)\b/.test(combined)) score -= 4;
+        }
+
+        return score;
+      }
+
+      function buildSearchApiUrl(searchTerm) {
+        const params = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          formatversion: '2',
+          origin: '*',
+          generator: 'search',
+          gsrsearch: searchTerm,
+          gsrnamespace: '6',
+          gsrlimit: String(SEARCH_LIMIT),
+          prop: 'imageinfo',
+          iiprop: 'url|mime|size|sha1|extmetadata|mediatype',
+          iiurlwidth: String(THUMB_WIDTH)
+        });
+
+        return `${COMMONS_API}?${params.toString()}`;
+      }
+
+      function buildCategoryApiUrl(categoryName) {
+        const params = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          formatversion: '2',
+          origin: '*',
+          generator: 'categorymembers',
+          gcmtitle: categoryName,
+          gcmnamespace: '6',
+          gcmtype: 'file',
+          gcmlimit: String(CATEGORY_LIMIT),
+          prop: 'imageinfo',
+          iiprop: 'url|mime|size|sha1|extmetadata|mediatype',
+          iiurlwidth: String(THUMB_WIDTH)
+        });
+
+        return `${COMMONS_API}?${params.toString()}`;
+      }
+
+      function readCache(cacheKey) {
+        try {
+          const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+          if (!cached || !cached.created || !Array.isArray(cached.images)) return null;
+          if (Date.now() - cached.created > CACHE_MAX_AGE) return null;
+          return cached.images;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function writeCache(cacheKey, images) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            created: Date.now(),
+            images
+          }));
+        } catch (error) {
+          // Local storage can fail in private browsing or when storage is full.
+        }
+      }
+
+      async function fetchApiPages(url) {
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          return data.query && data.query.pages ? data.query.pages : [];
+        } catch (error) {
+          console.warn('Wikimedia Commons request failed:', error);
+          return [];
+        }
+      }
+
+      function selectBestImages(candidates) {
+        const seenKeys = new Set();
+        const familyCounts = new Map();
+        const selected = [];
+
+        candidates
+          .sort((a, b) => b.score - a.score || a.date.sortValue - b.date.sortValue || a.title.localeCompare(b.title))
+          .forEach((item) => {
+            if (selected.length >= TARGET_COUNT) return;
+            if (item.duplicateKeys.some((key) => seenKeys.has(key))) return;
+
+            const familyCount = familyCounts.get(item.familyKey) || 0;
+            const familyLimit = item.outputId === 'video-game-images' ? 3 : 5;
+            if (familyCount >= familyLimit) return;
+
+            item.duplicateKeys.forEach((key) => seenKeys.add(key));
+            familyCounts.set(item.familyKey, familyCount + 1);
+            selected.push(item);
+          });
+
+        return selected
+          .sort((a, b) => a.date.sortValue - b.date.sortValue || a.title.localeCompare(b.title))
+          .map(({ duplicateKeys, familyKey, score, outputId, ...image }) => image);
+      }
+
+      async function fetchImages(config) {
+        const cachedImages = readCache(config.cacheKey);
+        if (cachedImages) {
+          return cachedImages;
+        }
+
+        const requests = [
+          ...(config.queries || []).map((query) => fetchApiPages(buildSearchApiUrl(query))),
+          ...(config.categories || []).map((category) => fetchApiPages(buildCategoryApiUrl(category)))
+        ];
+
+        const pageGroups = await Promise.all(requests);
+        const candidates = [];
+        const exactSeen = new Set();
+
+        pageGroups.flat().forEach((page) => {
+          if (!page || !page.title) return;
+
+          const info = page.imageinfo && page.imageinfo[0];
+          if (!info || !isUsableImage(info, page, config)) return;
+
+          const exactKey = info.sha1 || info.url || page.title;
+          if (exactSeen.has(exactKey)) return;
+          exactSeen.add(exactKey);
+
+          const metadata = info.extmetadata || {};
+          const date = extractDate(page, metadata, config);
+          if (!date || date.year < START_YEAR || date.year > END_YEAR) return;
+
+          const duplicateKeys = getDuplicateKeys(page, info);
+          const familyKey = familyKeyForTitle(page.title);
+          const score = imageScore(page, info, metadata, date, config);
+
+          candidates.push({
+            title: titleFromFileName(page.title),
+            fileTitle: page.title,
+            date,
+            src: info.thumburl || info.url,
+            pageUrl: info.descriptionurl || `https://commons.wikimedia.org/wiki/${encodeURIComponent(page.title.replace(/ /g, '_'))}`,
+            duplicateKeys,
+            familyKey,
+            score,
+            outputId: config.outputId
+          });
+        });
+
+        const selectedImages = selectBestImages(candidates);
+        writeCache(config.cacheKey, selectedImages);
+        return selectedImages;
+      }
+
+      function renderImages(config, images) {
+        const output = document.getElementById(config.outputId);
+
+        output.innerHTML = '';
+
+        images.forEach((item, index) => {
+          const card = document.createElement('article');
+          card.className = 'image-card';
+
+          const link = document.createElement('a');
+          link.href = item.pageUrl;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+
+          const img = document.createElement('img');
+          img.src = item.src;
+          img.alt = item.title;
+          img.loading = index < 6 ? 'eager' : 'lazy';
+          img.decoding = 'async';
+          img.fetchPriority = index < 6 ? 'high' : 'auto';
+
+          link.appendChild(img);
+          card.append(link);
+          output.appendChild(card);
+        });
+      }
+
+      async function initColumn(config) {
+        const images = await fetchImages(config);
+        renderImages(config, images);
+      }
+
+      function getImageStacks() {
+        return [
+          document.getElementById('cold-war-images'),
+          document.getElementById('video-game-images')
+        ].filter(Boolean);
+      }
+
+      function getReferenceScrollHeight(stacks) {
+        return Math.max(1, ...stacks.map((stack) => Math.max(0, stack.scrollHeight - stack.clientHeight)));
+      }
+
+      function setupUnifiedImageScrolling() {
+        if (window.matchMedia('(max-width: 820px)').matches) {
+          return;
+        }
+
+        const stacks = getImageStacks();
+        if (!stacks.length) {
+          return;
+        }
+
+        let scrollProgress = 0;
+        let resetHoldUntil = 0;
+        let lastFrameTime = performance.now();
+
+        function clampProgress(value) {
+          return Math.min(1, Math.max(0, value));
+        }
+
+        function applyProgress() {
+          stacks.forEach((stack) => {
+            const maxScroll = Math.max(0, stack.scrollHeight - stack.clientHeight);
+            stack.scrollTop = maxScroll * scrollProgress;
+          });
+        }
+
+        function setProgressFromDelta(deltaY) {
+          const referenceScrollHeight = getReferenceScrollHeight(stacks);
+          scrollProgress = clampProgress(scrollProgress + (deltaY / referenceScrollHeight));
+          applyProgress();
+        }
+
+        document.addEventListener('wheel', function (event) {
+          event.preventDefault();
+          setProgressFromDelta(event.deltaY);
+        }, { passive: false });
+
+        document.addEventListener('keydown', function (event) {
+          const keyDeltas = {
+            ArrowDown: 70,
+            ArrowUp: -70,
+            PageDown: window.innerHeight * 0.8,
+            PageUp: -window.innerHeight * 0.8,
+            Home: -999999,
+            End: 999999,
+            ' ': event.shiftKey ? -(window.innerHeight * 0.8) : (window.innerHeight * 0.8)
+          };
+
+          if (!(event.key in keyDeltas)) {
+            return;
+          }
+
+          event.preventDefault();
+
+          if (event.key === 'Home') {
+            scrollProgress = 0;
+            applyProgress();
+            return;
+          }
+
+          if (event.key === 'End') {
+            scrollProgress = 1;
+            applyProgress();
+            return;
+          }
+
+          setProgressFromDelta(keyDeltas[event.key]);
+        });
+
+        function autoScrollFrame(now) {
+          const deltaTimeSeconds = (now - lastFrameTime) / 1000;
+          lastFrameTime = now;
+
+          if (scrollProgress >= 1) {
+            if (!resetHoldUntil) {
+              resetHoldUntil = now + AUTO_SCROLL_RESET_PAUSE;
+            } else if (now >= resetHoldUntil) {
+              scrollProgress = 0;
+              resetHoldUntil = 0;
+              applyProgress();
+            }
+          } else {
+            resetHoldUntil = 0;
+            const referenceScrollHeight = getReferenceScrollHeight(stacks);
+            scrollProgress = clampProgress(scrollProgress + ((AUTO_SCROLL_PIXELS_PER_SECOND * deltaTimeSeconds) / referenceScrollHeight));
+            applyProgress();
+          }
+
+          requestAnimationFrame(autoScrollFrame);
+        }
+
+        applyProgress();
+        requestAnimationFrame(autoScrollFrame);
+      }
+
+      function initWikimediaColumns() {
+        Promise.all(Object.keys(imageSources).map((key) => initColumn(imageSources[key]))).then(setupUnifiedImageScrolling);
+      }
+
+      initWikimediaColumns();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      let audioContext = null;
+
+      function getAudioContext() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        return audioContext;
+      }
+
+      function playTone(frequency, duration, volume, delay) {
+        const ctx = getAudioContext();
+        const startTime = ctx.currentTime + (delay || 0);
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playClickSound() {
+        playTone(620, 0.035, 0.045, 0);
+        playTone(310, 0.025, 0.03, 0.025);
+      }
+
+      function playRunSound() {
+        playTone(220, 0.045, 0.11, 0);
+        playTone(440, 0.045, 0.10, 0.045);
+        playTone(880, 0.055, 0.09, 0.09);
+      }
+
+      function isRunControl(element) {
+        const control = element.closest('.button, button, a');
+        if (!control) return false;
+
+        const onclickValue = control.getAttribute('onclick') || '';
+        const controlText = (control.textContent || '').trim().toLowerCase();
+
+        return onclickValue.includes('toggleGame') || controlText === 'run' || controlText === 'stop';
+      }
+
+      function isClickableElement(element) {
+        return element.closest('a, button, input, select, textarea, .button, .card-link, .nav-card, .region-card, .hotspot a, .start-button, .click-sound');
+      }
+
+      function shouldIgnoreSound(element) {
+        return element.closest('.screen.running');
+      }
+
+      document.addEventListener('pointerdown', function (event) {
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

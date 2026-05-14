@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 520 430">
+  <!-- Generator: Adobe Illustrator 30.4.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 226)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #ccc;
+      }
+
+      .st0, .st1, .st2, .st3, .st4 {
+        stroke: #231f20;
+        stroke-miterlimit: 2;
+      }
+
+      .st1 {
+        opacity: .4;
+      }
+
+      .st1, .st5, .st4 {
+        isolation: isolate;
+      }
+
+      .st1, .st6, .st3, .st4 {
+        fill: #fff;
+      }
+
+      .st5 {
+        fill: #231f20;
+        font-family: Helvetica-Bold, Helvetica;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0em;
+      }
+
+      .st2 {
+        fill: none;
+      }
+
+      .st7 {
+        clip-path: url(#clippath);
+      }
+
+      .st4 {
+        opacity: .3;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st3" x="84.2" y="125.3" width="351.6" height="45.9"/>
+    </clipPath>
+  </defs>
+  <g id="floppy-reader">
+    <polygon id="bottom-depth" class="st0" points="41.6 335.4 478.4 335.4 458.4 347.4 24.6 347.4 41.6 335.4"/>
+    <polygon id="left-depth" class="st0" points="24.6 108.6 41.6 94.6 41.6 335.4 24.6 347.4 24.6 108.6"/>
+    <rect id="drive-body" class="st3" x="41.6" y="94.6" width="436.8" height="240.8"/>
+    <g id="drive-face">
+      <rect id="face-base" class="st3" x="55.6" y="108.6" width="408.8" height="208.8"/>
+      <rect id="face-top-shade" class="st3" x="55.6" y="108.6" width="408.8" height="71"/>
+      <line class="st4" x1="55.6" y1="179.6" x2="464.4" y2="179.6"/>
+      <g>
+        <rect class="st6" x="84.2" y="125.3" width="351.6" height="45.9"/>
+        <g class="st7">
+          <g id="top-grille">
+            <rect class="st3" x="84.2" y="125.3" width="351.6" height="45.9"/>
+            <g>
+              <line class="st3" x1="45" y1="190" x2="120" y2="95"/>
+              <line class="st3" x1="59" y1="190" x2="134" y2="95"/>
+              <line class="st3" x1="73" y1="190" x2="148" y2="95"/>
+              <line class="st3" x1="87" y1="190" x2="162" y2="95"/>
+              <line class="st3" x1="101" y1="190" x2="176" y2="95"/>
+              <line class="st3" x1="115" y1="190" x2="190" y2="95"/>
+              <line class="st3" x1="129" y1="190" x2="204" y2="95"/>
+              <line class="st3" x1="143" y1="190" x2="218" y2="95"/>
+              <line class="st3" x1="157" y1="190" x2="232" y2="95"/>
+              <line class="st3" x1="171" y1="190" x2="246" y2="95"/>
+              <line class="st3" x1="185" y1="190" x2="260" y2="95"/>
+              <line class="st3" x1="199" y1="190" x2="274" y2="95"/>
+              <line class="st3" x1="213" y1="190" x2="288" y2="95"/>
+              <line class="st3" x1="227" y1="190" x2="302" y2="95"/>
+              <line class="st3" x1="241" y1="190" x2="316" y2="95"/>
+              <line class="st3" x1="255" y1="190" x2="330" y2="95"/>
+              <line class="st3" x1="269" y1="190" x2="344" y2="95"/>
+              <line class="st3" x1="283" y1="190" x2="358" y2="95"/>
+              <line class="st3" x1="297" y1="190" x2="372" y2="95"/>
+              <line class="st3" x1="311" y1="190" x2="386" y2="95"/>
+              <line class="st3" x1="325" y1="190" x2="400" y2="95"/>
+              <line class="st3" x1="339" y1="190" x2="414" y2="95"/>
+              <line class="st3" x1="353" y1="190" x2="428" y2="95"/>
+              <line class="st3" x1="367" y1="190" x2="442" y2="95"/>
+              <line class="st3" x1="381" y1="190" x2="456" y2="95"/>
+              <line class="st3" x1="395" y1="190" x2="470" y2="95"/>
+              <line class="st3" x1="409" y1="190" x2="484" y2="95"/>
+            </g>
+          </g>
+        </g>
+        <rect class="st2" x="84.2" y="125.3" width="351.6" height="45.9"/>
+      </g>
+      <line class="st4" x1="84.2" y1="171.2" x2="435.8" y2="171.2"/>
+      <rect id="face-bottom-shade" class="st3" x="55.6" y="263.1" width="49.1" height="54.3"/>
+      <rect id="face-bottom-main" class="st3" x="104.7" y="263.1" width="310.7" height="54.3"/>
+      <rect id="face-bottom-right-shade" class="st3" x="415.4" y="263.1" width="49" height="54.3"/>
+      <line class="st1" x1="55.6" y1="263.1" x2="464.4" y2="263.1"/>
+    </g>
+    <g id="drive-slot">
+      <rect class="st3" x="142.1" y="215" width="235.9" height="16"/>
+      <line class="st3" x1="152.1" y1="223" x2="368" y2="223"/>
+    </g>
+    <g id="drive-led">
+      <rect class="st3" x="80.1" y="286.3" width="10" height="10"/>
+    </g>
+    <g id="drive-status">
+      <rect class="st3" x="142.1" y="276.8" width="235.9" height="27"/>
+      <text class="st5" transform="translate(220.9 292.2)"><tspan x="0" y="0">NO DISK INSERTED</tspan></text>
+    </g>
+    <g id="drive-load-button">
+      <rect class="st3" x="399.1" y="277.3" width="56" height="26"/>
+      <text class="st5" transform="translate(413.7 292.2)"><tspan x="0" y="0">LOAD</tspan></text>
+    </g>
+  </g>
+</svg>

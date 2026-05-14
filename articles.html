@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articles</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #e2dcc4;
+            --blue: #0000ff;
+            --black: #000000;
+            --white: #ffffff;
+            --yellow: #ffff00;
+            --top-bar-height: 16px;
+        }
+
+        @font-face {
+            font-family: "LoRes 21 OT";
+            src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
+                url("/fonts/LoRes21OT-Regular.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        html {
+            background-color: var(--blue) !important;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding-top: var(--top-bar-height);
+            background: var(--bg) !important;
+            color: var(--black);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            display: block;
+            position: relative;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--top-bar-height);
+            background: var(--blue);
+            border-bottom: 2px solid var(--black);
+            z-index: 100;
+        }
+
+        .nav {
+            position: relative;
+            z-index: 40;
+            display: flex;
+            gap: 22px;
+            padding: 14px 22px 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+            flex-wrap: wrap;
+            background: transparent;
+        }
+
+        .nav a {
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            background: var(--yellow);
+        }
+
+        .hero {
+            padding: 12px 20px 18px;
+            font-family: "LoRes 21 OT", monospace;
+            font-size: clamp(34px, 5.8vw, 82px);
+            line-height: .94;
+            letter-spacing: -.03em;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 40;
+        }
+
+        .launcher-view {
+            position: absolute;
+            top: 132px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            perspective: 1600px;
+        }
+
+        .stack-panel {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1px;
+            height: 1px;
+            transform-style: preserve-3d;
+            z-index: 10;
+        }
+
+        .document-ring {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .document-button {
+            position: absolute;
+            left: -210px;
+            top: -270px;
+            width: 420px;
+            height: 540px;
+            background: transparent;
+            text-align: left;
+            pointer-events: none;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .document-graphic {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            border: 1px solid var(--black);
+            box-shadow: 3px 3px 0 var(--black);
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            transition: border 0.3s ease;
+        }
+
+        .document-button.is-selected .document-graphic {
+            border: 2px solid var(--black);
+        }
+
+        .doc-kicker {
+            display: inline-flex;
+            width: fit-content;
+            border: 1px solid var(--black);
+            padding: 4px 6px 3px;
+            background: var(--black);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 24px;
+        }
+
+        .doc-title {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+            line-height: 0.94;
+            display: inline-block;
+            background: transparent;
+            padding: 2px 4px;
+            margin-left: -4px;
+            transition: background 0.3s ease;
+        }
+
+        .document-button.is-selected .doc-title {
+            background: var(--yellow);
+        }
+
+        .doc-subtitle {
+            margin: 0 0 24px 0;
+            font-size: 15px;
+            line-height: 1.2;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .doc-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px 10px;
+            border-top: 1px solid var(--black);
+            border-bottom: 1px solid var(--black);
+            padding: 12px 0;
+            font-size: 12px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .doc-text {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .doc-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .action-button {
+            display: inline-block;
+            border: 1px solid var(--black);
+            background: #e0e0e0;
+            padding: 10px 18px 9px;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--black);
+        }
+
+        .action-button:hover {
+            background: #cdcdcd;
+        }
+
+        .doc-ref {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stack-controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            border: 1px solid var(--black);
+            background: var(--white);
+            color: var(--black);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "LoRes 21 OT", monospace;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: var(--yellow);
+        }
+
+        body,
+        a,
+        button,
+        .button,
+        .nav-btn,
+        .action-button {
+            cursor: url("./cursor.png") 5 4, auto;
+        }
+
+        a:hover,
+        button:hover,
+        .button:hover,
+        .nav-btn:hover,
+        .action-button:hover {
+            cursor: url("./cursor.png") 5 4, pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar"></div>
+
+    <div class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="index.html">Start</a>
+        <a href="archivecatalogue.html">Catalogue</a>
+        <a href="articles.html">Articles</a>
+        <a href="emulators.html">Emulators</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="regionsmap.html">Regions Map</a>
+        <a href="art-archive.html">Art Archive</a>
+        <a href="about.html">About</a>
+    </div>
+
+    <div class="hero">Articles</div>
+
+    <main class="launcher-view">
+        <div class="stack-panel">
+            <div class="document-ring" id="documentRing">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+
+        <div class="stack-controls">
+            <button class="nav-btn" id="btnPrev">&lt;</button>
+            <button class="nav-btn" id="btnNext">&gt;</button>
+        </div>
+    </main>
+
+    <script>
+        const articlesData = [
+            {
+                kicker: "Research Article",
+                title: "Down with the Commies",
+                subtitle: "Anti-communist propaganda in American Cold War videogames",
+                year: "2021",
+                text: "Regina Seiwald analyses how American Cold War-themed games construct communist and socialist enemies through stereotypes, moral binaries, and ideas of American exceptionalism.",
+                href: "https://www.open-access.bcu.ac.uk/10832/3/Seiwald_Down%20with%20the%20Commies%20%282021%29.pdf"
+            },
+            {
+                kicker: "Research Article",
+                title: "Play America Great Again",
+                subtitle: "Americanness in Cold War-themed videogames",
+                year: "2020",
+                text: "A close study of how Cold War games played from an American perspective use morality, democracy, national identity, and anti-communist enemy images as persuasive structures.",
+                href: "https://www.open-access.bcu.ac.uk/10587/1/Seiwald_Play%20America%20Great%20Again_Pub.pdf"
+            },
+            {
+                kicker: "Journal Article",
+                title: "Know Your History!",
+                subtitle: "The Cold War in videogames and its function",
+                year: "2022",
+                text: "Eugen Pfister examines why the Cold War remains such a useful videogame setting, showing how apparently historical games still carry political assumptions and ideological framing.",
+                href: "https://ddd.uab.cat/pub/tdevorado/tdevorado_a2022v7n1/tdevorado_a2022v7n1p11.pdf"
+            },
+            {
+                kicker: "Research Article",
+                title: "The Cold War Will Not Take Place",
+                subtitle: "The Cold War in non-Western videogames",
+                year: "2022",
+                text: "Regina Seiwald and Alex Wade move beyond the usual US-centred frame by looking at how Cold War politics are simulated and reimagined in non-Western videogames.",
+                href: "https://www.open-access.bcu.ac.uk/13375/1/The%20Cold%20War%20Will%20Not%20Take%20Place%20The%20Cold%20War%20in%20Non%20Western%20Videogames.pdf"
+            },
+            {
+                kicker: "Research Article",
+                title: "A Genealogy of Power",
+                subtitle: "The portrayal of the US in Cold War-themed videogames",
+                year: "2023",
+                text: "This article connects power, knowledge, and American exceptionalism, making it useful for reading Cold War games as systems that organise history around US authority.",
+                href: "https://pure-oai.bham.ac.uk/ws/portalfiles/portal/239858424/SeiwaldR2023Genealogy.pdf"
+            },
+            {
+                kicker: "Exhibition Text",
+                title: "ColdWarGames: It’s All a Game",
+                subtitle: "Allied Museum / Computerspielemuseum exhibition",
+                year: "2025",
+                text: "A free exhibition page on games from and about the Cold War, including board games, GDR computer clubs, the Poly-Play arcade machine, and contemporary Cold War games.",
+                href: "https://www.alliiertenmuseum.de/en/ausstellung/cold-war-games/"
+            },
+            {
+                kicker: "Newspaper Article",
+                title: "Cold War Power Play",
+                subtitle: "How the Stasi got into computer games",
+                year: "2025",
+                text: "A readable article on East German gaming culture, Stasi monitoring, Poly-Play, DIY computer hardware, and the political tensions around play inside the GDR.",
+                href: "https://www.theguardian.com/games/2025/oct/07/stasi-coldwargames-its-all-a-game-alliiertenmuseum-berlin"
+            },
+            {
+                kicker: "Conference Paper",
+                title: "Computer Games and Propaganda",
+                subtitle: "America’s Army and the military-entertainment complex",
+                year: "2006",
+                text: "David B. Nieborg’s classic paper examines America’s Army as a state-produced propaganda game, recruitment tool, and example of the military-entertainment complex.",
+                href: "https://www.gamespace.nl/content/Nieborg_GamesAndPropaganda_2006.pdf"
+            }
+        ];
+
+        // Duplicate the array to create a massive ring that stretches off screen
+        const displayData = [...articlesData, ...articlesData, ...articlesData, ...articlesData];
+
+        const ringContainer = document.getElementById('documentRing');
+
+        let currentIndex = 0;
+        const totalItems = displayData.length;
+        const radius = 2400; // Giant radius for a wider ring
+        const theta = 360 / totalItems;
+        let documentElements = [];
+
+        function initRing() {
+            displayData.forEach((article, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'document-button';
+
+                const angle = i * theta;
+                btn.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+
+                const originalIndex = i % articlesData.length;
+
+                const graphic = document.createElement('div');
+                graphic.className = 'document-graphic';
+
+                graphic.innerHTML = `
+                    <div class="doc-kicker">${article.kicker}</div>
+                    <h2 class="doc-title">${article.title}</h2>
+                    <p class="doc-subtitle">${article.subtitle}</p>
+                    
+                    <div class="doc-meta">
+                        <span>Year</span>
+                        <span>${article.year}</span>
+                        <span>Format</span>
+                        <span>PDF Document</span>
+                    </div>
+                    
+                    <p class="doc-text">${article.text}</p>
+                    
+                    <div class="doc-footer">
+                        <a href="${article.href}" target="_blank" rel="noopener noreferrer" class="action-button">Read Document</a>
+                        <span class="doc-ref">REF-${originalIndex.toString().padStart(3, '0')}</span>
+                    </div>
+                `;
+
+                btn.appendChild(graphic);
+                ringContainer.appendChild(btn);
+                documentElements.push(btn);
+            });
+
+            updateSelection(0);
+        }
+
+        function updateSelection(index) {
+            currentIndex = index;
+            const rotation = currentIndex * -theta;
+
+            // Push the ring backwards so the front document is at roughly z=0
+            ringContainer.style.transform = `translateZ(-${radius}px) rotateY(${rotation}deg)`;
+
+            const normalizedIndex = ((currentIndex % totalItems) + totalItems) % totalItems;
+
+            documentElements.forEach((btn, i) => {
+                let dist = Math.abs(i - normalizedIndex);
+                if (dist > totalItems / 2) dist = totalItems - dist;
+
+                if (i === normalizedIndex) {
+                    btn.classList.add('is-selected');
+                    btn.style.pointerEvents = 'auto'; // Only front item links are clickable
+                } else {
+                    btn.classList.remove('is-selected');
+                    btn.style.pointerEvents = 'none'; // Background items can't be clicked
+                }
+
+                // Hide documents that are on the back side of the massive ring
+                if (dist > 7) {
+                    btn.style.opacity = '0';
+                    btn.style.visibility = 'hidden';
+                } else {
+                    btn.style.opacity = '1';
+                    btn.style.visibility = 'visible';
+                }
+            });
+        }
+
+        function nextArticle() {
+            updateSelection(currentIndex + 1);
+        }
+
+        function prevArticle() {
+            updateSelection(currentIndex - 1);
+        }
+
+        document.getElementById('btnNext').addEventListener('click', nextArticle);
+        document.getElementById('btnPrev').addEventListener('click', prevArticle);
+
+        // Keyboard to shuffle
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextArticle();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                prevArticle();
+            }
+        });
+
+        initRing();
+    </script>
+
+    <script>
+        (function () {
+            let audioContext = null;
+
+            function getAudioContext() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                return audioContext;
+            }
+
+            function playTone(frequency, duration, volume, delay) {
+                const ctx = getAudioContext();
+                const startTime = ctx.currentTime + (delay || 0);
+                const oscillator = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(frequency, startTime);
+
+                gain.gain.setValueAtTime(volume, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                oscillator.connect(gain);
+                gain.connect(ctx.destination);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            }
+
+            function playClickSound() {
+                playTone(620, 0.035, 0.045, 0);
+                playTone(310, 0.025, 0.03, 0.025);
+            }
+
+            function playRunSound() {
+                playTone(220, 0.045, 0.11, 0);
+                playTone(440, 0.045, 0.10, 0.045);
+                playTone(880, 0.055, 0.09, 0.09);
+            }
+
+            function isRunControl(element) {
+                const control = element.closest('.button, button, a, .nav-btn, .action-button');
+                if (!control) return false;
+
+                const onclickValue = control.getAttribute('onclick') || '';
+                const controlText = (control.textContent || '').trim().toLowerCase();
+
+                return onclickValue.includes('toggleGame') || controlText === 'run' || controlText === 'stop';
+            }
+
+            function isClickableElement(element) {
+                return element.closest('a, button, input, select, textarea, .button, .card-link, .nav-card, .region-card, .hotspot a, .start-button, .click-sound, .nav-btn, .action-button');
+            }
+
+            function shouldIgnoreSound(element) {
+                return element.closest('.screen.running');
+            }
+
+            document.addEventListener('pointerdown', function (event) {
+                const target = event.target;
+
+                if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+                    return;
+                }
+
+                if (isRunControl(target)) {
+                    playRunSound();
+                } else {
+                    playClickSound();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+
+                const target = event.target;
+
+                if (!target || shouldIgnoreSound(target)) {
+                    return;
+                }
+
+                // For arrow keys in articles page
+                if (event.key.startsWith('Arrow')) {
+                    playClickSound();
+                    return;
+                }
+
+                if (!isClickableElement(target)) return;
+
+                if (isRunControl(target)) {
+                    playRunSound();
+                } else {
+                    playClickSound();
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

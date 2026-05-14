@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kriegsspiele 1980-2000</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://v8.js-dos.com/latest/js-dos.css" rel="stylesheet">
+    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #e2dcc4;
+            --card: #ffffff;
+            --white: #ffffff;
+            --black: #000000;
+            --blue: #0000ff;
+            --yellow: #ffff00;
+            --muted: #d7d1bb;
+            --gap: 10px;
+            --rounded-box: 5px;
+            --rounded-btn: 5px;
+            --rounded-badge: 5px;
+            background-color: var(--blue) !important;
+        }
+
+        html {
+            background-color: var(--blue) !important;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg) !important;
+            color: var(--black);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .jsdos-rso {
+            background: var(--black) !important;
+            --p: 240 100% 50% !important;
+            --pf: 240 100% 40% !important;
+            --pc: 0 0% 100% !important;
+            --b1: 0 0% 100% !important;
+            --b2: 48 34% 83% !important;
+            --b3: 48 34% 73% !important;
+            --bc: 0 0% 0% !important;
+            --rounded-btn: 0px !important;
+            --rounded-box: 0px !important;
+            --sidebar-width: 0px !important;
+        }
+
+        .jsdos-rso .sidebar svg,
+        .jsdos-rso .sidebar-thin svg,
+        .jsdos-rso [class*="btn"] svg,
+        .jsdos-rso [class*="button"] svg {
+            display: none !important;
+        }
+
+        .jsdos-rso [class*="fullscreen"]::after {
+            content: "[ F ]";
+            font-family: "LoRes 21 OT", monospace;
+            font-size: 16px;
+        }
+
+        .jsdos-rso [class*="keyboard"]::after {
+            content: "[ K ]";
+            font-family: "LoRes 21 OT", monospace;
+            font-size: 16px;
+        }
+
+        .jsdos-rso [class*="settings"]::after,
+        .jsdos-rso [class*="dots"]::after {
+            content: "...";
+            font-family: "LoRes 21 OT", monospace;
+            font-size: 16px;
+        }
+
+        .jsdos-rso [class*="gamepad"]::after,
+        .jsdos-rso [class*="joy"]::after {
+            content: "[ G ]";
+            font-family: "LoRes 21 OT", monospace;
+            font-size: 16px;
+        }
+
+        .jsdos-rso [class*="button"]::after,
+        .jsdos-rso [class*="btn"]::after {
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .jsdos-rso .emulator-root {
+            left: 0 !important;
+            width: 100% !important;
+            background: var(--black) !important;
+        }
+
+        .jsdos-rso .sidebar,
+        .jsdos-rso .sidebar-thin,
+        .jsdos-rso [class*="sidebar"],
+        .jsdos-rso [class*="menu"],
+        .jsdos-rso [class*="panel"]:has([class*="fullscreen"]),
+        .jsdos-rso [class*="panel"]:has([class*="keyboard"]),
+        .jsdos-rso [class*="panel"]:has([class*="gamepad"]),
+        .jsdos-rso [class*="panel"]:has([class*="settings"]),
+        .jsdos-rso [class*="panel"]:has([class*="dots"]) {
+            display: none !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .jsdos-rso,
+        .jsdos-rso .emulator-root {
+            width: 100% !important;
+        }
+
+        .jsdos-rso .emulator-root,
+        .jsdos-rso [class*="stage"],
+        .jsdos-rso [class*="screen"] {
+            left: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        .jsdos-rso {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            grid-template-columns: 0 1fr !important;
+            display: block !important;
+        }
+
+        .jsdos-rso>* {
+            margin-left: 0 !important;
+        }
+
+        .jsdos-rso .emulator-root,
+        .jsdos-rso [class*="root"],
+        .jsdos-rso [class*="content"],
+        .jsdos-rso [class*="main"],
+        .jsdos-rso [class*="wrapper"],
+        .jsdos-rso [class*="layout"] {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+        }
+
+        .jsdos-rso [class*="sidebar"]+*,
+        .jsdos-rso [class*="menu"]+* {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        .screen>div[id^="dos-"] {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen>div[id^="dos-"] .jsdos-rso {
+            margin-left: 0 !important;
+            width: 100% !important;
+            left: 0 !important;
+        }
+
+        .screen>div[id^="dos-"] .jsdos-rso .emulator-root,
+        .screen>div[id^="dos-"] .jsdos-rso [class*="root"],
+        .screen>div[id^="dos-"] .jsdos-rso [class*="content"],
+        .screen>div[id^="dos-"] .jsdos-rso [class*="main"] {
+            width: 100% !important;
+        }
+
+
+        .top-bar {
+            height: 16px;
+            background: var(--blue);
+            border-bottom: 2px solid var(--black);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            gap: 22px;
+            padding: 14px 22px 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+            flex-wrap: wrap;
+        }
+
+        .nav a,
+        .nav span {
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            background: var(--yellow);
+        }
+
+        .hero {
+            padding: 12px 20px 18px;
+            width: 100%;
+            max-width: none;
+            font-family: "LoRes 21 OT", monospace;
+            font-size: clamp(34px, 5.8vw, 82px);
+            line-height: 0.94;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 290px minmax(0, 1fr);
+            gap: 18px;
+            padding: 0 20px 28px;
+            align-items: start;
+        }
+
+        .sidebar {
+            display: grid;
+            gap: 14px;
+            position: sticky;
+            top: 32px;
+            align-self: start;
+        }
+
+        .sidebar-section {
+            border: 1px solid var(--black);
+            background: var(--white);
+            padding: 12px;
+        }
+
+        .sidebar-label {
+            margin: 0 0 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .control,
+        .search-input,
+        .filter-select {
+            width: 100%;
+            border: 1px solid var(--black);
+            background: var(--white);
+            color: var(--black);
+            font: inherit;
+            font-size: 12px;
+            padding: 8px 10px;
+            appearance: none;
+        }
+
+        .control-stack {
+            display: grid;
+            gap: 8px;
+        }
+
+        .results-meta {
+            font-size: 12px;
+            line-height: 1.35;
+            text-transform: uppercase;
+            border-top: 1px solid var(--black);
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding-right: 2px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            grid-auto-rows: auto;
+            gap: 10px;
+            align-items: start;
+            grid-auto-flow: row;
+            position: relative;
+        }
+
+        .grid.masonry-active {
+            display: block;
+            min-height: 0;
+        }
+
+        .grid.masonry-active .catalogue-item {
+            position: absolute;
+            margin: 0;
+        }
+
+        .card {
+            position: relative;
+            border: 1px solid var(--black);
+            background: var(--card);
+            padding: 12px 12px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 10px;
+            min-height: 0;
+            filter: brightness(1) blur(0px);
+            transform: scale(1);
+            transition: filter 0.2s ease, background 0.2s ease, transform 0.2s ease, z-index 0s;
+            z-index: 1;
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+            min-width: 0;
+            isolation: isolate;
+        }
+
+        .grid:has(.card:hover) .card:not(:hover) {
+            transform: scale(0.995);
+        }
+
+        .grid .card:hover {
+            transform: scale(1.008);
+            background: var(--yellow);
+            z-index: 10;
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .card> :last-child {
+            margin-bottom: 0;
+        }
+
+        .card-link {
+            cursor: pointer;
+        }
+
+        .card-kicker,
+        .card-target,
+        .card-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card-kicker {
+            display: inline-flex;
+            width: fit-content;
+            max-width: 100%;
+            border: 1px solid var(--black);
+            padding: 4px 6px 3px;
+            background: var(--white);
+        }
+
+        .card-title {
+            margin: 0;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: visible;
+            font-size: clamp(18px, 1.65vw, 26px);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+            line-height: 1.02;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        .card-subtitle {
+            margin: 0;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            line-height: 1.18;
+            font-weight: 500;
+            overflow: visible;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .card-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .card-meta span {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .card-text {
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            font-size: 13px;
+            line-height: 1.42;
+            overflow: visible;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid var(--black);
+            min-width: 0;
+        }
+
+        .card-footer span {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .card-target {
+            display: block;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .card-footer span:last-child {
+            justify-self: end;
+            white-space: normal;
+            text-align: right;
+        }
+
+        .placeholder-box {
+            width: 100%;
+            height: 100%;
+            min-height: 170px;
+            border: 1px solid var(--black);
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .placeholder-box::before,
+        .placeholder-box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-repeat: no-repeat;
+        }
+
+        .placeholder-box::before {
+            background-image: linear-gradient(to top left, transparent calc(50% - 0.5px), var(--black) calc(50% - 0.5px), var(--black) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+        }
+
+        .placeholder-box::after {
+            background-image: linear-gradient(to top right, transparent calc(50% - 0.5px), var(--black) calc(50% - 0.5px), var(--black) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+        }
+
+        .placeholder-label {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            z-index: 1;
+            background: var(--white);
+            border: 1px solid var(--black);
+            padding: 4px 6px 3px;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .placeholder-box.has-archive-image {
+            min-height: 170px;
+            background: var(--black);
+        }
+
+        .placeholder-box.has-archive-image::before,
+        .placeholder-box.has-archive-image::after {
+            display: none;
+        }
+
+        .placeholder-box.has-archive-image .placeholder-label {
+            display: none;
+        }
+
+        .archive-placeholder-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: inherit;
+            object-fit: cover;
+            filter: contrast(1.05) saturate(0.95);
+        }
+
+        .screen {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--black);
+            border: 1px solid var(--black);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .button {
+            border: 1px solid var(--black);
+            padding: 7px 8px;
+            text-align: center;
+            cursor: pointer;
+            background: #e0e0e0;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            background: #d2d2d2;
+        }
+
+        .game-screen-wrap {
+            display: grid;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .span-3 {
+            grid-column: span 3;
+        }
+
+        .span-4 {
+            grid-column: span 4;
+        }
+
+        .span-5 {
+            grid-column: span 5;
+        }
+
+        .place-r1a {
+            grid-column: 1 / span 5;
+            grid-row: 1;
+        }
+
+        .place-r1b {
+            grid-column: 6 / span 3;
+            grid-row: 1;
+        }
+
+        .place-r1c {
+            grid-column: 9 / span 4;
+            grid-row: 1;
+        }
+
+        .place-r2a {
+            grid-column: 1 / span 4;
+            grid-row: 2;
+        }
+
+        .place-r2b {
+            grid-column: 5 / span 5;
+            grid-row: 2;
+        }
+
+        .place-r2c {
+            grid-column: 10 / span 3;
+            grid-row: 2;
+        }
+
+        .place-r3a {
+            grid-column: 1 / span 3;
+            grid-row: 3;
+        }
+
+        .place-r3b {
+            grid-column: 4 / span 4;
+            grid-row: 3;
+        }
+
+        .place-r3c {
+            grid-column: 8 / span 5;
+            grid-row: 3;
+        }
+
+        .place-r4a {
+            grid-column: 1 / span 5;
+            grid-row: 4;
+        }
+
+        .place-r4b {
+            grid-column: 6 / span 3;
+            grid-row: 4;
+        }
+
+        .place-r4c {
+            grid-column: 9 / span 4;
+            grid-row: 4;
+        }
+
+        .place-r5a {
+            grid-column: 1 / span 4;
+            grid-row: 5;
+        }
+
+        .place-r5b {
+            grid-column: 5 / span 3;
+            grid-row: 5;
+        }
+
+        .place-r5c {
+            grid-column: 8 / span 5;
+            grid-row: 5;
+        }
+
+        .place-r6a {
+            grid-column: 1 / span 5;
+            grid-row: 6;
+        }
+
+        .place-r6b {
+            grid-column: 6 / span 4;
+            grid-row: 6;
+        }
+
+        .place-r6c {
+            grid-column: 10 / span 3;
+            grid-row: 6;
+        }
+
+        .category-games {
+            min-height: 0;
+        }
+
+        .card-title,
+        .card-subtitle,
+        .card-text,
+        .card-target,
+        .card-footer span {
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        .card-title,
+        .card-subtitle {
+            padding-bottom: 0;
+        }
+
+        .card-text,
+        .card-target,
+        .card-footer span {
+            padding-bottom: 0;
+        }
+
+        .image-card {
+            padding: 12px;
+            background: var(--white);
+        }
+
+        .category-games .card-kicker {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .category-articles .card-kicker {
+            background: var(--white);
+        }
+
+        .category-history .card-kicker,
+        .category-regions .card-kicker,
+        .category-art .card-kicker {
+            background: var(--muted);
+        }
+
+
+        body,
+        a,
+        button,
+        .card,
+        .button,
+        input,
+        select {
+            cursor: url("./cursor.png") 5 4, auto;
+        }
+
+        a:hover,
+        button:hover,
+        .button:hover,
+        .card-link:hover {
+            cursor: url("./cursor.png") 5 4, pointer;
+        }
+
+        .screen.running:hover,
+        .screen.running:hover * {
+            cursor: none !important;
+        }
+
+        @media (max-width: 1100px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .grid {
+                grid-template-columns: repeat(8, minmax(0, 1fr));
+            }
+
+            .grid.masonry-active {
+                display: grid;
+            }
+
+            .grid.masonry-active .catalogue-item {
+                position: relative;
+                width: auto !important;
+                left: auto !important;
+                top: auto !important;
+            }
+
+            .span-3,
+            .span-4,
+            .span-5 {
+                grid-column: span 8;
+            }
+
+            .place-r1a,
+            .place-r1b,
+            .place-r1c,
+            .place-r2a,
+            .place-r2b,
+            .place-r2c,
+            .place-r3a,
+            .place-r3b,
+            .place-r3c,
+            .place-r4a,
+            .place-r4b,
+            .place-r4c,
+            .place-r5a,
+            .place-r5b,
+            .place-r5c,
+            .place-r6a,
+            .place-r6b,
+            .place-r6c {
+                grid-column: span 8;
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .nav {
+                gap: 14px;
+            }
+
+            .layout {
+                padding: 0 12px 18px;
+            }
+
+            .hero {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+
+            .grid.masonry-active {
+                display: grid;
+            }
+
+            .grid.masonry-active .catalogue-item {
+                position: relative;
+                width: auto !important;
+                left: auto !important;
+                top: auto !important;
+            }
+
+            .span-3,
+            .span-4,
+            .span-5,
+            .place-r1a,
+            .place-r1b,
+            .place-r1c,
+            .place-r2a,
+            .place-r2b,
+            .place-r2c,
+            .place-r3a,
+            .place-r3b,
+            .place-r3c,
+            .place-r4a,
+            .place-r4b,
+            .place-r4c,
+            .place-r5a,
+            .place-r5b,
+            .place-r5c,
+            .place-r6a,
+            .place-r6b,
+            .place-r6c {
+                grid-column: auto;
+                grid-row: auto;
+            }
+        }
+
+        @font-face {
+            font-family: "LoRes 21 OT";
+            src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
+                url("/fonts/LoRes21OT-Regular.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .logo-spin {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            z-index: 2147483647;
+            pointer-events: none;
+        }
+
+        #logoCanvas {
+            width: 75px;
+            height: 75px;
+            image-rendering: pixelated;
+        }
+
+        :fullscreen .logo-spin {
+            opacity: 0.3;
+        }
+    </style>
+    </link>
+</head>
+
+<body>
+    <div class="top-bar"></div>
+    <div class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="index.html">Start</a>
+        <a href="archivecatalogue.html">Catalogue</a>
+        <a href="articles.html">Articles</a>
+        <a href="emulators.html">Emulators</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="regionsmap.html">Regions Map</a>
+        <a href="art-archive.html">Art Archive</a>
+        <a href="about.html">About</a>
+    </div>
+    <div class="hero">BALANCE OF POWER : VIDEOGAME PROPAGANDA ARCHIVE 1980-2000</div>
+    <div class="layout">
+        <aside class="sidebar">
+            <section class="sidebar-section">
+                <p class="sidebar-label">Search</p>
+                <div class="control-stack">
+                    <input class="search-input" id="searchInput" placeholder="Title, year, region, theme"
+                        type="search" />
+                    <select class="control" id="sortSelect">
+                        <option value="index">Sort: Index</option>
+                        <option value="title">Sort: Title</option>
+                        <option value="year-desc">Sort: Year ↓</option>
+                        <option value="year-asc">Sort: Year ↑</option>
+                        <option value="category">Sort: Category</option>
+                    </select>
+                    <div class="results-meta" id="resultsMeta">Showing 0 items</div>
+                </div>
+            </section>
+            <section class="sidebar-section">
+                <p class="sidebar-label">Type</p>
+                <select class="filter-select" id="platformFilter">
+                    <option value="all">All platforms / types</option>
+                    <option value="MS-DOS">MS-DOS</option>
+                    <option value="Essay">Essay</option>
+                    <option value="Timeline">Timeline</option>
+                    <option value="Archive">Archive</option>
+                    <option value="Map">Map</option>
+                </select>
+            </section>
+        </aside>
+        <main>
+            <div class="toolbar">
+                <p class="toolbar-title">Catalogue</p>
+            </div>
+            <section class="grid" id="catalogueGrid">
+                <article class="card catalogue-item category-games span-5 place-r1a" data-category="games"
+                    data-index="001" data-platform="MS-DOS" data-title="Balance of Power" data-type="game"
+                    data-year="1985">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Balance of Power</h2>
+                    <p class="card-subtitle">Chris Crawford</p>
+                    <div class="card-meta"><span>1985</span><span>MS-DOS</span><span>Strategy</span><span>Cold
+                            War</span></div>
+                    <p class="card-text">A landmark geopolitical strategy game in which players manage superpower
+                        relations through diplomacy, aid, and nuclear brinkmanship. Its interface turns Cold War
+                        deterrence into a playable model of global power.
+                    </p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-001"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button" onclick="toggleGame(this, './balance-of-power-fixed.jsdos', 'dos-001')">
+                                Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-001')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card card-link catalogue-item category-articles span-3 place-r1b" data-category="articles"
+                    data-index="003" data-platform="Essay" data-title="Down with the Commies Anti-Communist Propaganda in American Cold War Video Games" data-type="article"
+                    data-year="2021" href="https://www.open-access.bcu.ac.uk/10832/3/Seiwald_Down%20with%20the%20Commies%20%282021%29.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Research Article</div>
+                    <h2 class="card-title">Down with the Commies</h2>
+                    <p class="card-subtitle">Anti-communist propaganda in American Cold War videogames</p>
+                    <p class="card-text">Regina Seiwald analyses how American Cold War-themed games construct communist and socialist enemies through stereotypes, moral binaries, and ideas of American exceptionalism.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2021</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-4 place-r1c" data-category="articles"
+                    data-index="004" data-platform="Essay" data-title="Play America Great Again Manifestations of Americanness in Cold War Themed Video Games" data-type="article"
+                    data-year="2020" href="https://www.open-access.bcu.ac.uk/10587/1/Seiwald_Play%20America%20Great%20Again_Pub.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Research Article</div>
+                    <h2 class="card-title">Play America Great Again</h2>
+                    <p class="card-subtitle">Americanness in Cold War-themed videogames</p>
+                    <p class="card-text">A close study of how Cold War games played from an American perspective use morality, democracy, national identity, and anti-communist enemy images as persuasive structures.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2020</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-4 place-r2a" data-category="articles"
+                    data-index="005" data-platform="Essay" data-title="Know Your History The Cold War in Video Games and its Function" data-type="article"
+                    data-year="2022" href="https://ddd.uab.cat/pub/tdevorado/tdevorado_a2022v7n1/tdevorado_a2022v7n1p11.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Journal Article</div>
+                    <h2 class="card-title">Know Your History!</h2>
+                    <p class="card-subtitle">The Cold War in videogames and its function</p>
+                    <p class="card-text">Eugen Pfister examines why the Cold War remains such a useful videogame setting, showing how apparently historical games still carry political assumptions and ideological framing.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2022</span></div>
+                </a>
+
+                <article class="card catalogue-item category-games span-5 place-r2b" data-category="games"
+                    data-index="031" data-platform="MS-DOS" data-title="Hidden Agenda" data-type="game"
+                    data-year="1988">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Hidden Agenda</h2>
+                    <p class="card-subtitle">Trans Fiction Systems</p>
+                    <div class="card-meta"><span>1988</span><span>MS-DOS</span><span>Political
+                            strategy</span><span>Latin America</span></div>
+                    <p class="card-text">A political simulation set in a fictional Central American republic. Players
+                        navigate elections, insurgency, media, labour, and foreign intervention, making it a key example
+                        of late Cold War political game design.</p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-003"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button"
+                                onclick="toggleGame(this, './hidden-agenda-cga-nolock.jsdos', 'dos-003')">Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-003')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card card-link catalogue-item category-articles span-3 place-r3a" data-category="articles"
+                    data-index="006" data-platform="Essay" data-title="The Cold War Will Not Take Place The Cold War in Non-Western Videogames" data-type="article"
+                    data-year="2022" href="https://www.open-access.bcu.ac.uk/13375/1/The%20Cold%20War%20Will%20Not%20Take%20Place%20The%20Cold%20War%20in%20Non%20Western%20Videogames.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Research Article</div>
+                    <h2 class="card-title">The Cold War Will Not Take Place</h2>
+                    <p class="card-subtitle">The Cold War in non-Western videogames</p>
+                    <p class="card-text">Regina Seiwald and Alex Wade move beyond the usual US-centred frame by looking at how Cold War politics are simulated and reimagined in non-Western videogames.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2022</span></div>
+                </a>
+
+                <article class="card catalogue-item category-games span-5 place-r4a" data-category="games"
+                    data-index="002" data-platform="MS-DOS" data-title="Duke Nukem" data-type="game" data-year="1991">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Duke Nukem</h2>
+                    <p class="card-subtitle">Apogee Software</p>
+                    <div class="card-meta">
+                        <span>1991</span><span>MS-DOS</span><span>Platformer</span><span>Side-scrolling action</span>
+                    </div>
+                    <p class="card-text">Apogee’s original side-scrolling action game, included here as an example of
+                        early-1990s militarised pop culture and the shift from Cold War strategy toward more spectacular
+                        action aesthetics.</p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-002"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button" onclick="toggleGame(this, './dukenukem.jsdos', 'dos-002')">Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-002')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card card-link catalogue-item category-history span-3 place-r2c" data-category="history"
+                    data-index="009" data-platform="Timeline" data-title="Grenada Intervention" data-type="history"
+                    data-year="1983" href="timeline.html#grenada-1983">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Grenada Intervention</h2>
+                    <p class="card-subtitle">Cold War intervention</p>
+                    <p class="card-text">The 1983 U.S. invasion of Grenada became one of the defining interventions of
+                        the late Cold War, shaping how military action, intervention, and regional control were imagined
+                        in games of the period.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1983</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-5 place-r3c" data-category="history"
+                    data-index="010" data-platform="Timeline" data-title="Fall of the Wall" data-type="history"
+                    data-year="1989" href="timeline.html#1989-fall-of-the-wall">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Fall of the Wall / Delayed Game Memory</h2>
+                    <p class="card-subtitle">Historical event compared against later simulations</p>
+                    <p class="card-text">The fall of the Berlin Wall marked a decisive symbolic break in the Cold War,
+                        later refracted through games concerned with reunification, transition, and the memory of
+                        geopolitical collapse.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1989</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item image-card category-art span-4 place-r4c" data-category="art"
+                    data-index="016" data-platform="Archive" data-title="Balance of Power Cover Art" data-type="art"
+                    data-year="1985" href="art-archive.html#balance-of-power-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Artwork Placeholder</span></div>
+                    <h2 class="card-title">Balance of Power Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#balance-of-power-cover-art</span><span>1985</span></div>
+                </a>
+
+                <article class="card catalogue-item category-games span-5 place-r5c" data-category="games"
+                    data-index="032" data-platform="MS-DOS" data-title="Crisis in the Kremlin" data-type="game"
+                    data-year="1991">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Crisis in the Kremlin</h2>
+                    <p class="card-subtitle">Barbu Corporation / Spectrum HoloByte</p>
+                    <div class="card-meta"><span>1991</span><span>MS-DOS</span><span>Political sim</span><span>Soviet
+                            reform</span></div>
+                    <p class="card-text">A political management game focused on the late Soviet Union, where players
+                        balance reform, ideology, party pressure, and economic crisis during the final years of the
+                        USSR.</p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-004"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button" onclick="toggleGame(this, './crisis-in-the-kremlin.jsdos', 'dos-004')">
+                                Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-004')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card card-link catalogue-item category-history span-4 place-r5a" data-category="history"
+                    data-index="013" data-platform="Timeline" data-title="First Gulf War Broadcast Logic"
+                    data-type="history" data-year="1991" href="timeline.html#first-gulf-war">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">First Gulf War Broadcast Logic</h2>
+                    <p class="card-subtitle">Media spectacle and tactical interface</p>
+                    <p class="card-text">The first Gulf War marked a turning point in the overlap between televised
+                        warfare, interface imagery, and game-like ways of seeing conflict.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1991</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3 place-r5b" data-category="regions"
+                    data-index="022" data-platform="Map" data-title="Central Europe Theatre" data-type="region"
+                    data-year="1980" href="regionsmap.html#central-europe">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Central Europe Theatre</h2>
+                    <p class="card-subtitle">Strategic zone</p>
+                    <p class="card-text">Central Europe recurs throughout the archive as a strategic zone shaped by
+                        NATO–Warsaw Pact confrontation, divided borders, and the spatial logic of Cold War planning.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span></div>
+                </a>
+
+                <article class="card catalogue-item category-games span-5 place-r6a" data-category="games"
+                    data-index="033" data-platform="MS-DOS" data-title="Harpoon" data-type="game" data-year="1989">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Harpoon</h2>
+                    <p class="card-subtitle">Three-Sixty Pacific</p>
+                    <div class="card-meta"><span>1989</span><span>MS-DOS</span><span>Simulation</span><span>Naval
+                            command</span></div>
+                    <p class="card-text">A detailed naval warfare simulation centred on modern fleet command, missile
+                        systems, and Cold War maritime doctrine. It translates contemporary military planning into a
+                        technical playable form.</p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-005"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button" onclick="toggleGame(this, './duke3d_flat.jsdos', 'dos-005')">Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-005')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card card-link catalogue-item image-card category-art span-4 place-r6b" data-category="art"
+                    data-index="018" data-platform="Archive" data-title="Red Storm Rising Cover Art" data-type="art"
+                    data-year="1988" href="art-archive.html#red-storm-rising-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Red Storm Rising Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#red-storm-rising-cover-art</span><span>1988</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-3" data-category="articles"
+                    data-index="007" data-platform="Essay" data-title="A Genealogy of Power The Portrayal of the US in Cold War-Themed Videogames" data-type="article"
+                    data-year="2023" href="https://pure-oai.bham.ac.uk/ws/portalfiles/portal/239858424/SeiwaldR2023Genealogy.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Research Article</div>
+                    <h2 class="card-title">A Genealogy of Power</h2>
+                    <p class="card-subtitle">The portrayal of the US in Cold War-themed videogames</p>
+                    <p class="card-text">This article connects power, knowledge, and American exceptionalism, making it useful for reading Cold War games as systems that organise history around US authority.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2023</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-3" data-category="articles"
+                    data-index="008" data-platform="Archive" data-title="ColdWarGames It&#x27;s All a Game Allied Museum Exhibition" data-type="article"
+                    data-year="2025" href="https://www.alliiertenmuseum.de/en/ausstellung/cold-war-games/" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Exhibition Text</div>
+                    <h2 class="card-title">ColdWarGames: It’s All a Game</h2>
+                    <p class="card-subtitle">Allied Museum / Computerspielemuseum exhibition</p>
+                    <p class="card-text">A free exhibition page on games from and about the Cold War, including board games, GDR computer clubs, the Poly-Play arcade machine, and contemporary Cold War games.</p>
+                    <div class="card-footer"><span class="card-target">Open exhibition</span><span>2025</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-3" data-category="history"
+                    data-index="011" data-platform="Timeline" data-title="Iran-Contra and Secret Statecraft"
+                    data-type="history" data-year="1986" href="timeline.html#iran-contra">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Iran-Contra</h2>
+                    <p class="card-subtitle">Covert operations</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1986</span>
+                    </div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-3" data-category="history"
+                    data-index="012" data-platform="Timeline" data-title="Able Archer 83" data-type="history"
+                    data-year="1983" href="timeline.html#able-archer">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Able Archer 83</h2>
+                    <p class="card-subtitle">Simulation near-crisis</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1983</span>
+                    </div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-3" data-category="history"
+                    data-index="014" data-platform="Timeline" data-title="Strategic Defense Initiative"
+                    data-type="history" data-year="1984" href="timeline.html#sdi">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">SDI / Star Wars</h2>
+                    <p class="card-subtitle">Technological spectacle</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1984</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-3" data-category="history"
+                    data-index="015" data-platform="Timeline" data-title="Yugoslavia 1999 and Late Simulations"
+                    data-type="history" data-year="1999" href="timeline.html#yugoslavia-1999">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Yugoslavia 1999</h2>
+                    <p class="card-subtitle">Late archive threshold</p>
+                    <div class="card-footer"><span
+                            class="card-target">timeline.html#yugoslavia-1999</span><span>1999</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item image-card category-art span-4" data-category="art"
+                    data-index="017" data-platform="Archive" data-title="Duke Nukem 3D Cover Art" data-type="art"
+                    data-year="1996" href="art-archive.html#duke-nukem-3d-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Duke Nukem 3D Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#duke-nukem-3d-cover-art</span><span>1996</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item image-card category-art span-4" data-category="art"
+                    data-index="019" data-platform="Archive" data-title="Harpoon Cover Art" data-type="art"
+                    data-year="1989" href="art-archive.html#harpoon-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Harpoon Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#harpoon-cover-art</span><span>1989</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item image-card category-art span-3 place-r6c" data-category="art"
+                    data-index="020" data-platform="Archive" data-title="Gunship Cover Art" data-type="art"
+                    data-year="1986" href="art-archive.html#gunship-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Gunship Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#gunship-cover-art</span><span>1986</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item image-card category-art span-3" data-category="art"
+                    data-index="021" data-platform="Archive" data-title="Crisis in the Kremlin Cover Art" data-type="art"
+                    data-year="1991" href="art-archive.html#crisis-in-the-kremlin-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Crisis in the Kremlin Cover Art</h2>
+                    <div class="card-footer"><span
+                            class="card-target">art-archive.html#crisis-in-the-kremlin-cover-art</span><span>1991</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3" data-category="regions"
+                    data-index="023" data-platform="Map" data-title="Berlin" data-type="region" data-year="1988"
+                    href="regionsmap.html#berlin">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Berlin</h2>
+                    <p class="card-subtitle">Checkpoint and symbolic centre</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span>
+                    </div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-4" data-category="regions"
+                    data-index="024" data-platform="Map" data-title="Persian Gulf Theatre" data-type="region"
+                    data-year="1991" href="regionsmap.html#persian-gulf">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Persian Gulf Theatre</h2>
+                    <p class="card-subtitle">Conflict zone across simulations, briefing screens, and map overlays</p>
+                    <p class="card-text">The Persian Gulf appears across simulations, briefing screens, and map-based
+                        representations of conflict as a zone defined by oil, logistics, and strategic chokepoints.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1991</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3" data-category="regions"
+                    data-index="025" data-platform="Map" data-title="Latin America" data-type="region" data-year="1984"
+                    href="regionsmap.html#latin-america">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Latin America</h2>
+                    <p class="card-subtitle">Counterinsurgency zones</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3" data-category="regions"
+                    data-index="026" data-platform="Map" data-title="North Atlantic" data-type="region" data-year="1989"
+                    href="regionsmap.html#north-atlantic">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">North Atlantic</h2>
+                    <p class="card-subtitle">Naval patrol zones</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3" data-category="regions"
+                    data-index="027" data-platform="Map" data-title="Korean Peninsula" data-type="region"
+                    data-year="1987" href="regionsmap.html#korean-peninsula">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Korean Peninsula</h2>
+                    <p class="card-subtitle">Proxy frontier</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-regions span-3" data-category="regions"
+                    data-index="028" data-platform="Map" data-title="Afghanistan" data-type="region" data-year="1986"
+                    href="regionsmap.html#afghanistan">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Afghanistan</h2>
+                    <p class="card-subtitle">Mountain warfare and proxy struggle</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>Map</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-3" data-category="articles"
+                    data-index="029" data-platform="Essay" data-title="Cold War Power Play How the Stasi Got Into Computer Games" data-type="article"
+                    data-year="2025" href="https://www.theguardian.com/games/2025/oct/07/stasi-coldwargames-its-all-a-game-alliiertenmuseum-berlin" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Newspaper Article</div>
+                    <h2 class="card-title">Cold War Power Play</h2>
+                    <p class="card-subtitle">How the Stasi got into computer games</p>
+                    <p class="card-text">A readable article on East German gaming culture, Stasi monitoring, Poly-Play, DIY computer hardware, and the political tensions around play inside the GDR.</p>
+                    <div class="card-footer"><span class="card-target">Read article</span><span>2025</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-articles span-3" data-category="articles"
+                    data-index="034" data-platform="Essay" data-title="Computer Games and Propaganda David B Nieborg" data-type="article"
+                    data-year="2006" href="https://www.gamespace.nl/content/Nieborg_GamesAndPropaganda_2006.pdf" target="_blank" rel="noopener noreferrer">
+                    <div class="card-kicker">Conference Paper</div>
+                    <h2 class="card-title">Computer Games and Propaganda</h2>
+                    <p class="card-subtitle">America’s Army and the military-entertainment complex</p>
+                    <p class="card-text">David B. Nieborg’s classic paper examines America’s Army as a state-produced propaganda game, recruitment tool, and example of the military-entertainment complex.</p>
+                    <div class="card-footer"><span class="card-target">Read PDF</span><span>2006</span></div>
+                </a>
+
+                <a class="card card-link catalogue-item category-history span-3" data-category="history"
+                    data-index="030" data-platform="Timeline" data-title="Cuban Missile Crisis Memory"
+                    data-type="history" data-year="1985" href="timeline.html#cuban-missile-memory">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Cuban Missile Crisis Memory</h2>
+                    <p class="card-subtitle">Retroactive framing inside later games</p>
+                    <div class="card-footer"><span
+                            class="card-target">timeline.html#cuban-missile-memory</span><span>1985</span></div>
+                </a>
+
+
+                <article class="card catalogue-item category-games span-5" data-category="games" data-index="035" data-platform="MS-DOS" data-title="Shadow President" data-type="game" data-year="1993">
+                    <div class="card-kicker">Emulated Game</div>
+                    <h2 class="card-title">Shadow President</h2>
+                    <p class="card-subtitle">DC True</p>
+                    <div class="card-meta"><span>1993</span><span>MS-DOS</span><span>Geopolitical simulation</span><span>Global crisis management</span></div>
+                    <p class="card-text">A geopolitical simulation in which players act as the U.S. president, managing diplomacy, budgets, foreign crises, covert pressure, popularity, and military decisions through a dense political interface.</p>
+                    <div class="game-screen-wrap">
+                        <div class="screen">
+                            <div id="dos-006"></div>
+                        </div>
+                        <div class="button-row">
+                            <div class="button" onclick="toggleGame(this, './shadow-president.jsdos', 'dos-006')">Run</div>
+                            <div class="button" onclick="toggleFullscreen('dos-006')">Fullscreen</div>
+                        </div>
+                    </div>
+                </article>
+
+                <a class="card catalogue-item category-regions span-4 card-link" data-category="regions" data-index="036" data-platform="Map" data-title="North America" data-type="region" data-year="1980" href="regionsmap.html#north-america">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">North America</h2>
+                    <p class="card-subtitle">United States, Canada, Greenland</p>
+                    <p class="card-text">Games and events tied to US military culture, nuclear command, defence infrastructure, and American Cold War politics.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1980</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="037" data-platform="Map" data-title="Nuclear War" data-type="region" data-year="1989" href="art-archive.html#nuclear-war-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Nuclear War</h2>
+                    <p class="card-subtitle">North America / game</p>
+                    <p class="card-text">Satirical nuclear strategy.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="038" data-platform="Map" data-title="America’s Army" data-type="region" data-year="2002" href="articles.html">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">America’s Army</h2>
+                    <p class="card-subtitle">North America / game</p>
+                    <p class="card-text">Recruitment and military image culture.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>2002</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="039" data-platform="Map" data-title="NORAD" data-type="region" data-year="1980" href="regionsmap.html#north-america">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">NORAD</h2>
+                    <p class="card-subtitle">North America / event</p>
+                    <p class="card-text">Early-warning and command infrastructure.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="040" data-platform="Map" data-title="Contra War / Nicaragua" data-type="region" data-year="1980" href="timeline.html#iran-contra">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Contra War / Nicaragua</h2>
+                    <p class="card-subtitle">Latin America / event</p>
+                    <p class="card-text">Nicaraguan side of Iran-Contra.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="041" data-platform="Map" data-title="Grenada Invasion" data-type="region" data-year="1983" href="timeline.html#grenada-1983">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Grenada Invasion</h2>
+                    <p class="card-subtitle">Latin America / event</p>
+                    <p class="card-text">US intervention in the Caribbean.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1983</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="042" data-platform="Map" data-title="Balance of Power: Latin America" data-type="region" data-year="1985" href="emulators.html#balance-of-power">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Balance of Power: Latin America</h2>
+                    <p class="card-subtitle">Latin America / game context</p>
+                    <p class="card-text">Regional crises as superpower pressure points.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="043" data-platform="Map" data-title="Chile Coup" data-type="region" data-year="1973" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Chile Coup</h2>
+                    <p class="card-subtitle">Latin America / event</p>
+                    <p class="card-text">Coup politics and Cold War intervention.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1973</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="044" data-platform="Map" data-title="South Atlantic Conflict" data-type="region" data-year="1982" href="regionsmap.html#latin-america">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">South Atlantic Conflict</h2>
+                    <p class="card-subtitle">Latin America / event</p>
+                    <p class="card-text">Territory, media, and military mapping.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1982</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="045" data-platform="Map" data-title="Andean Counterinsurgency" data-type="region" data-year="1980" href="regionsmap.html#latin-america">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Andean Counterinsurgency</h2>
+                    <p class="card-subtitle">Latin America / event</p>
+                    <p class="card-text">Counterinsurgency and aid politics.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-4 card-link" data-category="regions" data-index="046" data-platform="Map" data-title="Europe" data-type="region" data-year="1980" href="regionsmap.html#europe">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Europe</h2>
+                    <p class="card-subtitle">Europe and Russia</p>
+                    <p class="card-text">Games and events tied to Berlin, NATO, the Warsaw Pact, Soviet reform, naval routes, and European escalation scenarios.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1980</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="047" data-platform="Map" data-title="Raid over Moscow" data-type="region" data-year="1984" href="art-archive.html#raid-over-moscow-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Raid over Moscow</h2>
+                    <p class="card-subtitle">Europe / game</p>
+                    <p class="card-text">Anti-Soviet arcade attack fantasy.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1984</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="048" data-platform="Map" data-title="Theatre Europe" data-type="region" data-year="1985" href="art-archive.html#theatre-europe-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Theatre Europe</h2>
+                    <p class="card-subtitle">Europe / game</p>
+                    <p class="card-text">NATO / Warsaw Pact escalation.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="049" data-platform="Map" data-title="Conflict: Europe" data-type="region" data-year="1989" href="art-archive.html#conflict-europe-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Conflict: Europe</h2>
+                    <p class="card-subtitle">Europe / game</p>
+                    <p class="card-text">European strategy and force deployment.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="050" data-platform="Map" data-title="NATO Commander" data-type="region" data-year="1983" href="art-archive.html#nato-commander-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">NATO Commander</h2>
+                    <p class="card-subtitle">Europe / game</p>
+                    <p class="card-text">Central European command planning.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1983</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="051" data-platform="Map" data-title="Red Storm Rising" data-type="region" data-year="1988" href="art-archive.html#red-storm-rising-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Red Storm Rising</h2>
+                    <p class="card-subtitle">Europe / game</p>
+                    <p class="card-text">North Atlantic submarine warfare.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1988</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="052" data-platform="Map" data-title="Balance of Power: Geneva" data-type="region" data-year="1985" href="emulators.html#balance-of-power">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Balance of Power: Geneva</h2>
+                    <p class="card-subtitle">Europe / game context</p>
+                    <p class="card-text">Summit diplomacy and superpower pressure.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="053" data-platform="Map" data-title="Berlin Wall" data-type="region" data-year="1989" href="timeline.html#1989-fall-of-the-wall">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Berlin Wall</h2>
+                    <p class="card-subtitle">Europe / event</p>
+                    <p class="card-text">Cold War division and collapse.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-4 card-link" data-category="regions" data-index="054" data-platform="Map" data-title="Middle East" data-type="region" data-year="1980" href="regionsmap.html#middle-east">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Middle East</h2>
+                    <p class="card-subtitle">Middle East, Afghanistan, Pakistan</p>
+                    <p class="card-text">Games and events linked to oil politics, Gulf War imagery, proxy conflict, air strikes, and post-Cold War intervention.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1980</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="055" data-platform="Map" data-title="Desert Strike" data-type="region" data-year="1992" href="art-archive.html#desert-strike-return-to-the-gulf-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Desert Strike</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Gulf War helicopter action.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1992</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="056" data-platform="Map" data-title="Conflict: Middle East" data-type="region" data-year="1991" href="art-archive.html#conflict-middle-east-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Conflict: Middle East</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Regional conflict simulation.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="057" data-platform="Map" data-title="F-15 Strike Eagle" data-type="region" data-year="1984" href="art-archive.html#f-15-strike-eagle-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">F-15 Strike Eagle</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Air strike missions and target maps.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1984</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="058" data-platform="Map" data-title="F-117A Nighthawk" data-type="region" data-year="1991" href="art-archive.html#f-117a-nighthawk-stealth-fighter-2-0-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">F-117A Nighthawk</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Stealth bombing and Gulf War imagery.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="059" data-platform="Map" data-title="F-19 Stealth Fighter" data-type="region" data-year="1988" href="art-archive.html#f-19-stealth-fighter-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">F-19 Stealth Fighter</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Radar, routes, and strike targets.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1988</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="060" data-platform="Map" data-title="M1 Tank Platoon" data-type="region" data-year="1989" href="art-archive.html#m1-tank-platoon-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">M1 Tank Platoon</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Armoured warfare simulation.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="061" data-platform="Map" data-title="Under Ash" data-type="region" data-year="2001" href="regionsmap.html#middle-east">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Under Ash</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Palestinian political game.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>2001</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="062" data-platform="Map" data-title="September 12th" data-type="region" data-year="2003" href="regionsmap.html#middle-east">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">September 12th</h2>
+                    <p class="card-subtitle">Middle East / game</p>
+                    <p class="card-text">Critical game about cycles of violence.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>2003</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="063" data-platform="Map" data-title="First Gulf War" data-type="region" data-year="1991" href="timeline.html#first-gulf-war">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">First Gulf War</h2>
+                    <p class="card-subtitle">Middle East / event</p>
+                    <p class="card-text">Broadcast war and intervention imagery.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="064" data-platform="Map" data-title="Iran-Contra Arms Sales" data-type="region" data-year="1985" href="timeline.html#iran-contra">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Iran-Contra Arms Sales</h2>
+                    <p class="card-subtitle">Middle East / event</p>
+                    <p class="card-text">Secret weapons sales to Iran.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1985–86</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-4 card-link" data-category="regions" data-index="065" data-platform="Map" data-title="Africa" data-type="region" data-year="1980" href="regionsmap.html#africa">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Africa</h2>
+                    <p class="card-subtitle">North Africa and Sub-Saharan Africa</p>
+                    <p class="card-text">Games and events linked to proxy wars, air strike scenarios, strategic routes, postcolonial conflict, and military aid.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1980</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="066" data-platform="Map" data-title="F-15 Strike Eagle: Libya" data-type="region" data-year="1980" href="art-archive.html#f-15-strike-eagle-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">F-15 Strike Eagle: Libya</h2>
+                    <p class="card-subtitle">Africa / game context</p>
+                    <p class="card-text">North African strike scenario.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="067" data-platform="Map" data-title="Balance of Power: Africa" data-type="region" data-year="1985" href="emulators.html#balance-of-power">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Balance of Power: Africa</h2>
+                    <p class="card-subtitle">Africa / game context</p>
+                    <p class="card-text">Proxy crises and superpower influence.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="068" data-platform="Map" data-title="Harpoon: Red Sea" data-type="region" data-year="1989" href="emulators.html#harpoon">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Harpoon: Red Sea</h2>
+                    <p class="card-subtitle">Africa / game context</p>
+                    <p class="card-text">Chokepoints and naval routes.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="069" data-platform="Map" data-title="Egypt / Suez" data-type="region" data-year="1985" href="regionsmap.html#africa">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Egypt / Suez</h2>
+                    <p class="card-subtitle">Africa / event</p>
+                    <p class="card-text">North African strategic route.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>Cold War</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="070" data-platform="Map" data-title="Angola" data-type="region" data-year="1975" href="regionsmap.html#africa">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Angola</h2>
+                    <p class="card-subtitle">Africa / event</p>
+                    <p class="card-text">Cold War proxy war.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1975–91</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="071" data-platform="Map" data-title="Horn of Africa" data-type="region" data-year="1970" href="regionsmap.html#africa">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Horn of Africa</h2>
+                    <p class="card-subtitle">Africa / event</p>
+                    <p class="card-text">Ports, aid, and strategic access.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1970s–80s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="072" data-platform="Map" data-title="Southern Africa" data-type="region" data-year="1980" href="regionsmap.html#africa">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Southern Africa</h2>
+                    <p class="card-subtitle">Africa / event</p>
+                    <p class="card-text">Border war and apartheid-era conflict.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-4 card-link" data-category="regions" data-index="073" data-platform="Map" data-title="Asia" data-type="region" data-year="1980" href="regionsmap.html#asia">
+                    <div class="card-kicker">Region</div>
+                    <h2 class="card-title">Asia</h2>
+                    <p class="card-subtitle">South, East, Southeast Asia, Australia, and the Pacific</p>
+                    <p class="card-text">Games and events linked to Korea, Vietnam, South Asia, Pacific routes, and nearby Pacific settings outside the Middle East.</p>
+                    <div class="card-footer"><span class="card-target">View region</span><span>1980</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="074" data-platform="Map" data-title="Harpoon: South China Sea" data-type="region" data-year="1989" href="emulators.html#harpoon">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Harpoon: South China Sea</h2>
+                    <p class="card-subtitle">Asia / game context</p>
+                    <p class="card-text">Pacific naval command route.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="075" data-platform="Map" data-title="Top Gun: Fire at Will!" data-type="region" data-year="1996" href="art-archive.html#top-gun-fire-at-will-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Top Gun: Fire at Will!</h2>
+                    <p class="card-subtitle">Asia / game context</p>
+                    <p class="card-text">Military cinema and flight combat.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1996</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="076" data-platform="Map" data-title="Red Storm Rising: Pacific Routes" data-type="region" data-year="1988" href="art-archive.html#red-storm-rising-cover-art">
+                    <div class="card-kicker">Mapped Game</div>
+                    <h2 class="card-title">Red Storm Rising: Pacific Routes</h2>
+                    <p class="card-subtitle">Asia / game context</p>
+                    <p class="card-text">Submarine and convoy routes.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1988</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="077" data-platform="Map" data-title="India / South Asia" data-type="region" data-year="1985" href="regionsmap.html#asia">
+                    <div class="card-kicker">Map Context</div>
+                    <h2 class="card-title">India / South Asia</h2>
+                    <p class="card-subtitle">Asia / context</p>
+                    <p class="card-text">Non-alignment and regional conflict.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>Cold War</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="078" data-platform="Map" data-title="Vietnam / Saigon" data-type="region" data-year="1970" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Vietnam / Saigon</h2>
+                    <p class="card-subtitle">Asia / event</p>
+                    <p class="card-text">Vietnam War memory and protest imagery.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1970s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="079" data-platform="Map" data-title="Tokyo" data-type="region" data-year="1980" href="regionsmap.html#asia">
+                    <div class="card-kicker">Map Context</div>
+                    <h2 class="card-title">Tokyo</h2>
+                    <p class="card-subtitle">Asia / context</p>
+                    <p class="card-text">Game production and arcade culture.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>1980s–90s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-regions span-3 card-link" data-category="regions" data-index="080" data-platform="Map" data-title="Taiwan Strait" data-type="region" data-year="1985" href="regionsmap.html#asia">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Taiwan Strait</h2>
+                    <p class="card-subtitle">Asia / event</p>
+                    <p class="card-text">Pacific flashpoint and island-chain strategy.</p>
+                    <div class="card-footer"><span class="card-target">View source</span><span>Cold War</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="081" data-platform="Timeline" data-title="Computer Wargaming Precursors" data-type="history" data-year="1973" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Computer Wargaming Precursors</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <p class="card-text">Cold War simulation and military-computing roots.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1973</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="082" data-platform="Timeline" data-title="Chile coup / oil crisis / détente under strain" data-type="history" data-year="1973" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Chile coup / oil crisis / détente under strain</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1973</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="083" data-platform="Timeline" data-title="Grenada invasion / Able Archer tensions" data-type="history" data-year="1983" href="timeline.html#grenada-1983">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Grenada invasion / Able Archer tensions</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1983</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="084" data-platform="Timeline" data-title="Reagan–Gorbachev thaw" data-type="history" data-year="1985" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Reagan–Gorbachev thaw</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="085" data-platform="Timeline" data-title="Iran-Contra and Central American conflict" data-type="history" data-year="1986" href="timeline.html#iran-contra">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Iran-Contra and Central American conflict</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1986–88</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="086" data-platform="Timeline" data-title="Fall of the Berlin Wall" data-type="history" data-year="1989" href="timeline.html#1989-fall-of-the-wall">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Fall of the Berlin Wall</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="087" data-platform="Timeline" data-title="First Gulf War / USSR collapse" data-type="history" data-year="1991" href="timeline.html#first-gulf-war">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">First Gulf War / USSR collapse</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="088" data-platform="Timeline" data-title="Desert Strike: Return to the Gulf" data-type="history" data-year="1992" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Desert Strike: Return to the Gulf</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <p class="card-text">Gulf War-inspired helicopter action turns televised intervention, oil politics, and regional crisis into a playable military spectacle.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1992</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="089" data-platform="Timeline" data-title="Post-Cold War intervention politics" data-type="history" data-year="1992" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Post-Cold War intervention politics</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>1992–95</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="090" data-platform="Timeline" data-title="Under Ash / America’s Army / Special Force / September 12th" data-type="history" data-year="2000" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">Under Ash / America’s Army / Special Force / September 12th</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <p class="card-text">Recruitment, resistance, and critique.</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>2000s</span></div>
+                </a>
+
+                <a class="card catalogue-item category-history span-3 card-link" data-category="history" data-index="091" data-platform="Timeline" data-title="9/11, Second Intifada, Iraq War" data-type="history" data-year="2001" href="timeline.html">
+                    <div class="card-kicker">Historical Element</div>
+                    <h2 class="card-title">9/11, Second Intifada, Iraq War</h2>
+                    <p class="card-subtitle">Timeline marker</p>
+                    <div class="card-footer"><span class="card-target">View timeline</span><span>2001–03</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="092" data-platform="Archive" data-title="NATO Commander Cover Art" data-type="art" data-year="1983" href="art-archive.html#nato-commander-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">NATO Commander Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#nato-commander-cover-art</span><span>1983</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="093" data-platform="Archive" data-title="F-15 Strike Eagle Cover Art" data-type="art" data-year="1984" href="art-archive.html#f-15-strike-eagle-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">F-15 Strike Eagle Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#f-15-strike-eagle-cover-art</span><span>1984</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="094" data-platform="Archive" data-title="Raid over Moscow Cover Art" data-type="art" data-year="1984" href="art-archive.html#raid-over-moscow-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Raid over Moscow Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#raid-over-moscow-cover-art</span><span>1984</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="095" data-platform="Archive" data-title="S.D.I. Cover Art" data-type="art" data-year="1984" href="art-archive.html#s-d-i-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">S.D.I. Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#s-d-i-cover-art</span><span>1984</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="096" data-platform="Archive" data-title="Theatre Europe Cover Art" data-type="art" data-year="1985" href="art-archive.html#theatre-europe-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Theatre Europe Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#theatre-europe-cover-art</span><span>1985</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="097" data-platform="Archive" data-title="F-19 Stealth Fighter Cover Art" data-type="art" data-year="1988" href="art-archive.html#f-19-stealth-fighter-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">F-19 Stealth Fighter Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#f-19-stealth-fighter-cover-art</span><span>1988</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="098" data-platform="Archive" data-title="Hidden Agenda Cover Art" data-type="art" data-year="1988" href="art-archive.html#hidden-agenda-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Hidden Agenda Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#hidden-agenda-cover-art</span><span>1988</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="099" data-platform="Archive" data-title="Conflict: Europe Cover Art" data-type="art" data-year="1989" href="art-archive.html#conflict-europe-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Conflict: Europe Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#conflict-europe-cover-art</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="100" data-platform="Archive" data-title="M1 Tank Platoon Cover Art" data-type="art" data-year="1989" href="art-archive.html#m1-tank-platoon-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">M1 Tank Platoon Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#m1-tank-platoon-cover-art</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="101" data-platform="Archive" data-title="Nuclear War Cover Art" data-type="art" data-year="1989" href="art-archive.html#nuclear-war-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Nuclear War Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#nuclear-war-cover-art</span><span>1989</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="102" data-platform="Archive" data-title="Conflict: Middle East Cover Art" data-type="art" data-year="1991" href="art-archive.html#conflict-middle-east-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Conflict: Middle East Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#conflict-middle-east-cover-art</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="103" data-platform="Archive" data-title="Duke Nukem Cover Art" data-type="art" data-year="1991" href="art-archive.html#duke-nukem-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Duke Nukem Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#duke-nukem-cover-art</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="104" data-platform="Archive" data-title="F-117A Nighthawk Stealth Fighter 2.0 Cover Art" data-type="art" data-year="1991" href="art-archive.html#f-117a-nighthawk-stealth-fighter-2-0-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">F-117A Nighthawk Stealth Fighter 2.0 Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#f-117a-nighthawk-stealth-fighter-2-0-cover-art</span><span>1991</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="105" data-platform="Archive" data-title="Desert Strike: Return to the Gulf Cover Art" data-type="art" data-year="1992" href="art-archive.html#desert-strike-return-to-the-gulf-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Desert Strike: Return to the Gulf Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#desert-strike-return-to-the-gulf-cover-art</span><span>1992</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="106" data-platform="Archive" data-title="Shadow President Cover Art" data-type="art" data-year="1993" href="art-archive.html#shadow-president-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Shadow President Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#shadow-president-cover-art</span><span>1993</span></div>
+                </a>
+
+                <a class="card catalogue-item category-art span-4 image-card card-link" data-category="art" data-index="107" data-platform="Archive" data-title="Top Gun: Fire at Will! Cover Art" data-type="art" data-year="1996" href="art-archive.html#top-gun-fire-at-will-cover-art">
+                    <div class="card-kicker">Cover Art</div>
+                    <div class="placeholder-box"><span class="placeholder-label">Cover Placeholder</span></div>
+                    <h2 class="card-title">Top Gun: Fire at Will! Cover Art</h2>
+                    <div class="card-footer"><span class="card-target">art-archive.html#top-gun-fire-at-will-cover-art</span><span>1996</span></div>
+                </a>
+            </section>
+        </main>
+    </div>
+    <script>
+        let dosInstances = {};
+        let isEmulatorRunning = {};
+
+        async function toggleGame(btn, bundleUrl, containerId) {
+            const container = document.getElementById(containerId);
+            const isRunning = isEmulatorRunning[containerId] || false;
+
+            if (isRunning) {
+                try {
+                    if (dosInstances[containerId] && dosInstances[containerId].stop) {
+                        dosInstances[containerId].stop();
+                    }
+                } catch (err) { }
+
+                container.innerHTML = '';
+                btn.textContent = 'Run';
+                isEmulatorRunning[containerId] = false;
+                container.parentElement.classList.remove('running');
+                requestAnimationFrame(() => applyMasonry(getItems()));
+            } else {
+                container.innerHTML = '';
+                dosInstances[containerId] = Dos(container, {
+                    url: bundleUrl,
+                    autoStart: true,
+                    kiosk: true,
+                    renderAspect: '4/3'
+                });
+                btn.textContent = 'Stop';
+                isEmulatorRunning[containerId] = true;
+                container.parentElement.classList.add('running');
+                requestAnimationFrame(() => applyMasonry(getItems()));
+            }
+        }
+
+        function toggleFullscreen(containerId) {
+            const container = document.getElementById(containerId);
+            const parent = container.parentElement;
+            const logo = document.querySelector('.logo-spin');
+
+            if (!document.fullscreenElement) {
+                parent.appendChild(logo);
+                parent.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                const logo = document.querySelector('.logo-spin');
+                if (logo) document.body.appendChild(logo);
+            }
+        });
+
+
+        const searchInput = document.getElementById('searchInput');
+        const platformFilter = document.getElementById('platformFilter');
+        const sortSelect = document.getElementById('sortSelect');
+        const resultsMeta = document.getElementById('resultsMeta');
+        const catalogueGrid = document.getElementById('catalogueGrid');
+
+        function getItems() {
+            return Array.from(catalogueGrid.querySelectorAll('.catalogue-item'));
+        }
+
+        function matchesFilters(item) {
+            const search = searchInput.value.trim().toLowerCase();
+            const platform = platformFilter.value;
+
+            const haystack = [
+                item.dataset.title,
+                item.dataset.year,
+                item.dataset.platform,
+                item.dataset.type,
+                item.dataset.category,
+                item.textContent,
+            ].join(' ').toLowerCase();
+
+            const searchMatch = !search || haystack.includes(search);
+            const platformMatch = platform === 'all' || item.dataset.platform === platform;
+
+            return searchMatch && platformMatch;
+        }
+
+        function sortItems(items) {
+            const mode = sortSelect.value;
+
+            return items.sort((a, b) => {
+                if (mode === 'title') return a.dataset.title.localeCompare(b.dataset.title);
+                if (mode === 'year-desc') return Number(b.dataset.year) - Number(a.dataset.year);
+                if (mode === 'year-asc') return Number(a.dataset.year) - Number(b.dataset.year);
+                if (mode === 'category') return a.dataset.category.localeCompare(b.dataset.category) || a.dataset.index.localeCompare(b.dataset.index);
+                return a.dataset.index.localeCompare(b.dataset.index);
+            });
+        }
+
+        function balanceItems(items) {
+            const typeOrder = ['game', 'article', 'history', 'art', 'region'];
+            const buckets = new Map(typeOrder.map((type) => [type, []]));
+
+            items.forEach((item) => {
+                const type = item.dataset.type || 'article';
+                if (!buckets.has(type)) buckets.set(type, []);
+                buckets.get(type).push(item);
+            });
+
+            const total = items.length;
+            const result = [];
+            const recentTypes = [];
+            const remainingCounts = new Map(
+                Array.from(buckets.entries()).map(([type, bucket]) => [type, bucket.length])
+            );
+
+            for (let index = 0; index < total; index += 1) {
+                const progress = total > 1 ? index / (total - 1) : 0;
+
+                const candidates = Array.from(buckets.entries())
+                    .filter(([, bucket]) => bucket.length > 0)
+                    .map(([type, bucket]) => {
+                        const remaining = remainingCounts.get(type) || 0;
+                        const proportionRemaining = remaining / Math.max(1, total - index);
+                        let score = proportionRemaining * 100;
+
+                        const previousType = result.length ? result[result.length - 1].dataset.type : '';
+                        const previousTwoTypes = result.slice(-2).map((item) => item.dataset.type);
+
+                        if (type === previousType) score -= 28;
+                        if (previousTwoTypes.includes(type)) score -= 10;
+                        if (recentTypes.includes(type)) score -= 4;
+
+                        const idealPlacedByNow = Math.round(progress * (items.filter((item) => (item.dataset.type || 'article') === type).length));
+                        const alreadyPlaced = result.filter((item) => (item.dataset.type || 'article') === type).length;
+                        score -= Math.abs(alreadyPlaced - idealPlacedByNow) * 8;
+
+                        if (type === 'game') {
+                            const idealGamePositions = [0.08, 0.32, 0.56, 0.8]
+                                .slice(0, items.filter((item) => (item.dataset.type || 'article') === 'game').length)
+                                .map((p) => Math.round(p * Math.max(0, total - 1)));
+                            const gamesPlaced = result.filter((item) => (item.dataset.type || 'article') === 'game').length;
+                            const targetIndex = idealGamePositions[Math.min(gamesPlaced, Math.max(0, idealGamePositions.length - 1))] ?? 0;
+                            score -= Math.abs(index - targetIndex) * 6;
+                            if (Math.abs(index - targetIndex) <= 1) score += 20;
+                        }
+
+                        score += Math.min(remaining, 4);
+
+                        return { type, score };
+                    })
+                    .sort((a, b) => b.score - a.score || typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type));
+
+                const chosenType = candidates[0].type;
+                const chosenBucket = buckets.get(chosenType);
+                const nextItem = chosenBucket.shift();
+
+                result.push(nextItem);
+                remainingCounts.set(chosenType, (remainingCounts.get(chosenType) || 1) - 1);
+
+                recentTypes.push(chosenType);
+                if (recentTypes.length > 4) recentTypes.shift();
+            }
+
+            return result;
+        }
+
+
+        function getSpan(item) {
+            if (item.classList.contains('span-5')) return 5;
+            if (item.classList.contains('span-4')) return 4;
+            return 3;
+        }
+
+        function clearMasonryStyles(items) {
+            catalogueGrid.classList.remove('masonry-active');
+            catalogueGrid.style.height = '';
+            items.forEach((item) => {
+                item.style.position = '';
+                item.style.left = '';
+                item.style.top = '';
+                item.style.width = '';
+            });
+        }
+
+        function isEmulatorCard(item) {
+            return item.classList.contains('game-card') ||
+                item.dataset.type === 'game' ||
+                /EMULATED GAME/i.test(item.textContent || '');
+        }
+
+        function getSpan(item) {
+            if (item.classList.contains('game-card') || item.dataset.type === 'game') return 5;
+            return Math.min(Number(item.dataset.span || 3), 12);
+        }
+
+        function buildFirstRow(items, cols = 12) {
+            const visibleItems = items.filter((item) => !item.classList.contains('hidden'));
+            const emulators = visibleItems.filter((item) => isEmulatorCard(item));
+            const others = visibleItems.filter((item) => !isEmulatorCard(item));
+
+            if (!emulators.length) return [];
+
+            const emulator = emulators[0];
+            const emulatorSpan = getSpan(emulator);
+            const needed = cols - emulatorSpan;
+
+            for (let i = 0; i < others.length; i += 1) {
+                for (let j = i + 1; j < others.length; j += 1) {
+                    const a = others[i];
+                    const b = others[j];
+                    if (getSpan(a) + getSpan(b) === needed) {
+                        return [emulator, a, b];
+                    }
+                }
+            }
+
+            const exact = others.find((item) => getSpan(item) === needed);
+            if (exact) return [emulator, exact];
+
+            return [];
+        }
+
+        function applyMasonry(items) {
+            const desktop = window.innerWidth > 1100;
+            if (!desktop) {
+                clearMasonryStyles(items);
+                return;
+            }
+
+            catalogueGrid.classList.add('masonry-active');
+
+            const visibleItems = items.filter((item) => !item.classList.contains('hidden'));
+            if (!visibleItems.length) {
+                catalogueGrid.style.height = '0px';
+                return;
+            }
+
+            const gap = 10;
+            const cols = 12;
+            const gridWidth = catalogueGrid.clientWidth;
+            const unit = (gridWidth - gap * (cols - 1)) / cols;
+            const heights = new Array(cols).fill(0);
+            const placedItems = [];
+            // Prefer placements that touch the outer edges when several positions are equally good,
+            // so cards do not bunch into the middle and leave floating side gaps.
+
+            visibleItems.forEach((item) => {
+                const span = Math.min(getSpan(item), cols);
+                const itemWidth = unit * span + gap * (span - 1);
+
+                item.style.position = 'absolute';
+                item.style.width = `${itemWidth}px`;
+                item.style.left = '0px';
+                item.style.top = '0px';
+            });
+
+            const firstRowItems = buildFirstRow(visibleItems, cols);
+            const firstRowSet = new Set(firstRowItems);
+            let firstRowCursor = 0;
+
+            firstRowItems.forEach((item) => {
+                const span = Math.min(getSpan(item), cols);
+                const itemHeight = item.offsetHeight;
+                const bestStart = firstRowCursor;
+                const bestTop = 0;
+                const left = bestStart * (unit + gap);
+
+                item.style.left = `${left}px`;
+                item.style.top = `${bestTop}px`;
+                placedItems.push({ element: item, top: bestTop, left, span });
+
+                const newHeight = bestTop + itemHeight + gap;
+                for (let col = bestStart; col < bestStart + span; col += 1) {
+                    heights[col] = newHeight;
+                }
+
+                firstRowCursor += span;
+            });
+
+            const masonryItems = visibleItems.filter((item) => !firstRowSet.has(item));
+
+            masonryItems.forEach((item) => {
+                const span = Math.min(getSpan(item), cols);
+                const itemHeight = item.offsetHeight;
+
+                let bestStart = 0;
+                let bestTop = Number.POSITIVE_INFINITY;
+
+                const candidates = [];
+
+                for (let start = 0; start <= cols - span; start += 1) {
+                    const slice = heights.slice(start, start + span);
+                    const top = Math.max(...slice);
+                    candidates.push({ start, top });
+                    if (top < bestTop) {
+                        bestTop = top;
+                    }
+                }
+
+                let bestCandidates = candidates.filter((candidate) => candidate.top === bestTop);
+
+                if (isEmulatorCard(item)) {
+                    const usedEmulatorTops = placedItems
+                        .filter((placed) => isEmulatorCard(placed.element))
+                        .map((placed) => Math.round(placed.top));
+
+                    const allStaggeredCandidates = candidates.filter(
+                        (candidate) => !usedEmulatorTops.includes(Math.round(candidate.top))
+                    );
+
+                    if (allStaggeredCandidates.length) {
+                        const staggeredBestTop = Math.min(...allStaggeredCandidates.map((candidate) => candidate.top));
+                        bestCandidates = allStaggeredCandidates.filter(
+                            (candidate) => candidate.top === staggeredBestTop
+                        );
+                    }
+                }
+
+                bestCandidates.sort((a, b) => {
+                    const aTouchesEdge = a.start === 0 || (a.start + span) === cols ? 1 : 0;
+                    const bTouchesEdge = b.start === 0 || (b.start + span) === cols ? 1 : 0;
+
+                    if (aTouchesEdge !== bTouchesEdge) {
+                        return bTouchesEdge - aTouchesEdge;
+                    }
+
+                    const aOuterGap = Math.min(a.start, cols - (a.start + span));
+                    const bOuterGap = Math.min(b.start, cols - (b.start + span));
+
+                    if (aOuterGap !== bOuterGap) {
+                        return aOuterGap - bOuterGap;
+                    }
+
+                    const aCenter = a.start + span / 2;
+                    const bCenter = b.start + span / 2;
+
+                    return Math.abs(aCenter - cols / 2) - Math.abs(bCenter - cols / 2);
+                });
+
+                bestStart = bestCandidates[0].start;
+
+                const left = bestStart * (unit + gap);
+                item.style.left = `${left}px`;
+                item.style.top = `${bestTop}px`;
+                placedItems.push({ element: item, top: bestTop, left, span });
+
+                const newHeight = bestTop + itemHeight + gap;
+                for (let col = bestStart; col < bestStart + span; col += 1) {
+                    heights[col] = newHeight;
+                }
+            });
+
+            catalogueGrid.style.height = `${Math.max(...heights) - gap}px`;
+        }
+
+        function updateCatalogue() {
+            const items = getItems();
+            const visibleItems = items.filter(matchesFilters);
+            const sortedItems = sortItems([...visibleItems]);
+            const balancedItems = balanceItems(sortedItems);
+
+            items.forEach((item) => item.classList.add('hidden'));
+            balancedItems.forEach((item) => {
+                item.classList.remove('hidden');
+                catalogueGrid.appendChild(item);
+            });
+
+            resultsMeta.textContent = `Showing ${balancedItems.length} item${balancedItems.length === 1 ? '' : 's'}`;
+
+            requestAnimationFrame(() => applyMasonry(getItems()));
+        }
+
+        [searchInput, platformFilter, sortSelect].forEach((control) => {
+            control.addEventListener('input', updateCatalogue);
+            control.addEventListener('change', updateCatalogue);
+        });
+
+        window.addEventListener('resize', () => {
+            window.clearTimeout(window.__masonryResizeTimer);
+            window.__masonryResizeTimer = window.setTimeout(() => applyMasonry(getItems()), 80);
+        });
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => applyMasonry(getItems()));
+        }
+
+
+
+        updateCatalogue();
+    </script>
+
+    <script>
+        (function () {
+            const catalogueImageMatches = {
+                "Balance of Power Cover Art": { game: "Balance of Power", image: 'cover' },
+                "Conflict: Europe Cover Art": { game: "Conflict: Europe", image: 'cover' },
+                "Conflict: Middle East Cover Art": { game: "Conflict: Middle East", image: 'cover' },
+                "Crisis in the Kremlin Cover Art": { game: "Crisis in the Kremlin", image: 'cover' },
+                "Desert Strike: Return to the Gulf Cover Art": { game: "Desert Strike: Return to the Gulf", image: 'cover' },
+                "Duke Nukem 3D Cover Art": { game: "Duke Nukem 3D", image: 'cover' },
+                "Duke Nukem Cover Art": { game: "Duke Nukem", image: 'cover' },
+                "F-117A Nighthawk Stealth Fighter 2.0 Cover Art": { game: "F-117A Nighthawk Stealth Fighter 2.0", image: 'cover' },
+                "F-15 Strike Eagle Cover Art": { game: "F-15 Strike Eagle", image: 'cover' },
+                "F-19 Stealth Fighter Cover Art": { game: "F-19 Stealth Fighter", image: 'cover' },
+                "Gunship Cover Art": { game: "Gunship", image: 'cover' },
+                "Harpoon Cover Art": { game: "Harpoon", image: 'cover' },
+                "Hidden Agenda Cover Art": { game: "Hidden Agenda", image: 'cover' },
+                "M1 Tank Platoon Cover Art": { game: "M1 Tank Platoon", image: 'cover' },
+                "NATO Commander Cover Art": { game: "NATO Commander", image: 'cover' },
+                "Nuclear War Cover Art": { game: "Nuclear War", image: 'cover' },
+                "Raid over Moscow Cover Art": { game: "Raid over Moscow", image: 'cover' },
+                "Red Storm Rising Cover Art": { game: "Red Storm Rising", image: 'cover' },
+                "S.D.I. Cover Art": { game: "S.D.I.", image: 'cover' },
+                "Shadow President Cover Art": { game: "Shadow President", image: 'cover' },
+                "Theatre Europe Cover Art": { game: "Theatre Europe", image: 'cover' },
+                "Top Gun: Fire at Will! Cover Art": { game: "Top Gun: Fire at Will!", image: 'cover' }
+            };
+
+            function normalise(text) {
+                return String(text || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').trim();
+            }
+
+            function findArchiveGame(archiveData, title) {
+                const target = normalise(title);
+                return archiveData.find((game) => normalise(game.title) === target);
+            }
+
+            function setPlaceholderImage(card, imagePath, altText) {
+                const placeholder = card.querySelector('.placeholder-box');
+                if (!placeholder || !imagePath) return;
+
+                placeholder.classList.add('has-archive-image');
+                placeholder.innerHTML = '';
+
+                const image = document.createElement('img');
+                image.className = 'archive-placeholder-image';
+                image.src = imagePath;
+                image.alt = altText;
+                image.loading = 'lazy';
+                placeholder.appendChild(image);
+            }
+
+            function applyArchiveImages(archiveData) {
+                document.querySelectorAll('.image-card').forEach((card) => {
+                    const match = catalogueImageMatches[card.dataset.title];
+                    if (!match) return;
+
+                    const archiveGame = findArchiveGame(archiveData, match.game);
+                    if (!archiveGame) return;
+
+                    const imagePath = archiveGame[match.image] || archiveGame.cover || archiveGame.gameplay;
+                    setPlaceholderImage(card, imagePath, `${match.game} archive image`);
+                });
+
+                requestAnimationFrame(() => {
+                    if (typeof applyMasonry === 'function' && typeof getItems === 'function') {
+                        applyMasonry(getItems());
+                    }
+                });
+            }
+
+            fetch('archive-data.json')
+                .then((response) => {
+                    if (!response.ok) throw new Error('archive-data.json could not be loaded');
+                    return response.json();
+                })
+                .then(applyArchiveImages)
+                .catch((error) => console.error(error));
+        })();
+    </script>
+
+    <div class="logo-spin">
+        <canvas height="20" id="logoCanvas" width="20"></canvas>
+    </div>
+    <script>
+        (function () {
+            const canvas = document.getElementById('logoCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+            const SIZE = 31;
+            canvas.width = SIZE;
+            canvas.height = SIZE;
+            let angle = 0;
+            const VIEWBOX = 79.43;
+            const logoPath = new Path2D('M39.72,0C17.78,0,0,17.78,0,39.71s17.78,39.71,39.72,39.71,39.71-17.78,39.71-39.71S61.65,0,39.72,0ZM58.47,72.18l-18.75-32.47-18.75,32.47L2.22,39.71h37.5L20.97,7.24h37.5l-18.75,32.47h37.5l-18.75,32.47Z');
+
+            function draw() {
+                ctx.clearRect(0, 0, SIZE, SIZE);
+                ctx.save();
+                ctx.translate(SIZE / 2, SIZE / 2);
+                ctx.rotate(angle);
+                const PADDING = 4;
+                const scale = (SIZE - PADDING) / VIEWBOX;
+                ctx.scale(scale, scale);
+                ctx.translate(-VIEWBOX / 2, -VIEWBOX / 2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2.5 / scale;
+                ctx.stroke(logoPath);
+                ctx.fillStyle = '#ffff00';
+                ctx.fill(logoPath);
+                ctx.restore();
+
+                const imageData = ctx.getImageData(0, 0, SIZE, SIZE);
+                const d = imageData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    if (d[i + 3] > 128) {
+                        const brightness = d[i] + d[i + 1] + d[i + 2];
+                        if (brightness > 100) {
+                            d[i] = 255; d[i + 1] = 255; d[i + 2] = 0; d[i + 3] = 255;
+                        } else {
+                            d[i] = 0; d[i + 1] = 0; d[i + 2] = 0; d[i + 3] = 255;
+                        }
+                    } else {
+                        d[i + 3] = 0;
+                    }
+                }
+                ctx.putImageData(imageData, 0, 0);
+                angle += 0.009;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+    </script>
+
+
+    <script>
+        (function () {
+            let audioContext = null;
+
+            function getAudioContext() {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                return audioContext;
+            }
+
+            function playTone(frequency, duration, volume, delay) {
+                const ctx = getAudioContext();
+                const startTime = ctx.currentTime + (delay || 0);
+                const oscillator = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(frequency, startTime);
+
+                gain.gain.setValueAtTime(volume, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+                oscillator.connect(gain);
+                gain.connect(ctx.destination);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            }
+
+            function playClickSound() {
+                playTone(620, 0.035, 0.045, 0);
+                playTone(310, 0.025, 0.03, 0.025);
+            }
+
+            function playRunSound() {
+                playTone(220, 0.045, 0.11, 0);
+                playTone(440, 0.045, 0.10, 0.045);
+                playTone(880, 0.055, 0.09, 0.09);
+            }
+
+            function isRunControl(element) {
+                const control = element.closest('.button, button, a');
+                if (!control) return false;
+
+                const onclickValue = control.getAttribute('onclick') || '';
+                const controlText = (control.textContent || '').trim().toLowerCase();
+
+                return onclickValue.includes('toggleGame') || controlText === 'run' || controlText === 'stop';
+            }
+
+            function isClickableElement(element) {
+                return element.closest('a, button, input, select, textarea, .button, .card-link, .nav-card, .region-card, .hotspot a, .start-button, .click-sound');
+            }
+
+            function shouldIgnoreSound(element) {
+                return element.closest('.screen.running');
+            }
+
+            document.addEventListener('pointerdown', function (event) {
+                const target = event.target;
+
+                if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+                    return;
+                }
+
+                if (isRunControl(target)) {
+                    playRunSound();
+                } else {
+                    playClickSound();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key !== 'Enter' && event.key !== ' ') return;
+
+                const target = event.target;
+
+                if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+                    return;
+                }
+
+                if (isRunControl(target)) {
+                    playRunSound();
+                } else {
+                    playClickSound();
+                }
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

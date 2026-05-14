@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Archive</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #e2dcc4;
+      --blue: #0000ff;
+      --black: #000000;
+      --white: #ffffff;
+      --yellow: #ffff00;
+    }
+
+    html {
+      background: var(--blue);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--black);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .top-bar {
+      height: 16px;
+      background: var(--blue);
+      border-bottom: 2px solid var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      padding: 14px 22px 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 500;
+      flex-wrap: wrap;
+      background: var(--bg);
+      position: sticky;
+      top: 16px;
+      z-index: 90;
+    }
+
+    .nav a {
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    body,
+    a {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+    .nav a:hover {
+      background: var(--yellow);
+    }
+
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      width: 100%;
+      padding: 22px;
+    }
+
+    .archive-item {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      appearance: none;
+      text-align: left;
+      color: inherit;
+      font: inherit;
+    }
+
+    .archive-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(0.95);
+    }
+
+    .archive-info {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 9px;
+      background: rgba(0, 0, 0, 0.78);
+      color: var(--white);
+      opacity: 0;
+      transition: opacity 0.14s ease;
+      pointer-events: none;
+    }
+
+    .archive-item:hover .archive-info,
+    .archive-item:focus .archive-info,
+    .archive-item:focus-within .archive-info {
+      opacity: 1;
+    }
+
+    .archive-info h2 {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.1;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .archive-info p {
+      margin: 3px 0 0;
+      font-size: 11px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .archive-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+    }
+
+    .archive-modal.is-open {
+      display: flex;
+    }
+
+    .archive-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.64);
+    }
+
+    .archive-modal-panel {
+      position: relative;
+      z-index: 2;
+      width: min(760px, 86vw);
+      max-height: calc(100vh - 52px);
+      overflow: visible;
+      background: var(--bg);
+      color: var(--black);
+      border: 2px solid var(--black);
+    }
+
+    .archive-modal-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 3;
+      border: 1px solid var(--black);
+      background: var(--white);
+      color: var(--black);
+      padding: 6px 9px 5px;
+      font: inherit;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .archive-modal-close:hover {
+      background: var(--yellow);
+    }
+
+    .archive-modal-image {
+      display: block;
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      background: var(--black);
+    }
+
+    .archive-modal-meta {
+      padding: 12px;
+      background: var(--white);
+    }
+
+    .archive-modal-title {
+      margin: 0 0 6px;
+      font-size: clamp(24px, 3.5vw, 48px);
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .archive-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px 16px;
+      padding: 8px 0;
+      border-top: 1px solid var(--black);
+      border-bottom: 1px solid var(--black);
+      font-size: 12px;
+      line-height: 1.12;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .archive-modal-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .archive-modal-button {
+      display: inline-block;
+      border: 1px solid var(--black);
+      background: #e0e0e0;
+      color: var(--black);
+      padding: 8px 12px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .archive-modal-button:hover {
+      background: #cdcdcd;
+    }
+
+    .archive-modal-button.is-disabled {
+      border-color: #777777;
+      background: #c7c7c7;
+      color: #777777;
+      pointer-events: none;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    body,
+    a,
+    button,
+    .archive-item,
+    .archive-modal-button,
+    .archive-modal-close {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover,
+    button:hover,
+    .archive-item:hover,
+    .archive-modal-button:hover,
+    .archive-modal-close:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+    @media (max-width: 1100px) {
+      .archive-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .archive-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 14px;
+      }
+
+      .archive-info {
+        padding: 7px;
+      }
+
+      .archive-info h2 {
+        font-size: 11px;
+      }
+
+      .archive-info p {
+        font-size: 10px;
+      }
+
+      .archive-modal {
+        padding: 14px;
+      }
+
+      .archive-modal-panel {
+        width: calc(100vw - 28px);
+        max-height: calc(100vh - 28px);
+      }
+
+      .archive-modal-image {
+        max-height: 48vh;
+      }
+
+      .archive-modal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="top-bar"></div>
+
+  <div class="nav">
+    <a href="homepage.html">Home</a>
+    <a href="index.html">Start</a>
+    <a href="archivecatalogue.html">Catalogue</a>
+    <a href="articles.html">Articles</a>
+    <a href="emulators.html">Emulators</a>
+    <a href="timeline.html">Timeline</a>
+    <a href="regionsmap.html">Regions Map</a>
+    <a href="art-archive.html">Art Archive</a>
+    <a href="about.html">About</a>
+  </div>
+
+  <main class="archive-grid" id="archive-grid"></main>
+
+  <div class="archive-modal" id="archive-modal" aria-hidden="true">
+    <div class="archive-modal-backdrop" data-close-modal></div>
+    <section class="archive-modal-panel" role="dialog" aria-modal="true" aria-labelledby="archive-modal-title">
+      <button class="archive-modal-close" type="button" data-close-modal>Close</button>
+      <img class="archive-modal-image" id="archive-modal-image" alt="">
+      <div class="archive-modal-meta">
+        <h1 class="archive-modal-title" id="archive-modal-title"></h1>
+        <div class="archive-modal-grid">
+          <span>Year</span>
+          <span id="archive-modal-year"></span>
+          <span>Image type</span>
+          <span id="archive-modal-type"></span>
+          <span>Source item</span>
+          <span id="archive-modal-source"></span>
+        </div>
+        <div class="archive-modal-actions">
+          <a class="archive-modal-button" id="archive-modal-elsewhere" href="#">Elsewhere in the Archive</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const archiveGrid = document.getElementById('archive-grid');
+      const modal = document.getElementById('archive-modal');
+      const modalImage = document.getElementById('archive-modal-image');
+      const modalTitle = document.getElementById('archive-modal-title');
+      const modalYear = document.getElementById('archive-modal-year');
+      const modalType = document.getElementById('archive-modal-type');
+      const modalSource = document.getElementById('archive-modal-source');
+      const modalElsewhere = document.getElementById('archive-modal-elsewhere');
+
+      const elsewhereLinks = {
+        'balance of power': 'emulators.html#balance-of-power',
+        'hidden agenda': 'emulators.html#hidden-agenda',
+        'duke nukem': 'emulators.html#duke-nukem',
+        'crisis in the kremlin': 'emulators.html#crisis-in-the-kremlin',
+        'harpoon': 'emulators.html#harpoon',
+        'shadow president': 'emulators.html#shadow-president',
+        'raid over moscow': 'timeline.html',
+        's d i': 'timeline.html#sdi',
+        'red storm rising': 'archivecatalogue.html',
+        'gunship': 'archivecatalogue.html',
+        'duke nukem 3d': 'archivecatalogue.html'
+      };
+
+      function normalizeTitle(text) {
+        return String(text || '')
+          .toLowerCase()
+          .replace(/&/g, 'and')
+          .replace(/[^a-z0-9]+/g, ' ')
+          .trim();
+      }
+
+      function slugify(text) {
+        return String(text || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
+      function makeTextElement(tagName, text) {
+        const element = document.createElement(tagName);
+        element.textContent = text;
+        return element;
+      }
+
+      function getElsewhereLink(game) {
+        const normalizedTitle = normalizeTitle(game.title);
+
+        if (elsewhereLinks[normalizedTitle]) {
+          return elsewhereLinks[normalizedTitle];
+        }
+
+        return null;
+      }
+
+      function setElsewhereButton(game) {
+        const link = getElsewhereLink(game);
+
+        if (link) {
+          modalElsewhere.href = link;
+          modalElsewhere.classList.remove('is-disabled');
+          modalElsewhere.setAttribute('aria-disabled', 'false');
+        } else {
+          modalElsewhere.href = '#';
+          modalElsewhere.classList.add('is-disabled');
+          modalElsewhere.setAttribute('aria-disabled', 'true');
+        }
+      }
+
+      function openModal(game, imagePath, imageType) {
+        modalImage.src = imagePath;
+        modalImage.alt = (game.title || 'Untitled') + ' ' + imageType;
+        modalTitle.textContent = game.title || 'Untitled';
+        modalYear.textContent = game.year || 'Year unknown';
+        modalType.textContent = imageType;
+        modalSource.textContent = game.archiveTitle || game.archiveIdentifier || game.source || 'Unknown';
+        setElsewhereButton(game);
+
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        modalImage.src = '';
+      }
+
+      function makeArchiveItem(game, imagePath, imageType) {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'archive-item';
+        item.id = slugify(game.title + '-' + imageType);
+
+        const image = document.createElement('img');
+        image.src = imagePath;
+        image.alt = game.title + ' ' + imageType;
+        image.loading = 'lazy';
+
+        const info = document.createElement('div');
+        info.className = 'archive-info';
+
+        info.appendChild(makeTextElement('h2', game.title || 'Untitled'));
+        info.appendChild(makeTextElement('p', game.year || 'Year unknown'));
+        info.appendChild(makeTextElement('p', imageType));
+
+        item.appendChild(image);
+        item.appendChild(info);
+
+        item.addEventListener('click', function () {
+          openModal(game, imagePath, imageType);
+        });
+
+        return item;
+      }
+
+      function addGameToArchive(game) {
+        const images = [
+          {
+            path: game.cover,
+            type: 'cover art'
+          },
+          {
+            path: game.gameplay,
+            type: 'gameplay image'
+          }
+        ];
+
+        images.forEach(function (archiveImage) {
+          if (!archiveImage.path) return;
+
+          archiveGrid.appendChild(
+            makeArchiveItem(game, archiveImage.path, archiveImage.type)
+          );
+        });
+      }
+
+      modal.addEventListener('click', function (event) {
+        if (event.target.closest('[data-close-modal]')) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+
+      modalElsewhere.addEventListener('click', function (event) {
+        if (modalElsewhere.classList.contains('is-disabled')) {
+          event.preventDefault();
+        }
+      });
+
+      fetch('archive-data.json')
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('archive-data.json could not be loaded');
+          }
+
+          return response.json();
+        })
+        .then(function (games) {
+          games.forEach(addGameToArchive);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    })();
+  </script>
+
+
+<script>
+    (function () {
+      let audioContext = null;
+
+      function getAudioContext() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        return audioContext;
+      }
+
+      function playTone(frequency, duration, volume, delay) {
+        const ctx = getAudioContext();
+        const startTime = ctx.currentTime + (delay || 0);
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playClickSound() {
+        playTone(620, 0.035, 0.045, 0);
+        playTone(310, 0.025, 0.03, 0.025);
+      }
+
+      function playRunSound() {
+        playTone(220, 0.045, 0.11, 0);
+        playTone(440, 0.045, 0.10, 0.045);
+        playTone(880, 0.055, 0.09, 0.09);
+      }
+
+      function isRunControl(element) {
+        const control = element.closest('.button, button, a');
+        if (!control) return false;
+
+        const onclickValue = control.getAttribute('onclick') || '';
+        const controlText = (control.textContent || '').trim().toLowerCase();
+
+        return onclickValue.includes('toggleGame') || controlText === 'run' || controlText === 'stop';
+      }
+
+      function isClickableElement(element) {
+        return element.closest('a, button, input, select, textarea, .button, .card-link, .nav-card, .region-card, .hotspot a, .start-button, .click-sound, .archive-item, .archive-modal-button, .archive-modal-close');
+      }
+
+      function shouldIgnoreSound(element) {
+        return element.closest('.screen.running');
+      }
+
+      document.addEventListener('pointerdown', function (event) {
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home — Balance of Power Archive</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #e2dcc4;
+      --card: #ffffff;
+      --white: #ffffff;
+      --black: #000000;
+      --blue: #0000ff;
+      --yellow: #ffff00;
+      --muted: #d7d1bb;
+      background-color: var(--blue) !important;
+    }
+
+    @font-face {
+      font-family: "LoRes 21 OT";
+      src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
+        url("/fonts/LoRes21OT-Regular.woff") format("woff");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html {
+      background-color: var(--blue) !important;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--black);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body,
+    a,
+    button,
+    .nav-card,
+    .random-archive-link {
+      cursor: url('./cursor.png') 5 4, auto;
+    }
+
+    a:hover,
+    button:hover,
+    .nav-card:hover,
+    .random-archive-link:hover {
+      cursor: url('./cursor.png') 5 4, pointer;
+    }
+
+    .top-bar {
+      height: 16px;
+      background: var(--blue);
+      border-bottom: 2px solid var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      padding: 14px 22px 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 500;
+      flex-wrap: wrap;
+      background: var(--bg);
+      position: sticky;
+      top: 16px;
+      z-index: 90;
+    }
+
+    .nav a {
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      background: var(--yellow);
+    }
+
+    .hero {
+      padding: 12px 20px 18px;
+      font-family: "LoRes 21 OT", monospace;
+      font-size: clamp(34px, 5.8vw, 82px);
+      line-height: .94;
+      letter-spacing: -.03em;
+      text-transform: uppercase;
+    }
+
+    .home-wrap {
+      padding: 0 20px 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, .9fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .home-main,
+    .stack {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .under-yellow {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .under-yellow > .panel {
+      height: 100%;
+    }
+
+    .under-yellow .about-panel {
+      grid-column: 1 / -1;
+    }
+
+    .panel {
+      border: 1px solid var(--black);
+      background: var(--white);
+      padding: 12px;
+      min-height: 0;
+    }
+
+    .panel.yellow {
+      background: var(--yellow);
+    }
+
+    .panel.muted {
+      background: var(--muted);
+    }
+
+    .panel-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .04em;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 8px;
+    }
+
+    .feature-title {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 58px);
+      line-height: .95;
+      text-transform: uppercase;
+      letter-spacing: -.04em;
+    }
+
+    .feature-text,
+    .body-text {
+      font-size: 13px;
+      line-height: 1.42;
+      margin: 10px 0 0;
+      max-width: 72ch;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .nav-card {
+      display: block;
+      border: 1px solid var(--black);
+      background: var(--white);
+      padding: 10px;
+      color: var(--black);
+      text-decoration: none;
+      min-height: 88px;
+    }
+
+    .nav-card:hover {
+      background: #d2d2d2;
+    }
+
+    .nav-card strong {
+      display: block;
+      font-size: 18px;
+      text-transform: uppercase;
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+
+    .nav-card span {
+      display: block;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .fact-box {
+      display: grid;
+      gap: 9px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .fact-box b,
+    .random-archive-meta span:nth-child(odd) {
+      border: 1px solid var(--black);
+      background: var(--yellow);
+      padding: 3px 5px 2px;
+      width: max-content;
+    }
+
+    .fact-box p {
+      margin: 0;
+    }
+
+    .fact-box a,
+    .list-links a {
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .fact-box a {
+      width: fit-content;
+    }
+
+    .fact-box a:hover,
+    .list-links a:hover {
+      background: var(--yellow);
+    }
+
+    .list-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .random-archive-link {
+      display: block;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .random-archive-link:has(.random-archive-image[src=""]) .random-archive-image {
+      min-height: 180px;
+    }
+
+    .random-archive-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      background: var(--black);
+      margin-bottom: 10px;
+      filter: contrast(1.05) saturate(0.95);
+    }
+
+    .random-archive-meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 5px 10px;
+      font-size: 12px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .home-wrap,
+      .under-yellow {
+        grid-template-columns: 1fr;
+      }
+
+
+
+      .under-yellow .about-panel {
+        grid-column: auto;
+      }
+
+      .link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-wrap {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .hero {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .nav {
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar"></div>
+
+  <div class="nav">
+    <a href="homepage.html">Home</a>
+    <a href="index.html">Start</a>
+    <a href="archivecatalogue.html">Catalogue</a>
+    <a href="articles.html">Articles</a>
+    <a href="emulators.html">Emulators</a>
+    <a href="timeline.html">Timeline</a>
+    <a href="regionsmap.html">Regions Map</a>
+    <a href="art-archive.html">Art Archive</a>
+    <a href="about.html">About</a>
+  </div>
+
+  <div class="hero">Balance of Power : Videogame Propaganda Archive</div>
+
+  <main class="home-wrap">
+    <div class="home-main">
+      <section class="panel yellow">
+        <p class="panel-title">Start here</p>
+        <h1 class="feature-title">Cold War games, military image culture, and playable politics</h1>
+        <p class="feature-text">Explore how videogames translated Cold War politics, military technology, national identity, and interventionist imagery into playable systems.</p>
+
+        <div class="link-grid">
+          <a class="nav-card" href="archivecatalogue.html"><strong>Catalogue</strong><span>Browse games, essays, historical notes, regions, and visual material.</span></a>
+          <a class="nav-card" href="timeline.html"><strong>Timeline</strong><span>Follow Cold War events, military simulations, and game releases across the archive.</span></a>
+          <a class="nav-card" href="regionsmap.html"><strong>Regions Map</strong><span>Move through Berlin, Central Europe, Latin America, the Gulf, and other recurring zones.</span></a>
+          <a class="nav-card" href="art-archive.html"><strong>Art Archive</strong><span>Browse cover art, screenshots, advertising, and interface fragments.</span></a>
+        </div>
+      </section>
+
+      <section class="under-yellow">
+        <section class="panel">
+          <p class="panel-title">Browse by format</p>
+          <div class="list-links">
+            <a href="archivecatalogue.html">Emulated games</a>
+            <a href="archivecatalogue.html">Essays and criticism</a>
+            <a href="timeline.html">Historical timeline</a>
+            <a href="regionsmap.html">Map regions</a>
+          </div>
+        </section>
+
+        <section class="panel">
+          <p class="panel-title">Suggested route</p>
+          <p class="body-text">Begin with the catalogue, move through the timeline, then use the map to see how conflict is organised by place.</p>
+          <div class="list-links" style="margin-top:10px;">
+            <a href="archivecatalogue.html">1. Browse the catalogue</a>
+            <a href="timeline.html">2. Follow the timeline</a>
+            <a href="regionsmap.html">3. Move through the map</a>
+          </div>
+        </section>
+
+        <section class="panel about-panel">
+          <p class="panel-title">About the archive</p>
+          <p class="body-text">This archive looks at how videogames have pictured power: through maps, menus, cover art, military hardware, fictional enemies, and the rules that make conflict feel playable.</p>
+          <div class="list-links" style="margin-top:10px;">
+            <a href="about.html">About this project</a>
+            <a href="index.html">Open start screen</a>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <aside class="stack">
+      <section class="panel">
+        <p class="panel-title">Did you know?</p>
+        <div class="fact-box" id="factBox">
+          <b id="factYear">1985</b>
+          <p id="factText">Balance of Power turns nuclear diplomacy into a playable interface, where escalation is often a failure rather than a victory.</p>
+          <a id="factLink" href="archivecatalogue.html">Explore</a>
+        </div>
+      </section>
+
+      <section class="panel muted">
+        <p class="panel-title">Explore next</p>
+        <div class="list-links">
+          <a href="regionsmap.html#persian-gulf">Persian Gulf imagery and strategy</a>
+          <a href="regionsmap.html#central-europe">Central Europe as Cold War board</a>
+          <a href="timeline.html#iran-contra">Iran-Contra and proxy conflict</a>
+          <a href="art-archive.html#balance-of-power-cover-art">Balance of Power cover art</a>
+        </div>
+      </section>
+
+      <section class="panel" id="randomArchivePanel">
+        <p class="panel-title">From the art archive</p>
+        <a class="random-archive-link" id="randomArchiveLink" href="art-archive.html">
+          <img class="random-archive-image" id="randomArchiveImage" alt="">
+          <div class="random-archive-meta">
+            <span>Title</span><span id="randomArchiveTitle">Loading</span>
+            <span>Year</span><span id="randomArchiveYear">—</span>
+            <span>Image</span><span id="randomArchiveType">—</span>
+          </div>
+        </a>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    (function () {
+      const facts = [
+        {
+          year: '1983',
+          text: 'Able Archer 83 was a NATO exercise that Soviet observers feared could be preparation for a real nuclear attack.',
+          href: 'timeline.html#able-archer'
+        },
+        {
+          year: '1984',
+          text: 'Raid over Moscow turns the fear of nuclear surprise attack into an arcade mission against the Soviet Union.',
+          href: 'timeline.html'
+        },
+        {
+          year: '1985',
+          text: 'Balance of Power treats nuclear escalation as a political failure, not a conventional win condition.',
+          href: 'emulators.html#balance-of-power'
+        },
+        {
+          year: '1986',
+          text: 'The Strategic Defense Initiative helped popularise a fantasy of technological protection from nuclear war.',
+          href: 'timeline.html#sdi'
+        },
+        {
+          year: '1988',
+          text: 'Hidden Agenda uses a fictional Central American country to make elections, foreign pressure, and social conflict playable.',
+          href: 'emulators.html#hidden-agenda'
+        },
+        {
+          year: '1989',
+          text: 'Harpoon presents Cold War naval conflict through databases, sensors, missiles, and command interfaces rather than arcade action.',
+          href: 'emulators.html#harpoon'
+        },
+        {
+          year: '1991',
+          text: 'Crisis in the Kremlin reframes the late Soviet Union as a balancing act between reform, party pressure, and economic collapse.',
+          href: 'emulators.html#crisis-in-the-kremlin'
+        },
+        {
+          year: '1992',
+          text: 'Desert Strike channels Gulf War-era media imagery into a helicopter action game built around intervention and rescue missions.',
+          href: 'art-archive.html'
+        }
+      ];
+
+      const factYear = document.getElementById('factYear');
+      const factText = document.getElementById('factText');
+      const factLink = document.getElementById('factLink');
+
+      if (!factYear || !factText || !factLink) return;
+
+      const selectedFact = facts[Math.floor(Math.random() * facts.length)];
+
+      factYear.textContent = selectedFact.year;
+      factText.textContent = selectedFact.text;
+      factLink.href = selectedFact.href;
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const randomImage = document.getElementById('randomArchiveImage');
+      const randomTitle = document.getElementById('randomArchiveTitle');
+      const randomYear = document.getElementById('randomArchiveYear');
+      const randomType = document.getElementById('randomArchiveType');
+      const randomLink = document.getElementById('randomArchiveLink');
+
+      if (!randomImage || !randomTitle || !randomYear || !randomType || !randomLink) return;
+
+      function slugify(text) {
+        return String(text || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+
+      function buildImagePool(games) {
+        const pool = [];
+        games.forEach((game) => {
+          if (game.cover) {
+            pool.push({ title: game.title, year: game.year, type: 'cover art', src: game.cover });
+          }
+          if (game.gameplay) {
+            pool.push({ title: game.title, year: game.year, type: 'gameplay image', src: game.gameplay });
+          }
+        });
+        return pool;
+      }
+
+      function showRandomArchiveImage(games) {
+        const pool = buildImagePool(games);
+        if (!pool.length) return;
+
+        const selected = pool[Math.floor(Math.random() * pool.length)];
+        const anchor = slugify(`${selected.title}-${selected.type}`);
+
+        randomImage.src = selected.src;
+        randomImage.alt = `${selected.title} ${selected.type}`;
+        randomTitle.textContent = selected.title || 'Untitled';
+        randomYear.textContent = selected.year || 'Year unknown';
+        randomType.textContent = selected.type;
+        randomLink.href = `art-archive.html#${anchor}`;
+      }
+
+      fetch('archive-data.json')
+        .then((response) => {
+          if (!response.ok) throw new Error('archive-data.json could not be loaded');
+          return response.json();
+        })
+        .then(showRandomArchiveImage)
+        .catch((error) => console.error(error));
+    })();
+  </script>
+
+  <script>
+    (function () {
+      let audioContext = null;
+
+      function getAudioContext() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        return audioContext;
+      }
+
+      function playTone(frequency, duration, volume, delay) {
+        const ctx = getAudioContext();
+        const startTime = ctx.currentTime + (delay || 0);
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playClickSound() {
+        playTone(620, 0.035, 0.045, 0);
+        playTone(310, 0.025, 0.03, 0.025);
+      }
+
+      function playRunSound() {
+        playTone(220, 0.045, 0.11, 0);
+        playTone(440, 0.045, 0.10, 0.045);
+        playTone(880, 0.055, 0.09, 0.09);
+      }
+
+      function isRunControl(element) {
+        const control = element.closest('.button, button, a');
+        if (!control) return false;
+
+        const onclickValue = control.getAttribute('onclick') || '';
+        const controlText = (control.textContent || '').trim().toLowerCase();
+
+        return onclickValue.includes('toggleGame') || controlText === 'run' || controlText === 'stop';
+      }
+
+      function isClickableElement(element) {
+        return element.closest('a, button, input, select, textarea, .button, .card-link, .nav-card, .region-card, .hotspot a, .start-button, .click-sound');
+      }
+
+      function shouldIgnoreSound(element) {
+        return element.closest('.screen.running');
+      }
+
+      document.addEventListener('pointerdown', function (event) {
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+
+        const target = event.target;
+
+        if (!target || shouldIgnoreSound(target) || !isClickableElement(target)) {
+          return;
+        }
+
+        if (isRunControl(target)) {
+          playRunSound();
+        } else {
+          playClickSound();
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>

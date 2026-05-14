@@ -1,0 +1,335 @@
+[
+  {
+    "title": "688 Attack Sub",
+    "year": 1989,
+    "cover": null,
+    "gameplay": null,
+    "source": "https://archive.org/details/688AttackSub",
+    "archiveTitle": "688 Attack Sub",
+    "archiveIdentifier": "688AttackSub"
+  },
+  {
+    "title": "Balance of Power",
+    "year": 1985,
+    "cover": "assets/archive/balance-of-power/source-02.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/wozaday_Balance_of_Power_1990_IIgs",
+    "archiveTitle": "Balance of Power: The 1990 Edition IIgs (woz-a-day collection)",
+    "archiveIdentifier": "wozaday_Balance_of_Power_1990_IIgs"
+  },
+  {
+    "title": "Command & Conquer",
+    "year": 1995,
+    "cover": "assets/archive/command-conquer/source-03.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/command-conquer-alarmstufe-rot-gegenschlag-psx-german",
+    "archiveTitle": "Command & Conquer - Alarmstufe Rot - Gegenschlag (Playstation) (German)",
+    "archiveIdentifier": "command-conquer-alarmstufe-rot-gegenschlag-psx-german"
+  },
+  {
+    "title": "Command & Conquer: Red Alert",
+    "year": 1996,
+    "cover": "assets/archive/command-conquer-red-alert/source-05.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/command-conquer-red-alert-2-usa-europe-alt_202505",
+    "archiveTitle": "Command & Conquer - Red Alert 2 (USA, Europe) (Alt)",
+    "archiveIdentifier": "command-conquer-red-alert-2-usa-europe-alt_202505"
+  },
+  {
+    "title": "Conflict",
+    "year": 1990,
+    "cover": "assets/archive/conflict/source-01.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/380_Conflict_in_Vietnam_Side_1",
+    "archiveTitle": "380 Conflict in Vietnam Side 1",
+    "archiveIdentifier": "380_Conflict_in_Vietnam_Side_1"
+  },
+  {
+    "title": "Conflict: Europe",
+    "year": 1989,
+    "cover": null,
+    "gameplay": null,
+    "source": "https://archive.org/details/Conflict_Europe_1989_PSS_cr_Delight",
+    "archiveTitle": "Conflict Europe",
+    "archiveIdentifier": "Conflict_Europe_1989_PSS_cr_Delight"
+  },
+  {
+    "title": "Conflict: Middle East",
+    "year": 1991,
+    "cover": "assets/archive/conflict-middle-east/source-03.gif",
+    "gameplay": null,
+    "source": "https://archive.org/details/msdos_Conflict_-_Middle_East_1991",
+    "archiveTitle": "Conflict - Middle East",
+    "archiveIdentifier": "msdos_Conflict_-_Middle_East_1991"
+  },
+  {
+    "title": "Crisis in the Kremlin",
+    "year": 1991,
+    "cover": "assets/archive/crisis-in-the-kremlin/source-10.jpg",
+    "gameplay": "assets/archive/crisis-in-the-kremlin/source-01.jpg",
+    "source": "https://archive.org/details/msdos_Crisis_in_the_Kremlin_1992",
+    "archiveTitle": "Crisis in the Kremlin",
+    "archiveIdentifier": "msdos_Crisis_in_the_Kremlin_1992"
+  },
+  {
+    "title": "Desert Strike: Return to the Gulf",
+    "year": 1992,
+    "cover": "assets/archive/desert-strike-return-to-the-gulf/source-03.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/desert-strike-mr-abandonware",
+    "archiveTitle": "Desert Strike: Return to the Gulf",
+    "archiveIdentifier": "desert-strike-mr-abandonware"
+  },
+  {
+    "title": "Duke Nukem",
+    "year": 1991,
+    "cover": "assets/archive/duke-nukem/source-05.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/senha-no-1-duke-nukem-atomic-edition",
+    "archiveTitle": "SENHA Nº 1 Duke Nukem 3D Atomic Edition Completo",
+    "archiveIdentifier": "senha-no-1-duke-nukem-atomic-edition"
+  },
+  {
+    "title": "Duke Nukem II",
+    "year": 1993,
+    "cover": "assets/archive/duke-nukem-ii/source-03.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/apogee-duke-nukem-ii",
+    "archiveTitle": "Duke Nukem II",
+    "archiveIdentifier": "apogee-duke-nukem-ii"
+  },
+  {
+    "title": "Duke Nukem 3D",
+    "year": 1996,
+    "cover": "assets/archive/duke-nukem-3d/source-03.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/duke-3-d",
+    "archiveTitle": "Duke Nukem 3D",
+    "archiveIdentifier": "duke-3-d"
+  },
+  {
+    "title": "F-15 Strike Eagle",
+    "year": 1984,
+    "cover": "assets/archive/f-15-strike-eagle/source-03.jpg",
+    "gameplay": "assets/archive/f-15-strike-eagle/source-04.png",
+    "source": "https://archive.org/details/zx_F_15_Strike_Eagle_1986_Microprose_Software",
+    "archiveTitle": "F-15 Strike Eagle",
+    "archiveIdentifier": "zx_F_15_Strike_Eagle_1986_Microprose_Software"
+  },
+  {
+    "title": "F-15 Strike Eagle II",
+    "year": 1989,
+    "cover": "assets/archive/f-15-strike-eagle-ii/source-03.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/f-15-strike-eagle-ii",
+    "archiveTitle": "F-15 Strike Eagle II",
+    "archiveIdentifier": "f-15-strike-eagle-ii"
+  },
+  {
+    "title": "F-15 Strike Eagle III",
+    "year": 1992,
+    "cover": "assets/archive/f-15-strike-eagle-iii/source-01.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/f-15-iii",
+    "archiveTitle": "F-15 Strike Eagle III",
+    "archiveIdentifier": "f-15-iii"
+  },
+  {
+    "title": "F-117A Nighthawk Stealth Fighter 2.0",
+    "year": 1991,
+    "cover": null,
+    "gameplay": null,
+    "source": "https://archive.org/details/002941-F117aNighthawkStealthFighter20",
+    "archiveTitle": "F-117A Nighthawk Stealth Fighter 2.0 IBM PC Floppy Image",
+    "archiveIdentifier": "002941-F117aNighthawkStealthFighter20"
+  },
+  {
+    "title": "F-19 Stealth Fighter",
+    "year": 1988,
+    "cover": "assets/archive/f-19-stealth-fighter/source-03.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/f-19_20240729",
+    "archiveTitle": "F-19 Stealth Fighter",
+    "archiveIdentifier": "f-19_20240729"
+  },
+  {
+    "title": "Fleet Defender",
+    "year": 1994,
+    "cover": "assets/archive/fleet-defender/source-01.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/msdos_Fleet_Defender_1994",
+    "archiveTitle": "Fleet Defender",
+    "archiveIdentifier": "msdos_Fleet_Defender_1994"
+  },
+  {
+    "title": "Global Thermonuclear War",
+    "year": 1983,
+    "cover": "assets/archive/global-thermonuclear-war/source-09.jpg",
+    "gameplay": "assets/archive/global-thermonuclear-war/source-01.jpg",
+    "source": "https://archive.org/details/a2_Global_Thermonuclear_War_19xx__cr_Blade",
+    "archiveTitle": "Global Thermonuclear War",
+    "archiveIdentifier": "a2_Global_Thermonuclear_War_19xx__cr_Blade"
+  },
+  {
+    "title": "Gunship",
+    "year": 1986,
+    "cover": "assets/archive/gunship/source-03.jpg",
+    "gameplay": "assets/archive/gunship/source-01.jpg",
+    "source": "https://archive.org/details/Gunship_1986_MicroProse",
+    "archiveTitle": "Gunship",
+    "archiveIdentifier": "Gunship_1986_MicroProse"
+  },
+  {
+    "title": "Gunship 2000",
+    "year": 1991,
+    "cover": "assets/archive/gunship-2000/source-01.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/gunship-2000",
+    "archiveTitle": "Gunship 2000 (Disks)",
+    "archiveIdentifier": "gunship-2000"
+  },
+  {
+    "title": "Harpoon",
+    "year": 1989,
+    "cover": "assets/archive/harpoon/source-02.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/harpoon_generaladmissionsoftware",
+    "archiveTitle": "Harpoon",
+    "archiveIdentifier": "harpoon_generaladmissionsoftware"
+  },
+  {
+    "title": "Hidden Agenda",
+    "year": 1988,
+    "cover": "assets/archive/hidden-agenda/source-10.jpg",
+    "gameplay": "assets/archive/hidden-agenda/source-01.jpg",
+    "source": "https://archive.org/details/msdos_Hidden_Agenda_1988",
+    "archiveTitle": "Hidden Agenda",
+    "archiveIdentifier": "msdos_Hidden_Agenda_1988"
+  },
+  {
+    "title": "Jane's Combat Simulations: USAF",
+    "year": 1999,
+    "cover": "assets/archive/jane-s-combat-simulations-usaf/source-01.jpg",
+    "gameplay": "assets/archive/jane-s-combat-simulations-usaf/source-03.jpg",
+    "source": "https://archive.org/details/JanesCombatSimulationsUSAFUSA",
+    "archiveTitle": "Jane's Combat Simulations - USAF (USA)",
+    "archiveIdentifier": "JanesCombatSimulationsUSAFUSA"
+  },
+  {
+    "title": "Jungle Strike",
+    "year": 1993,
+    "cover": "assets/archive/jungle-strike/source-03.jpg",
+    "gameplay": null,
+    "source": "https://archive.org/details/jungle-strike-mr-abandonware",
+    "archiveTitle": "Jungle Strike",
+    "archiveIdentifier": "jungle-strike-mr-abandonware"
+  },
+  {
+    "title": "M1 Tank Platoon",
+    "year": 1989,
+    "cover": "assets/archive/m1-tank-platoon/source-01.jpg",
+    "gameplay": "assets/archive/m1-tank-platoon/source-01.jpg",
+    "source": "https://archive.org/details/msdos_M1_Tank_Platoon_1989",
+    "archiveTitle": "M1 Tank Platoon",
+    "archiveIdentifier": "msdos_M1_Tank_Platoon_1989"
+  },
+  {
+    "title": "NATO Commander",
+    "year": 1983,
+    "cover": "assets/archive/nato-commander/source-03.jpg",
+    "gameplay": "assets/archive/nato-commander/source-07.jpg",
+    "source": "https://archive.org/details/a8b_NATO_Commander_1983_MicroProse_US_k_file",
+    "archiveTitle": "NATO Commander",
+    "archiveIdentifier": "a8b_NATO_Commander_1983_MicroProse_US_k_file"
+  },
+  {
+    "title": "Nuclear Strike",
+    "year": 1997,
+    "cover": "assets/archive/nuclear-strike/source-01.png",
+    "gameplay": "assets/archive/nuclear-strike/source-05.png",
+    "source": "https://archive.org/details/seuck_c64_nuclear-strike-force-preview",
+    "archiveTitle": "Nuclear Strike Force [preview]",
+    "archiveIdentifier": "seuck_c64_nuclear-strike-force-preview"
+  },
+  {
+    "title": "Nuclear War",
+    "year": 1989,
+    "cover": "assets/archive/nuclear-war/source-06.jpg",
+    "gameplay": "assets/archive/nuclear-war/source-01.jpg",
+    "source": "https://archive.org/details/msdos_Nuclear_War_1989",
+    "archiveTitle": "Nuclear War",
+    "archiveIdentifier": "msdos_Nuclear_War_1989"
+  },
+  {
+    "title": "Raid over Moscow",
+    "year": 1984,
+    "cover": "assets/archive/raid-over-moscow/source-03.jpg",
+    "gameplay": "assets/archive/raid-over-moscow/source-01.jpg",
+    "source": "https://archive.org/details/a8b_Raid_over_Moscow_1986_Access_Software_US",
+    "archiveTitle": "Raid over Moscow",
+    "archiveIdentifier": "a8b_Raid_over_Moscow_1986_Access_Software_US"
+  },
+  {
+    "title": "Red Storm Rising",
+    "year": 1988,
+    "cover": null,
+    "gameplay": "assets/archive/red-storm-rising/source-01.jpg",
+    "source": "https://archive.org/details/msdos_Red_Storm_Rising_1989",
+    "archiveTitle": "Red Storm Rising",
+    "archiveIdentifier": "msdos_Red_Storm_Rising_1989"
+  },
+  {
+    "title": "S.D.I.",
+    "year": 1986,
+    "cover": null,
+    "gameplay": null,
+    "source": "https://archive.org/details/S.D.I._1987_Cinemaware_cr_United_Atari_Syndicate_m_Vectronix",
+    "archiveTitle": "S.D.I.",
+    "archiveIdentifier": "S.D.I._1987_Cinemaware_cr_United_Atari_Syndicate_m_Vectronix"
+  },
+  {
+    "title": "Shadow President",
+    "year": 1993,
+    "cover": "assets/archive/shadow-president/source-03.png",
+    "gameplay": null,
+    "source": "https://archive.org/details/msdos_Shadow_President_1993",
+    "archiveTitle": "Shadow President",
+    "archiveIdentifier": "msdos_Shadow_President_1993"
+  },
+  {
+    "title": "Soviet Strike",
+    "year": 1996,
+    "cover": null,
+    "gameplay": null,
+    "source": "https://archive.org/details/soviet-strike",
+    "archiveTitle": "Soviet Strike",
+    "archiveIdentifier": "soviet-strike"
+  },
+  {
+    "title": "Theatre Europe",
+    "year": 1985,
+    "cover": "assets/archive/theatre-europe/source-03.jpg",
+    "gameplay": "assets/archive/theatre-europe/source-10.gif",
+    "source": "https://archive.org/details/a8b_Theatre_Europe_1986_Datasoft_US",
+    "archiveTitle": "Theatre Europe",
+    "archiveIdentifier": "a8b_Theatre_Europe_1986_Datasoft_US"
+  },
+  {
+    "title": "Top Gun: Fire at Will!",
+    "year": 1996,
+    "cover": "assets/archive/top-gun-fire-at-will/source-01.jpg",
+    "gameplay": "assets/archive/top-gun-fire-at-will/source-03.png",
+    "source": "https://archive.org/details/msdos_Top_Gun_Fire_at_Will_1996",
+    "archiveTitle": "Top Gun Fire at Will",
+    "archiveIdentifier": "msdos_Top_Gun_Fire_at_Will_1996"
+  },
+  {
+    "title": "Urban Strike",
+    "year": 1994,
+    "cover": "assets/archive/urban-strike/source-01.jpg",
+    "gameplay": "assets/archive/urban-strike/source-10.jpg",
+    "source": "https://archive.org/details/sg_Urban_Strike_1994_Electronic_Arts_EU-US_en",
+    "archiveTitle": "Urban Strike",
+    "archiveIdentifier": "sg_Urban_Strike_1994_Electronic_Arts_EU-US_en"
+  }
+]
