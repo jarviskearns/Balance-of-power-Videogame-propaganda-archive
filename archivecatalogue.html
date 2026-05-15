@@ -1126,7 +1126,7 @@
                             <div id="dos-005"></div>
                         </div>
                         <div class="button-row">
-                            <div class="button" onclick="toggleGame(this, './duke3d_flat.jsdos', 'dos-005')">Run</div>
+                            <div class="button" onclick="toggleGame(this, './Harpoon-ega-nosound-noloadfix.jsdos', 'dos-005')">Run</div>
                             <div class="button" onclick="toggleFullscreen('dos-005')">Fullscreen</div>
                         </div>
                     </div>
@@ -1922,12 +1922,26 @@
                 requestAnimationFrame(() => applyMasonry(getItems()));
             } else {
                 container.innerHTML = '';
-                dosInstances[containerId] = Dos(container, {
+                const dosOptions = {
                     url: bundleUrl,
                     autoStart: true,
                     kiosk: true,
+                    mouseCapture: false,
                     renderAspect: '4/3'
-                });
+                };
+
+                if (containerId === 'dos-005' || bundleUrl.toLowerCase().includes('harpoon')) {
+                    Object.assign(dosOptions, {
+                        backend: 'dosboxX',
+                        backendLocked: true,
+                        workerThread: false,
+                        renderBackend: 'canvas',
+                        renderAspect: 'Fit',
+                        noCloud: true
+                    });
+                }
+
+                dosInstances[containerId] = Dos(container, dosOptions);
                 btn.textContent = 'Stop';
                 isEmulatorRunning[containerId] = true;
                 container.parentElement.classList.add('running');
