@@ -704,6 +704,8 @@
       position: relative;
     }
 
+    .screen:hover,
+    .screen:hover *,
     .screen.running:hover,
     .screen.running:hover * {
       cursor: none !important;
@@ -1057,8 +1059,17 @@
         genre: 'Simulation',
         theme: 'Naval command',
         text: 'A detailed naval warfare simulation centred on modern fleet command, missile systems, and Cold War maritime doctrine. It translates contemporary military planning into a technical playable form.',
-        bundle: './duke3d_flat.jsdos',
-        containerId: 'dos-005'
+        bundle: './Harpoon-ega-nosound-noloadfix.jsdos',
+        containerId: 'dos-005',
+        dosOptions: {
+          backend: 'dosboxX',
+          backendLocked: true,
+          workerThread: false,
+          mouseCapture: false,
+          renderBackend: 'canvas',
+          renderAspect: 'Fit',
+          noCloud: true
+        }
       },
       {
         id: 'shadow-president',
@@ -1318,11 +1329,18 @@
       }
 
       container.innerHTML = '';
-      dosInstance = Dos(container, {
+
+      const defaultDosOptions = {
         url: activeGame.bundle,
         autoStart: true,
         kiosk: true,
+        mouseCapture: false,
         renderAspect: '4/3'
+      };
+
+      dosInstance = Dos(container, {
+        ...defaultDosOptions,
+        ...(activeGame.dosOptions || {})
       });
 
       isEmulatorRunning = true;
