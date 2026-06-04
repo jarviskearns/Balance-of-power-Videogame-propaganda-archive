@@ -25,8 +25,8 @@
 
     @font-face {
       font-family: "LoRes 21 OT";
-      src: url("/fonts/LoRes21OT-Regular.woff2") format("woff2"),
-        url("/fonts/LoRes21OT-Regular.woff") format("woff");
+      src: url("./fonts/LoRes21OT-Regular.woff2") format("woff2"),
+        url("./fonts/LoRes21OT-Regular.woff") format("woff");
       font-weight: normal;
       font-style: normal;
       font-display: swap;
@@ -745,18 +745,37 @@
         max-height: none;
       }
 
+      .hero {
+        font-size: clamp(34px, 8vw, 70px);
+      }
+
       .launcher-view {
         height: auto;
         min-height: calc(100vh - 132px);
         grid-template-columns: 1fr;
+        align-items: start;
         overflow: visible;
-        gap: 20px;
+        gap: 18px;
       }
 
-      .stack-panel,
-      .info-panel,
+      .stack-panel {
+        min-height: 330px;
+      }
+
+      .info-panel {
+        min-height: auto;
+        max-width: 620px;
+        padding: 22px 0 8px;
+      }
+
       .drive-panel {
-        min-height: 380px;
+        min-height: 330px;
+      }
+
+      .drive-wrap {
+        width: min(92vw, 520px);
+        height: auto;
+        aspect-ratio: 520 / 430;
       }
 
       .emulator-view {
@@ -783,22 +802,68 @@
         padding-right: 12px;
       }
 
+      .hero {
+        font-size: clamp(30px, 13vw, 58px);
+        line-height: 0.92;
+      }
+
+      .launcher-view {
+        min-height: 0;
+        gap: 14px;
+        padding-top: 4px;
+      }
+
       .button-row {
         grid-template-columns: 1fr;
       }
 
+      .stack-panel {
+        min-height: 292px;
+      }
+
       .disk-stack {
-        width: 215px;
+        left: 50%;
+        top: 54%;
+        width: min(70vw, 215px);
+        height: 315px;
       }
 
       .floppy-button {
-        width: 146px;
-        height: 158px;
+        width: min(42vw, 146px);
+        height: auto;
+        aspect-ratio: 146 / 158;
       }
 
       .floppy-graphic {
-        width: 146px;
-        height: 158px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .floppy-title {
+        font-size: clamp(7px, 2.2vw, 9px);
+      }
+
+      .floppy-year {
+        font-size: clamp(7px, 2.2vw, 9px);
+      }
+
+      .info-title,
+      .view-title {
+        font-size: clamp(28px, 10vw, 46px);
+      }
+
+      .info-panel {
+        padding-top: 8px;
+      }
+
+      .drive-panel {
+        min-height: 260px;
+      }
+
+      .drive-wrap {
+        width: min(88vw, 440px);
+        height: auto;
+        aspect-ratio: 520 / 430;
       }
     }
   </style>
