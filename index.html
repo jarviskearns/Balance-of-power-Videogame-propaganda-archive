@@ -88,6 +88,12 @@
     }
 
     .graphic-stage {
+      --globe-top: 54%;
+      --button-top: var(--globe-top);
+      --globe-size: min(114vw, 130vh, 1860px);
+      --globe-edge-x: min(47vw, 54vh, 760px);
+      --left-symbol-size: min(29vw, 42vh, 530px);
+      --right-symbol-size: min(24vw, 37vh, 460px);
       position: relative;
       min-height: calc(100vh - 58px);
       background: var(--bg);
@@ -137,28 +143,31 @@
     }
 
     .symbol.left {
-      left: 8%;
-      width: min(30vw, 42vh);
+      left: calc(50% - var(--globe-edge-x));
+      top: var(--globe-top);
+      transform: translate(-50%, -50%);
+      width: var(--left-symbol-size);
       height: auto;
       aspect-ratio: 1 / 1;
-      top: 35%;
       z-index: 9;
     }
 
     .symbol.right {
-      right: 11%;
-      width: min(20vw, 32vh);
+      left: calc(50% + var(--globe-edge-x));
+      right: auto;
+      top: var(--globe-top);
+      transform: translate(-50%, -50%);
+      width: var(--right-symbol-size);
       height: auto;
       aspect-ratio: 1 / 1;
-      top: 40%;
       z-index: 9;
     }
 
     .symbol.center {
       left: 50%;
-      top: 40%;
+      top: var(--globe-top);
       transform: translate(-50%, -50%);
-      width: min(72vw, 78vh, 1350px);
+      width: var(--globe-size);
       height: auto;
       aspect-ratio: 1 / 1;
       z-index: 2;
@@ -287,7 +296,7 @@
     .start-button {
       position: absolute;
       left: 50%;
-      top: 62.5%;
+      top: var(--button-top);
       transform: translate(-50%, -50%);
       display: inline-flex;
       align-items: center;
@@ -313,31 +322,16 @@
     }
 
     @media (max-width: 1100px) {
+      .graphic-stage {
+        --globe-top: 52%;
+        --globe-size: min(104vw, 96vh);
+        --globe-edge-x: min(43vw, 40vh);
+        --left-symbol-size: min(34vw, 38vh);
+        --right-symbol-size: min(26vw, 30vh);
+      }
+
       .ui-version {
         max-width: min(42vw, 360px);
-      }
-
-      .symbol.left {
-        left: 8%;
-        width: min(34vw, 38vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 40%;
-      }
-
-      .symbol.right {
-        right: 7%;
-        width: min(22vw, 28vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 43%;
-      }
-
-      .symbol.center {
-        width: min(88vw, 76vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 55%;
       }
 
       .start-button {
@@ -347,6 +341,14 @@
     }
 
     @media (max-width: 820px) {
+      .graphic-stage {
+        --globe-top: 51%;
+        --globe-size: min(112vw, 86vh);
+        --globe-edge-x: min(46.5vw, 35.5vh);
+        --left-symbol-size: min(38vw, 30vh);
+        --right-symbol-size: min(28vw, 23vh);
+      }
+
       .graphic-stage::before {
         inset: 14px;
       }
@@ -364,29 +366,6 @@
         font-size: 10px;
       }
 
-      .symbol.left {
-        left: 4%;
-        width: min(36vw, 30vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 45%;
-      }
-
-      .symbol.right {
-        right: 4%;
-        width: min(23vw, 22vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 47%;
-      }
-
-      .symbol.center {
-        width: min(100vw, 76vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 55%;
-      }
-
       .start-button {
         font-size: clamp(18px, 3.4vw, 26px);
         padding: 8px 14px 6px;
@@ -394,6 +373,14 @@
     }
 
     @media (max-width: 640px) {
+      .graphic-stage {
+        --globe-top: 50%;
+        --globe-size: min(116vw, 76vh);
+        --globe-edge-x: min(48vw, 31.5vh);
+        --left-symbol-size: min(44vw, 24vh);
+        --right-symbol-size: min(32vw, 20vh);
+      }
+
       .graphic-stage::before {
         inset: 10px;
       }
@@ -410,29 +397,6 @@
         right: 18px;
         font-size: 9px;
         max-width: 44vw;
-      }
-
-      .symbol.left {
-        left: 0%;
-        width: min(40vw, 24vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 49%;
-      }
-
-      .symbol.right {
-        right: 1%;
-        width: min(25vw, 18vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 50%;
-      }
-
-      .symbol.center {
-        width: min(112vw, 78vh);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        top: 56%;
       }
 
       .start-button {
